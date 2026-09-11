@@ -9,10 +9,10 @@
         /* Custom Blanka Font Load for OTF */
         @font-face {
             font-family: 'Blanka';
-            src: url('blanka.otf') format('opentype'); /* Agar TTF hai toh blanka.ttf kar lena */
+            src: url('blanka.otf') format('opentype');
         }
 
-        /* Scrollbar Hider Magic 🪄 */
+        /* Scrollbar Hider Magic */
         ::-webkit-scrollbar { display: none; }
         * { scrollbar-width: none; -ms-overflow-style: none; margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
         
@@ -25,7 +25,9 @@
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
         .logo-container { display: flex; align-items: center; gap: 12px; }
         .logo-img { width: 42px; height: 42px; border-radius: 50%; border: 1px solid #333; object-fit: cover; display: block; }
-        .header h1 { font-family: 'Blanka', sans-serif; font-size: 38px; letter-spacing: 4px; color: #ffffff; margin: 0; line-height: 1; padding-top: 4px; }
+        
+        /* EIMI text ko thoda upar shift kiya `margin-top: -8px` se */
+        .header h1 { font-family: 'Blanka', sans-serif; font-size: 38px; letter-spacing: 4px; color: #ffffff; margin: 0; line-height: 1; margin-top: -8px; }
         
         .header-actions { display: flex; gap: 8px; }
         .btn { background: #000000; border: 1px solid #404040; color: #ffffff; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 13px; font-weight: 600; }
@@ -132,17 +134,18 @@
 
     <script>
         let currentSubjects = [];
-        const API_URL = "https://attendpro-web-2.onrender.com/sync"; // Tera Live Backend URL 🔥
+        const API_URL = "https://attendpro-web-2.onrender.com/sync";
 
         function calculateStatus(present, total) {
             if (total === 0) return { pct: 0, status: "Pending" };
             const pct = Math.round((present / total) * 100);
             if (pct >= 75) {
                 const safeBunks = Math.floor((present - (0.75 * total)) / 0.75);
-                return { pct, status: `Safe [${safeBunks} left]` };
+                // Yahan naya detail add kiya hai "bunks left" ke liye
+                return { pct, status: `Safe [${safeBunks} bunks left]` };
             } else {
                 const needed = Math.ceil(((0.75 * total) - present) / 0.25);
-                return { pct, status: `Warning [Need ${needed}]` };
+                return { pct, status: `Warning [Need ${needed} classes]` };
             }
         }
 
