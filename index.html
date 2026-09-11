@@ -9,22 +9,23 @@
         /* Custom Blanka Font Load for OTF */
         @font-face {
             font-family: 'Blanka';
-            src: url('blanka.otf') format('opentype');
+            src: url('blanka.otf') format('opentype'); /* Agar TTF hai toh blanka.ttf kar lena */
         }
 
+        /* Scrollbar Hider Magic 🪄 */
+        ::-webkit-scrollbar { display: none; }
+        * { scrollbar-width: none; -ms-overflow-style: none; margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
+        
         iframe { display: none !important; }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
         body { background-color: #000000; color: #ffffff; display: flex; justify-content: center; padding: 20px; }
         .container { width: 100%; max-width: 480px; }
         
-        /* Header & Logo Style */
+        /* Header & Logo Perfect Alignment */
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
         .logo-container { display: flex; align-items: center; gap: 12px; }
-        .logo-img { width: 45px; height: 45px; border-radius: 50%; border: 1px solid #333; }
-        
-        /* EIMI Text Font Updated to Blanka */
-        .header h1 { font-family: 'Blanka', sans-serif; font-size: 38px; letter-spacing: 4px; color: #ffffff; margin-top: 5px; }
+        .logo-img { width: 42px; height: 42px; border-radius: 50%; border: 1px solid #333; object-fit: cover; display: block; }
+        .header h1 { font-family: 'Blanka', sans-serif; font-size: 38px; letter-spacing: 4px; color: #ffffff; margin: 0; line-height: 1; padding-top: 4px; }
         
         .header-actions { display: flex; gap: 8px; }
         .btn { background: #000000; border: 1px solid #404040; color: #ffffff; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 13px; font-weight: 600; }
@@ -57,7 +58,6 @@
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(4px); }
         .modal-content { background: #0a0a0a; border: 1px solid #404040; border-radius: 16px; padding: 24px; width: 90%; max-width: 380px; display: flex; flex-direction: column; gap: 14px; }
         
-        /* Modals Title Font Updated to Blanka */
         .modal-content h3 { font-family: 'Blanka', sans-serif; color: #ffffff; letter-spacing: 2px; }
         
         .modal-input { padding: 12px; background: #000000; border: 1px solid #333333; border-radius: 8px; color: #ffffff; outline: none; }
@@ -132,7 +132,7 @@
 
     <script>
         let currentSubjects = [];
-        const API_URL = "https://attendpro-web-2.onrender.com/sync"; // Backend API URL 🔥
+        const API_URL = "https://attendpro-web-2.onrender.com/sync"; // Tera Live Backend URL 🔥
 
         function calculateStatus(present, total) {
             if (total === 0) return { pct: 0, status: "Pending" };
