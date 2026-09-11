@@ -6,299 +6,35 @@
     <title>AttendPro 75 - Interactive Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background-color: #0f172a;
-            color: #f8fafc;
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(45deg, #38bdf8, #818cf8);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .btn:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-add {
-            background: rgba(56, 189, 248, 0.15);
-            border-color: rgba(56, 189, 248, 0.3);
-            color: #38bdf8;
-        }
-
-        .btn-add:hover {
-            background: rgba(56, 189, 248, 0.25);
-        }
-
-        /* Search Bar */
-        .search-box {
-            width: 100%;
-            padding: 12px 16px;
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
-            color: #fff;
-            font-size: 14px;
-            margin-bottom: 20px;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .search-box:focus {
-            border-color: #38bdf8;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
-        }
-
-        /* Overall Card */
-        .overall-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .overall-info h3 {
-            font-size: 13px;
-            color: #94a3b8;
-            font-weight: 400;
-        }
-
-        .overall-info h2 {
-            font-size: 18px;
-            font-weight: 700;
-            margin: 4px 0;
-        }
-
-        .overall-info p {
-            font-size: 11px;
-            color: #64748b;
-        }
-
-        .overall-ring {
-            font-size: 18px;
-            font-weight: 700;
-            padding: 15px;
-            border-radius: 50%;
-            width: 65px;
-            height: 65px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid;
-        }
-
-        .section-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #e2e8f0;
-        }
-
-        /* Subject Cards List */
-        .subject-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 480px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        .subject-list::-webkit-scrollbar {
-            width: 4px;
-        }
-        .subject-list::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-        }
-
-        .subject-card {
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            transition: 0.2s;
-        }
-
-        .subject-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.15);
-            background: rgba(30, 41, 59, 0.8);
-        }
-
-        .card-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .subject-info h4 {
-            font-size: 13px;
-            font-weight: 600;
-            color: #f1f5f9;
-            max-width: 280px;
-        }
-
-        .subject-info .classes {
-            font-size: 11px;
-            color: #94a3b8;
-            margin: 3px 0;
-        }
-
-        .status-tag {
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .safe { color: #4ade80; }
-        .risk { color: #fbbf24; }
-
-        .percentage {
-            font-weight: 700;
-            font-size: 16px;
-            text-align: right;
-        }
-
-        /* Quick Action Buttons */
-        .quick-actions {
-            display: flex;
-            gap: 8px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding-top: 8px;
-            justify-content: flex-end;
-        }
-
-        .action-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #cbd5e1;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .action-btn.present:hover {
-            background: rgba(74, 222, 128, 0.2);
-            color: #4ade80;
-            border-color: #4ade80;
-        }
-
-        .action-btn.bunk:hover {
-            background: rgba(248, 113, 113, 0.2);
-            color: #f87171;
-            border-color: #f87171;
-        }
-
-        /* Modal Popup */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-        }
-
-        .modal-content {
-            background: #1e293b;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 24px;
-            width: 90%;
-            max-width: 380px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .modal-content h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #38bdf8;
-        }
-
-        .modal-input {
-            width: 100%;
-            padding: 10px 14px;
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 13px;
-            outline: none;
-        }
-
-        .modal-input:focus {
-            border-color: #38bdf8;
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 10px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; padding: 20px; }
+        .container { width: 100%; max-width: 480px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .header h1 { font-size: 24px; font-weight: 700; background: linear-gradient(45deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+        .header-actions { display: flex; gap: 8px; }
+        .btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 8px 12px; border-radius: 12px; cursor: pointer; transition: 0.3s; font-size: 13px; font-weight: 500; }
+        .btn:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.2); }
+        .btn-add { background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.3); color: #38bdf8; }
+        .btn-sync { background: rgba(74, 222, 128, 0.15); border-color: rgba(74, 222, 128, 0.3); color: #4ade80; }
+        .search-box { width: 100%; padding: 12px 16px; background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; color: #fff; font-size: 14px; margin-bottom: 20px; outline: none; }
+        .overall-card { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .overall-info h3 { font-size: 13px; color: #94a3b8; }
+        .overall-info h2 { font-size: 18px; font-weight: 700; margin: 4px 0; }
+        .overall-ring { font-size: 18px; font-weight: 700; padding: 15px; border-radius: 50%; width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; border: 2px solid; }
+        .section-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; color: #e2e8f0; }
+        .subject-list { display: flex; flex-direction: column; gap: 12px; max-height: 480px; overflow-y: auto; }
+        .subject-card { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+        .card-top { display: flex; justify-content: space-between; align-items: center; }
+        .subject-info h4 { font-size: 13px; font-weight: 600; color: #f1f5f9; }
+        .status-tag { font-size: 11px; font-weight: 600; }
+        .safe { color: #4ade80; } .risk { color: #fbbf24; }
+        .percentage { font-weight: 700; font-size: 16px; text-align: right; }
+        .quick-actions { display: flex; gap: 8px; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 8px; justify-content: flex-end; }
+        .action-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #cbd5e1; padding: 4px 10px; border-radius: 8px; font-size: 11px; cursor: pointer; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); align-items: center; justify-content: center; z-index: 100; }
+        .modal-content { background: #1e293b; border-radius: 20px; padding: 24px; width: 90%; max-width: 380px; display: flex; flex-direction: column; gap: 14px; }
+        .modal-input { padding: 10px; background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; color: #fff; outline: none; }
+        .loader { font-size: 12px; color: #fbbf24; text-align: center; display: none; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -307,220 +43,179 @@
         <div class="header">
             <h1>AttendPro 🚀</h1>
             <div class="header-actions">
-                <button class="btn btn-add" onclick="openModal()">➕ Add</button>
-                <button class="btn" onclick="syncData()">🔄 Sync</button>
+                <button class="btn btn-add" onclick="openAddModal()">➕ Add</button>
+                <button class="btn btn-sync" onclick="openSyncModal()">🔄 Live Sync</button>
             </div>
         </div>
 
-        <!-- Overall Status Card -->
         <div class="overall-card">
             <div class="overall-info">
                 <h3>Overall Status</h3>
                 <h2 id="overallStatusText">Loading...</h2>
-                <p>Calculated live from your attendance data</p>
             </div>
             <div class="overall-ring" id="overallRing">0%</div>
         </div>
 
-        <!-- Search Bar -->
         <input type="text" class="search-box" id="searchInput" placeholder="🔍 Search subject..." onkeyup="filterSubjects()">
-
         <div class="section-title">All Subjects Analytics</div>
-
-        <!-- Subjects Container -->
         <div class="subject-list" id="subjectList"></div>
+    </div>
+
+    <!-- Sync Credentials Modal -->
+    <div class="modal" id="syncModal">
+        <div class="modal-content">
+            <h3 style="color: #4ade80;">Live Portal Sync 🌐</h3>
+            <p style="font-size: 12px; color: #94a3b8;">Enter college portal details to fetch live attendance.</p>
+            <input type="text" class="modal-input" id="collegeId" placeholder="College ID (e.g. 126nixay12006)">
+            <input type="password" class="modal-input" id="collegePass" placeholder="Password">
+            <div class="loader" id="syncLoader">⏳ Scraping portal... Captcha solving takes 30-40 sec. Please wait!</div>
+            <div class="header-actions" style="justify-content: flex-end; margin-top: 10px;">
+                <button class="btn" onclick="closeSyncModal()">Cancel</button>
+                <button class="btn btn-sync" id="syncBtn" onclick="runLiveSync()">Start Sync</button>
+            </div>
+        </div>
     </div>
 
     <!-- Add Subject Modal -->
     <div class="modal" id="addModal">
         <div class="modal-content">
-            <h3>Add New Attendance</h3>
-            <input type="text" class="modal-input" id="newSubName" placeholder="Subject Name (e.g. Data Structures)">
-            <input type="number" class="modal-input" id="newSubPresent" placeholder="Attended Classes (e.g. 15)">
-            <input type="number" class="modal-input" id="newSubTotal" placeholder="Total Classes Conducted (e.g. 18)">
-            
-            <div class="modal-actions">
-                <button class="btn" onclick="closeModal()">Cancel</button>
+            <h3 style="color: #38bdf8;">Add Manual Attendance</h3>
+            <input type="text" class="modal-input" id="newSubName" placeholder="Subject Name">
+            <input type="number" class="modal-input" id="newSubPresent" placeholder="Attended Classes">
+            <input type="number" class="modal-input" id="newSubTotal" placeholder="Total Classes">
+            <div class="header-actions" style="justify-content: flex-end; margin-top: 10px;">
+                <button class="btn" onclick="closeAddModal()">Cancel</button>
                 <button class="btn btn-add" onclick="saveNewSubject()">Save</button>
             </div>
         </div>
     </div>
 
-    <!-- Agar server pe chalana ho tab ke liye (Abhi phone ke liye optional hai) -->
-    <!-- <script src="data.js"></script> -->
-
     <script>
-        // Dummy data incase tera data.js link nahi ho pa raha phone pe
-        let defaultSubjects = [
-            { "name": "Major: Python Programming", "present": 24, "total": 25, "status": "Safe (7 bunks left)", "pct": 96 },
-            { "name": "Major: Descriptive Statistics", "present": 11, "total": 13, "status": "Safe (1 bunk left)", "pct": 85 },
-            { "name": "Minor: OOP with C++", "present": 10, "total": 13, "status": "Safe (0 bunks left)", "pct": 77 }
-        ];
-
         let currentSubjects = [];
+        const API_URL = "https://attendpro-web.onrender.com/sync"; // TERA LIVE RENDER URL 🔥
 
         function calculateStatus(present, total) {
-            if (total === 0) return { pct: 0, status: "No classes yet", isRisk: false };
+            if (total === 0) return { pct: 0, status: "No classes yet" };
             const pct = Math.round((present / total) * 100);
             if (pct >= 75) {
                 const safeBunks = Math.floor((present - (0.75 * total)) / 0.75);
-                return { pct, status: `Safe (${safeBunks} bunks left)`, isRisk: false };
+                return { pct, status: `Safe (${safeBunks} bunks left)` };
             } else {
                 const needed = Math.ceil(((0.75 * total) - present) / 0.25);
-                return { pct, status: `At Risk (Need ${needed} classes)`, isRisk: true };
+                return { pct, status: `At Risk (Need ${needed} classes)` };
             }
         }
 
         function updateOverallStats(data) {
             if (!data || data.length === 0) return;
-            
-            let totalPresent = 0;
-            let totalClasses = 0;
-            let atRiskCount = 0;
-
-            data.forEach(sub => {
-                totalPresent += sub.present;
-                totalClasses += sub.total;
-                if (sub.pct < 75) atRiskCount++;
-            });
-
+            let totalPresent = 0, totalClasses = 0, atRiskCount = 0;
+            data.forEach(sub => { totalPresent += sub.present; totalClasses += sub.total; if (sub.pct < 75) atRiskCount++; });
             if (totalClasses === 0) return;
-
             const overallPct = Math.round((totalPresent / totalClasses) * 100);
             const ring = document.getElementById('overallRing');
             const statusText = document.getElementById('overallStatusText');
-
             ring.innerText = overallPct + '%';
-
             if (overallPct >= 75 && atRiskCount === 0) {
-                statusText.innerHTML = 'Safe to Bunk! 🟢';
-                statusText.style.color = '#4ade80';
-                ring.style.color = '#4ade80';
-                ring.style.borderColor = 'rgba(74, 222, 128, 0.3)';
-                ring.style.background = 'rgba(74, 222, 128, 0.1)';
+                statusText.innerHTML = 'Safe to Bunk! 🟢'; statusText.style.color = '#4ade80';
+                ring.style.color = '#4ade80'; ring.style.borderColor = 'rgba(74, 222, 128, 0.3)';
             } else {
-                statusText.innerHTML = 'At Risk / Low ⚠️';
-                statusText.style.color = '#fbbf24';
-                ring.style.color = '#fbbf24';
-                ring.style.borderColor = 'rgba(251, 191, 36, 0.3)';
-                ring.style.background = 'rgba(251, 191, 36, 0.1)';
+                statusText.innerHTML = 'At Risk / Low ⚠️'; statusText.style.color = '#fbbf24';
+                ring.style.color = '#fbbf24'; ring.style.borderColor = 'rgba(251, 191, 36, 0.3)';
             }
         }
 
         function renderSubjects(data) {
             const listContainer = document.getElementById('subjectList');
             listContainer.innerHTML = '';
-
-            if (!data || data.length === 0) {
-                listContainer.innerHTML = '<p style="text-align:center; color:#94a3b8; font-size:13px; padding:20px;">No subjects found. Click + Add to start!</p>';
-                return;
-            }
-
+            if (!data || data.length === 0) { listContainer.innerHTML = '<p style="text-align:center; color:#94a3b8; font-size:13px; padding:20px;">No data. Click Live Sync!</p>'; return; }
+            
             data.forEach((sub, index) => {
-                const card = document.createElement('div');
-                card.className = 'subject-card';
-                
                 const isRisk = sub.pct < 75;
                 const statusClass = isRisk ? 'risk' : 'safe';
-                const emoji = isRisk ? '⚠️' : '🟢';
-
-                card.innerHTML = `
-                    <div class="card-top">
-                        <div class="subject-info">
-                            <h4>${sub.name}</h4>
-                            <div class="classes">Classes: ${sub.present}/${sub.total}</div>
-                            <div class="status-tag ${statusClass}">${emoji} ${sub.status}</div>
+                listContainer.innerHTML += `
+                    <div class="subject-card">
+                        <div class="card-top">
+                            <div class="subject-info">
+                                <h4>${sub.name}</h4>
+                                <div style="font-size:11px; color:#94a3b8; margin:3px 0;">Classes: ${sub.present}/${sub.total}</div>
+                                <div class="status-tag ${statusClass}">${isRisk ? '⚠️' : '🟢'} ${sub.status}</div>
+                            </div>
+                            <div class="percentage" style="color: ${isRisk ? '#fbbf24' : '#4ade80'}">${sub.pct}%</div>
                         </div>
-                        <div class="percentage" style="color: ${isRisk ? '#fbbf24' : '#4ade80'}">${sub.pct}%</div>
-                    </div>
-                    <div class="quick-actions">
-                        <button class="action-btn present" onclick="quickMark(${index}, true)">+1 Present</button>
-                        <button class="action-btn bunk" onclick="quickMark(${index}, false)">+1 Bunk</button>
-                    </div>
-                `;
-                listContainer.appendChild(card);
+                        <div class="quick-actions">
+                            <button class="action-btn" onclick="quickMark(${index}, true)">+1 Present</button>
+                            <button class="action-btn" onclick="quickMark(${index}, false)">+1 Bunk</button>
+                        </div>
+                    </div>`;
             });
         }
 
         function quickMark(index, isPresent) {
             currentSubjects[index].total += 1;
-            if (isPresent) {
-                currentSubjects[index].present += 1;
-            }
+            if (isPresent) currentSubjects[index].present += 1;
             const info = calculateStatus(currentSubjects[index].present, currentSubjects[index].total);
-            currentSubjects[index].pct = info.pct;
-            currentSubjects[index].status = info.status;
-
+            currentSubjects[index].pct = info.pct; currentSubjects[index].status = info.status;
             saveAndRefresh();
         }
 
-        function openModal() {
-            document.getElementById('addModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('addModal').style.display = 'none';
-        }
+        function openAddModal() { document.getElementById('addModal').style.display = 'flex'; }
+        function closeAddModal() { document.getElementById('addModal').style.display = 'none'; }
+        function openSyncModal() { document.getElementById('syncModal').style.display = 'flex'; }
+        function closeSyncModal() { document.getElementById('syncModal').style.display = 'none'; document.getElementById('syncLoader').style.display = 'none'; }
 
         function saveNewSubject() {
-            const name = document.getElementById('newSubName').value.trim();
+            const name = document.getElementById('newSubName').value;
             const present = parseInt(document.getElementById('newSubPresent').value) || 0;
             const total = parseInt(document.getElementById('newSubTotal').value) || 0;
-
-            if (!name || total <= 0 || present > total) {
-                alert("Please valid details daalo (Total > 0 aur Present <= Total hona chahiye)");
-                return;
-            }
-
+            if (!name || total <= 0) return alert("Valid details daalo!");
             const info = calculateStatus(present, total);
-            currentSubjects.push({
-                name: name,
-                present: present,
-                total: total,
-                status: info.status,
-                pct: info.pct
-            });
+            currentSubjects.push({ name, present, total, status: info.status, pct: info.pct });
+            closeAddModal(); saveAndRefresh();
+        }
 
-            document.getElementById('newSubName').value = '';
-            document.getElementById('newSubPresent').value = '';
-            document.getElementById('newSubTotal').value = '';
-            closeModal();
+        async function runLiveSync() {
+            const user = document.getElementById('collegeId').value.trim();
+            const pass = document.getElementById('collegePass').value.trim();
+            if(!user || !pass) return alert("Bhai ID aur Password toh daal!");
 
-            saveAndRefresh();
+            document.getElementById('syncBtn').disabled = true;
+            document.getElementById('syncLoader').style.display = 'block';
+
+            try {
+                const res = await fetch(`${API_URL}?user=${encodeURIComponent(user)}&passw=${encodeURIComponent(pass)}`);
+                const result = await res.json();
+                
+                if(result.success) {
+                    currentSubjects = result.data.map(sub => {
+                        const info = calculateStatus(sub.present, sub.total);
+                        return { ...sub, status: info.status };
+                    });
+                    saveAndRefresh();
+                    closeSyncModal();
+                    alert("✨ Live attendance successfully fetched!");
+                } else {
+                    alert("❌ Login Error: " + result.error);
+                }
+            } catch(e) {
+                alert("❌ Server issue. Render backend wake-up mode me hoga, 1 min baad wapas try kar!");
+            }
+            document.getElementById('syncBtn').disabled = false;
+            document.getElementById('syncLoader').style.display = 'none';
         }
 
         function saveAndRefresh() {
             localStorage.setItem('user_attendance', JSON.stringify(currentSubjects));
-            updateOverallStats(currentSubjects);
-            renderSubjects(currentSubjects);
+            updateOverallStats(currentSubjects); renderSubjects(currentSubjects);
         }
 
         function filterSubjects() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = currentSubjects.filter(sub => sub.name.toLowerCase().includes(query));
-            renderSubjects(filtered);
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            renderSubjects(currentSubjects.filter(s => s.name.toLowerCase().includes(q)));
         }
 
-        function syncData() {
-            if(confirm("Yeh tera local data reset kar dega. Continue?")) {
-                localStorage.removeItem('user_attendance');
-                location.reload();
-            }
-        }
-
-        // Initial Load
         document.addEventListener('DOMContentLoaded', () => {
             const saved = localStorage.getItem('user_attendance');
-            if (saved) {
-                currentSubjects = JSON.parse(saved);
-            } else if (typeof subjects !== 'undefined') {
-                currentSubjects = [...subjects];
-            } else {
-                // Agar phone me `data.js` alag se run nahi hota, toh default fallback data chalega
-                currentSubjects = [...defaultSubjects];
-            }
-            updateOverallStats(currentSubjects);
-            renderSubjects(currentSubjects);
+            if (saved) { currentSubjects = JSON.parse(saved); updateOverallStats(currentSubjects); renderSubjects(currentSubjects); }
         });
     </script>
 </body>
