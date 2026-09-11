@@ -48,12 +48,22 @@
             </div>
         </div>
 
-        <div class="overall-card">
-            <div class="overall-info">
-                <h3>Overall Status</h3>
-                <h2 id="overallStatusText">Loading...</h2>
+        <!-- Naya Double Card (Theory + Practical) -->
+        <div style="display: flex; gap: 10px; margin-bottom: 24px;">
+            <div class="overall-card" style="margin-bottom: 0; flex: 1; padding: 15px;">
+                <div class="overall-info">
+                    <h3 style="font-size: 11px;">Theory Overall</h3>
+                    <h2 id="theoryStatusText" style="font-size: 15px;">Loading...</h2>
+                </div>
+                <div class="overall-ring" id="theoryRing" style="width: 55px; height: 55px; font-size: 15px; padding: 10px;">0%</div>
             </div>
-            <div class="overall-ring" id="overallRing">0%</div>
+            <div class="overall-card" style="margin-bottom: 0; flex: 1; padding: 15px;">
+                <div class="overall-info">
+                    <h3 style="font-size: 11px;">Practical Overall</h3>
+                    <h2 id="pracStatusText" style="font-size: 15px;">Loading...</h2>
+                </div>
+                <div class="overall-ring" id="pracRing" style="width: 55px; height: 55px; font-size: 15px; padding: 10px;">0%</div>
+            </div>
         </div>
 
         <input type="text" class="search-box" id="searchInput" placeholder="🔍 Search subject..." onkeyup="filterSubjects()">
@@ -92,7 +102,7 @@
 
     <script>
         let currentSubjects = [];
-        const API_URL = "https://attendpro-web-2.onrender.com/sync"; // TERA LIVE RENDER URL 🔥
+        const API_URL = "https://attendpro-web-2.onrender.com/sync"; // Updated to Backend-2! 🔥
 
         function calculateStatus(present, total) {
             if (total === 0) return { pct: 0, status: "No classes yet" };
@@ -108,19 +118,42 @@
 
         function updateOverallStats(data) {
             if (!data || data.length === 0) return;
-            let totalPresent = 0, totalClasses = 0, atRiskCount = 0;
-            data.forEach(sub => { totalPresent += sub.present; totalClasses += sub.total; if (sub.pct < 75) atRiskCount++; });
-            if (totalClasses === 0) return;
-            const overallPct = Math.round((totalPresent / totalClasses) * 100);
-            const ring = document.getElementById('overallRing');
-            const statusText = document.getElementById('overallStatusText');
-            ring.innerText = overallPct + '%';
-            if (overallPct >= 75 && atRiskCount === 0) {
-                statusText.innerHTML = 'Safe to Bunk! 🟢'; statusText.style.color = '#4ade80';
-                ring.style.color = '#4ade80'; ring.style.borderColor = 'rgba(74, 222, 128, 0.3)';
+            
+            let tPresent = 0, tTotal = 0, tRisk = 0;
+            let pPresent = 0, pTotal = 0, pRisk = 0;
+            
+            data.forEach(sub => { 
+                if (sub.name.includes("(Practical)")) {
+                    pPresent += sub.present; pTotal += sub.total; if (sub.pct < 75) pRisk++; 
+                } else {
+                    tPresent += sub.present; tTotal += sub.total; if (sub.pct < 75) tRisk++; 
+                }
+            });
+
+            // Theory Stats
+            const tPct = tTotal === 0 ? 0 : Math.round((tPresent / tTotal) * 100);
+            const tRing = document.getElementById('theoryRing');
+            const tText = document.getElementById('theoryStatusText');
+            tRing.innerText = tPct + '%';
+            if (tPct >= 75 && tRisk === 0) {
+                tText.innerHTML = 'Safe 🟢'; tText.style.color = '#4ade80';
+                tRing.style.color = '#4ade80'; tRing.style.borderColor = 'rgba(74, 222, 128, 0.3)';
             } else {
-                statusText.innerHTML = 'At Risk / Low ⚠️'; statusText.style.color = '#fbbf24';
-                ring.style.color = '#fbbf24'; ring.style.borderColor = 'rgba(251, 191, 36, 0.3)';
+                tText.innerHTML = 'At Risk ⚠️'; tText.style.color = '#fbbf24';
+                tRing.style.color = '#fbbf24'; tRing.style.borderColor = 'rgba(251, 191, 36, 0.3)';
+            }
+
+            // Practical Stats
+            const pPct = pTotal === 0 ? 0 : Math.round((pPresent / pTotal) * 100);
+            const pRing = document.getElementById('pracRing');
+            const pText = document.getElementById('pracStatusText');
+            pRing.innerText = pPct + '%';
+            if (pPct >= 75 && pRisk === 0) {
+                pText.innerHTML = 'Safe 🟢'; pText.style.color = '#4ade80';
+                pRing.style.color = '#4ade80'; pRing.style.borderColor = 'rgba(74, 222, 128, 0.3)';
+            } else {
+                pText.innerHTML = 'At Risk ⚠️'; pText.style.color = '#fbbf24';
+                pRing.style.color = '#fbbf24'; pRing.style.borderColor = 'rgba(251, 191, 36, 0.3)';
             }
         }
 
@@ -186,10 +219,24 @@
                 const result = await res.json();
                 
                 if(result.success) {
-                    currentSubjects = result.data.map(sub => {
-                        const info = calculateStatus(sub.present, sub.total);
-                        return { ...sub, status: info.status };
+                    // Theory / Practical Logic Split 🔥
+                    let nameCount = {};
+                    result.data.forEach(sub => {
+                        nameCount[sub.name] = (nameCount[sub.name] || 0) + 1;
                     });
+
+                    let currentNameCount = {};
+                    currentSubjects = result.data.map(sub => {
+                        let finalName = sub.name;
+                        if (nameCount[sub.name] > 1) {
+                            currentNameCount[sub.name] = (currentNameCount[sub.name] || 0) + 1;
+                            if (currentNameCount[sub.name] === 1) finalName += " (Theory)";
+                            else if (currentNameCount[sub.name] === 2) finalName += " (Practical)";
+                        }
+                        const info = calculateStatus(sub.present, sub.total);
+                        return { ...sub, name: finalName, status: info.status };
+                    });
+
                     saveAndRefresh();
                     closeSyncModal();
                     alert("✨ Live attendance successfully fetched!");
