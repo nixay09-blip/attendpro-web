@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EIMI - Dashboard</title>
-    <!-- Naya Font "Bebas Neue" EIMI text ke liye aur Space Grotesk baaki text ke liye -->
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Naya Font "Syncopate" jo tere logo ke text jaisa wide aur blocky hai -->
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         iframe { display: none !important; }
         
@@ -17,7 +17,9 @@
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
         .logo-container { display: flex; align-items: center; gap: 12px; }
         .logo-img { width: 45px; height: 45px; border-radius: 50%; border: 1px solid #333; }
-        .header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 38px; letter-spacing: 4px; color: #ffffff; margin-top: 5px; }
+        
+        /* EIMI Text Font Update */
+        .header h1 { font-family: 'Syncopate', sans-serif; font-size: 32px; font-weight: 700; letter-spacing: 3px; color: #ffffff; margin-top: 5px; }
         
         .header-actions { display: flex; gap: 8px; }
         .btn { background: #000000; border: 1px solid #404040; color: #ffffff; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 13px; font-weight: 600; }
@@ -57,7 +59,7 @@
 <body>
 
     <div class="container">
-        <!-- Naya Header Jisme Logo Aur Text Saath Hai -->
+        <!-- Header Jisme Logo Aur Naya Text Font Saath Hai -->
         <div class="header">
             <div class="logo-container">
                 <img src="logo.jpg" alt="EIMI Logo" class="logo-img" onerror="this.style.display='none'">
@@ -94,7 +96,7 @@
     <!-- Sync Modal -->
     <div class="modal" id="syncModal">
         <div class="modal-content">
-            <h3 style="color: #ffffff; letter-spacing: 1px;">SYSTEM SYNC</h3>
+            <h3 style="color: #ffffff; letter-spacing: 1px; font-family: 'Syncopate', sans-serif;">SYSTEM SYNC</h3>
             <p style="font-size: 12px; color: #888888;">Enter credentials to authenticate.</p>
             <input type="text" class="modal-input" id="collegeId" placeholder="User ID">
             <input type="password" class="modal-input" id="collegePass" placeholder="Password">
@@ -109,7 +111,7 @@
     <!-- Add Subject Modal -->
     <div class="modal" id="addModal">
         <div class="modal-content">
-            <h3 style="color: #ffffff; letter-spacing: 1px;">MANUAL ENTRY</h3>
+            <h3 style="color: #ffffff; letter-spacing: 1px; font-family: 'Syncopate', sans-serif;">MANUAL ENTRY</h3>
             <input type="text" class="modal-input" id="newSubName" placeholder="Module Name">
             <input type="number" class="modal-input" id="newSubPresent" placeholder="Attended">
             <input type="number" class="modal-input" id="newSubTotal" placeholder="Total">
