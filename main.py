@@ -15,24 +15,38 @@ def sync_attendance(user: str, passw: str):
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
             
-            # Login Process
-            page.goto("http://report.aldel.org/student_page.php", timeout=60000)
-            page.fill('[name="studentid"]', user)
-            page.fill('[name="studentpwd"]', passw)
+            # --- AUTO-RETRY LOOP (Max 5 attempts) ---
+            login_success = False
+            max_retries = 10
             
-            page.locator("#captcha").screenshot(path="cap.png")
-            with open("cap.png", "rb") as f:
-                captcha_text = ocr.classification(f.read())
-            
-            page.fill('[name="captcha_code"]', captcha_text.strip())
-            page.click('[name="student_submit"]')
-            page.wait_for_timeout(3000)
-            
-            if page.url == "http://report.aldel.org/student_page.php":
-                browser.close()
-                return {"success": False, "error": "Captcha ya Password galat tha. Try again!"}
+            for attempt in range(max_retries):
+                page.goto("http://report.aldel.org/student_page.php", timeout=60000)
+                page.fill('[name="studentid"]', user)
+                page.fill('[name="studentpwd"]', passw)
                 
-            # Scrape Attendance
+                page.locator("#captcha").screenshot(path="cap.png")
+                with open("cap.png", "rb") as f:
+                    captcha_text = ocr.classification(f.read())
+                
+                page.fill('[name="captcha_code"]', captcha_text.strip())
+                page.click('[name="student_submit"]')
+                
+                # Thoda wait karenge taaki page load ho sake
+                page.wait_for_timeout(3000)
+                
+                # Check agar login ho gaya
+                if page.url != "http://report.aldel.org/student_page.php":
+                    login_success = True
+                    break  # Login success, loop se bahar nikal jao
+                else:
+                    print(f"Captcha failed for {user}, trying again... (Attempt {attempt + 1})", flush=True)
+            
+            # Agar 5 baar try karne ke baad bhi login nahi hua (Maybe password galat ho)
+            if not login_success:
+                browser.close()
+                return {"success": False, "error": "Login Failed. Shayad Password galat hai ya Captcha hard hai. Try Again!"}
+                
+            # --- SCRAPE ATTENDANCE ---
             page.goto("http://report.aldel.org/student/attendance_report.php")
             time.sleep(2)
             
@@ -53,6 +67,10 @@ def sync_attendance(user: str, passw: str):
                         })
             
             browser.close()
+            
+            # Yeh log tere Render server pe print hoga dost ka ID dekhne ke liye!
+            print(f"🚀 NAYA LOGIN AAYA: Dost {user} ne abhi EIMI use kiya! 🔥", flush=True)
+            
             return {"success": True, "data": data}
             
     except Exception as e:
