@@ -16,12 +16,15 @@
         ::-webkit-scrollbar { display: none; }
         * { scrollbar-width: none; -ms-overflow-style: none; margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
         
+        /* Focus Ring for Keyboard Navigation */
+        *:focus-visible { outline: 2px solid #86efac; outline-offset: 3px; border-radius: 4px; }
+        
         iframe { display: none !important; }
         
         body { background-color: #000000; color: #ffffff; display: flex; justify-content: center; padding: 20px; }
         .container { width: 100%; max-width: 480px; }
         
-        /* Header & Logo Perfect Alignment */
+        /* Header & Logo */
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
         .logo-container { display: flex; align-items: center; gap: 12px; }
         .logo-img { width: 42px; height: 42px; border-radius: 50%; border: 1px solid #333; object-fit: cover; display: block; }
@@ -128,18 +131,17 @@
                 <p style="font-size: 12px; color: #888888; margin-bottom: 8px;">Fetching data... Play a match! 🎮</p>
                 <div class="game-status" id="gameStatus">Your Turn (X)</div>
                 <div class="board" id="board">
-                    <div class="cell" onclick="makeMove(0)"></div>
-                    <div class="cell" onclick="makeMove(1)"></div>
-                    <div class="cell" onclick="makeMove(2)"></div>
-                    <div class="cell" onclick="makeMove(3)"></div>
-                    <div class="cell" onclick="makeMove(4)"></div>
-                    <div class="cell" onclick="makeMove(5)"></div>
-                    <div class="cell" onclick="makeMove(6)"></div>
-                    <div class="cell" onclick="makeMove(7)"></div>
-                    <div class="cell" onclick="makeMove(8)"></div>
+                    <div class="cell" onclick="makeMove(0)" tabindex="0"></div>
+                    <div class="cell" onclick="makeMove(1)" tabindex="0"></div>
+                    <div class="cell" onclick="makeMove(2)" tabindex="0"></div>
+                    <div class="cell" onclick="makeMove(3)" tabindex="0"></div>
+                    <div class="cell" onclick="makeMove(4)" tabindex="0"></div>
+                    <div class="cell" onclick="makeMove(5)" tabindex="0"></div>
+                    <div class="cell" onclick="makeMove(6)" tabindex="0"></div>
+                    <div class="cell" onclick="makeMove(7)" tabindex="0"></div>
+                    <div class="cell" onclick="makeMove(8)" tabindex="0"></div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -157,9 +159,50 @@
         </div>
     </div>
 
+    <!-- Hidden Visitors Counter -->
+    <img src="https://hits.sh/eimi-attendance.vercel.app.svg" style="opacity: 0; position: absolute; width: 1px; height: 1px; z-index: -1;">
+
     <script>
         let currentSubjects = [];
         const API_URL = "https://attendpro-web-2.onrender.com/sync";
+
+        // === KEYBOARD NAVIGATION LOGIC ===
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.activeElement.blur();
+                closeAddModal();
+                closeSyncModal();
+                return;
+            }
+
+            if (e.key === 'Enter') {
+                if (document.getElementById('syncModal').style.display === 'flex' && document.getElementById('authForm').style.display !== 'none') {
+                    runLiveSync();
+                    return;
+                }
+                if (document.getElementById('addModal').style.display === 'flex') {
+                    saveNewSubject();
+                    return;
+                }
+            }
+
+            if (document.activeElement.tagName !== 'INPUT') {
+                if (e.key.toLowerCase() === 's') {
+                    e.preventDefault();
+                    openSyncModal();
+                    setTimeout(() => document.getElementById('collegeId').focus(), 100);
+                }
+                if (e.key.toLowerCase() === 'a') {
+                    e.preventDefault();
+                    openAddModal();
+                    setTimeout(() => document.getElementById('newSubName').focus(), 100);
+                }
+                if (e.key === '/') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+            }
+        });
 
         // === GAME LOGIC (HARD MODE) 🔥 ===
         let boardState = ["", "", "", "", "", "", "", "", ""];
@@ -189,11 +232,10 @@
             let empty = boardState.map((val, i) => val === "" ? i : null).filter(val => val !== null);
             if(empty.length === 0) return;
 
-            // Smart AI Logic
-            let move = findWinningMove("O"); // 1. Bot jeetne ka try karega
-            if(move === -1) move = findWinningMove("X"); // 2. Tera raasta block karega
-            if(move === -1 && boardState[4] === "") move = 4; // 3. Center capture karega
-            if(move === -1) move = empty[Math.floor(Math.random() * empty.length)]; // 4. Random bachi jagah lega
+            let move = findWinningMove("O"); 
+            if(move === -1) move = findWinningMove("X"); 
+            if(move === -1 && boardState[4] === "") move = 4; 
+            if(move === -1) move = empty[Math.floor(Math.random() * empty.length)]; 
 
             boardState[move] = "O";
             updateBoardUI();
@@ -231,8 +273,8 @@
             document.getElementById('gameStatus').innerText = "Your Turn (X)";
             updateBoardUI();
         }
-        // === END GAME LOGIC ===
 
+        // === ATTENDANCE LOGIC ===
         function calculateStatus(present, total) {
             if (total === 0) return { pct: 0, status: "Pending" };
             const pct = Math.round((present / total) * 100);
@@ -341,7 +383,6 @@
             const pass = document.getElementById('collegePass').value.trim();
             if(!user || !pass) return alert("Credentials Required!");
 
-            // Hide Form, Show Game 🎮
             document.getElementById('authForm').style.display = 'none';
             document.getElementById('gameContainer').style.display = 'block';
             resetGame();
@@ -396,6 +437,5 @@
             if (saved) { currentSubjects = JSON.parse(saved); updateOverallStats(currentSubjects); renderSubjects(currentSubjects); }
         });
     </script>
-<img src="https://hits.sh/eimi-attendance.vercel.app.svg" style="opacity: 0; position: absolute; width: 1px; height: 1px; z-index: -1;">
 </body>
 </html>
