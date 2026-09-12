@@ -25,8 +25,6 @@
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
         .logo-container { display: flex; align-items: center; gap: 12px; }
         .logo-img { width: 42px; height: 42px; border-radius: 50%; border: 1px solid #333; object-fit: cover; display: block; }
-        
-        /* EIMI text ko thoda upar shift kiya `margin-top: -8px` se */
         .header h1 { font-family: 'Blanka', sans-serif; font-size: 38px; letter-spacing: 4px; color: #ffffff; margin: 0; line-height: 1; margin-top: -8px; }
         
         .header-actions { display: flex; gap: 8px; }
@@ -59,12 +57,19 @@
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(4px); }
         .modal-content { background: #0a0a0a; border: 1px solid #404040; border-radius: 16px; padding: 24px; width: 90%; max-width: 380px; display: flex; flex-direction: column; gap: 14px; }
-        
         .modal-content h3 { font-family: 'Blanka', sans-serif; color: #ffffff; letter-spacing: 2px; }
         
         .modal-input { padding: 12px; background: #000000; border: 1px solid #333333; border-radius: 8px; color: #ffffff; outline: none; }
         .modal-input:focus { border-color: #ffffff; }
-        .loader { font-size: 12px; color: #a3a3a3; text-align: center; display: none; margin-top: 5px; }
+        
+        #authForm { display: flex; flex-direction: column; gap: 14px; width: 100%; }
+
+        /* Tic-Tac-Toe Game CSS */
+        .game-container { display: none; margin-top: 5px; text-align: center; }
+        .game-status { font-size: 15px; font-weight: 700; color: #86efac; margin-bottom: 12px; font-family: 'Space Grotesk', sans-serif; }
+        .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .cell { background: #1a1a1a; border: 1px solid #333; border-radius: 8px; height: 75px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; cursor: pointer; color: #ffffff; transition: 0.2s; }
+        .cell:hover { background: #262626; }
     </style>
 </head>
 <body>
@@ -103,18 +108,38 @@
         <div class="subject-list" id="subjectList"></div>
     </div>
 
-    <!-- Sync Modal -->
+    <!-- Sync Modal with Game Integration -->
     <div class="modal" id="syncModal">
         <div class="modal-content">
             <h3>SYSTEM SYNC</h3>
-            <p style="font-size: 12px; color: #888888;">Enter credentials to authenticate.</p>
-            <input type="text" class="modal-input" id="collegeId" placeholder="User ID">
-            <input type="password" class="modal-input" id="collegePass" placeholder="Password">
-            <div class="loader" id="syncLoader">Processing request... Please wait.</div>
-            <div class="header-actions" style="justify-content: flex-end; margin-top: 10px;">
-                <button class="btn" style="background: transparent; border-color: #333;" onclick="closeSyncModal()">Cancel</button>
-                <button class="btn" id="syncBtn" onclick="runLiveSync()">Authenticate</button>
+            
+            <div id="authForm">
+                <p style="font-size: 12px; color: #888888; margin: 0;">Enter credentials to authenticate.</p>
+                <input type="text" class="modal-input" id="collegeId" placeholder="User ID">
+                <input type="password" class="modal-input" id="collegePass" placeholder="Password">
+                <div class="header-actions" style="justify-content: flex-end; margin-top: 5px;">
+                    <button class="btn" style="background: transparent; border-color: #333;" onclick="closeSyncModal()">Cancel</button>
+                    <button class="btn" id="syncBtn" onclick="runLiveSync()">Authenticate</button>
+                </div>
             </div>
+
+            <!-- Mini Game inside Modal -->
+            <div class="game-container" id="gameContainer">
+                <p style="font-size: 12px; color: #888888; margin-bottom: 8px;">Fetching data... Play a match! 🎮</p>
+                <div class="game-status" id="gameStatus">Your Turn (X)</div>
+                <div class="board" id="board">
+                    <div class="cell" onclick="makeMove(0)"></div>
+                    <div class="cell" onclick="makeMove(1)"></div>
+                    <div class="cell" onclick="makeMove(2)"></div>
+                    <div class="cell" onclick="makeMove(3)"></div>
+                    <div class="cell" onclick="makeMove(4)"></div>
+                    <div class="cell" onclick="makeMove(5)"></div>
+                    <div class="cell" onclick="makeMove(6)"></div>
+                    <div class="cell" onclick="makeMove(7)"></div>
+                    <div class="cell" onclick="makeMove(8)"></div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -136,12 +161,83 @@
         let currentSubjects = [];
         const API_URL = "https://attendpro-web-2.onrender.com/sync";
 
+        // === GAME LOGIC (HARD MODE) 🔥 ===
+        let boardState = ["", "", "", "", "", "", "", "", ""];
+        let gameActive = true;
+
+        function makeMove(idx) {
+            if(boardState[idx] === "" && gameActive) {
+                boardState[idx] = "X";
+                updateBoardUI();
+                checkWin();
+                if(gameActive) setTimeout(botMove, 400);
+            }
+        }
+
+        function findWinningMove(player) {
+            const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            for(let line of lines) {
+                let [a, b, c] = line;
+                if(boardState[a] === player && boardState[b] === player && boardState[c] === "") return c;
+                if(boardState[a] === player && boardState[c] === player && boardState[b] === "") return b;
+                if(boardState[b] === player && boardState[c] === player && boardState[a] === "") return a;
+            }
+            return -1;
+        }
+
+        function botMove() {
+            let empty = boardState.map((val, i) => val === "" ? i : null).filter(val => val !== null);
+            if(empty.length === 0) return;
+
+            // Smart AI Logic
+            let move = findWinningMove("O"); // 1. Bot jeetne ka try karega
+            if(move === -1) move = findWinningMove("X"); // 2. Tera raasta block karega
+            if(move === -1 && boardState[4] === "") move = 4; // 3. Center capture karega
+            if(move === -1) move = empty[Math.floor(Math.random() * empty.length)]; // 4. Random bachi jagah lega
+
+            boardState[move] = "O";
+            updateBoardUI();
+            checkWin();
+        }
+
+        function updateBoardUI() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach((cell, i) => { 
+                cell.innerText = boardState[i]; 
+                cell.style.color = boardState[i] === 'X' ? '#86efac' : '#fde047'; 
+            });
+        }
+
+        function checkWin() {
+            const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            for(let line of lines) {
+                if(boardState[line[0]] && boardState[line[0]] === boardState[line[1]] && boardState[line[1]] === boardState[line[2]]) {
+                    document.getElementById('gameStatus').innerText = boardState[line[0]] + " WINS! 🏆";
+                    gameActive = false;
+                    setTimeout(resetGame, 1500);
+                    return;
+                }
+            }
+            if(!boardState.includes("")) {
+                document.getElementById('gameStatus').innerText = "DRAW! 🤝";
+                gameActive = false;
+                setTimeout(resetGame, 1500);
+            }
+        }
+
+        function resetGame() {
+            boardState = ["", "", "", "", "", "", "", "", ""];
+            gameActive = true;
+            document.getElementById('gameStatus').innerText = "Your Turn (X)";
+            updateBoardUI();
+        }
+        // === END GAME LOGIC ===
+
         function calculateStatus(present, total) {
             if (total === 0) return { pct: 0, status: "Pending" };
             const pct = Math.round((present / total) * 100);
             if (pct >= 75) {
                 const safeBunks = Math.floor((present - (0.75 * total)) / 0.75);
-                // Yahan naya detail add kiya hai "bunks left" ke liye
                 return { pct, status: `Safe [${safeBunks} bunks left]` };
             } else {
                 const needed = Math.ceil(((0.75 * total) - present) / 0.25);
@@ -151,10 +247,8 @@
 
         function updateOverallStats(data) {
             if (!data || data.length === 0) return;
-            
             let tPresent = 0, tTotal = 0, tRisk = 0;
             let pPresent = 0, pTotal = 0, pRisk = 0;
-            
             data.forEach(sub => { 
                 if (sub.name.includes("(Practical)")) {
                     pPresent += sub.present; pTotal += sub.total; if (sub.pct < 75) pRisk++; 
@@ -192,7 +286,6 @@
             const listContainer = document.getElementById('subjectList');
             listContainer.innerHTML = '';
             if (!data || data.length === 0) { listContainer.innerHTML = '<p style="text-align:center; color:#525252; font-size:13px; padding:20px;">NO DATA. INITIATE SYNC.</p>'; return; }
-            
             data.forEach((sub, index) => {
                 const isRisk = sub.pct < 75;
                 const statusClass = isRisk ? 'risk' : 'safe';
@@ -224,8 +317,14 @@
 
         function openAddModal() { document.getElementById('addModal').style.display = 'flex'; }
         function closeAddModal() { document.getElementById('addModal').style.display = 'none'; }
-        function openSyncModal() { document.getElementById('syncModal').style.display = 'flex'; }
-        function closeSyncModal() { document.getElementById('syncModal').style.display = 'none'; document.getElementById('syncLoader').style.display = 'none'; }
+        function openSyncModal() { 
+            document.getElementById('syncModal').style.display = 'flex'; 
+            document.getElementById('authForm').style.display = 'flex';
+            document.getElementById('gameContainer').style.display = 'none';
+        }
+        function closeSyncModal() { 
+            document.getElementById('syncModal').style.display = 'none'; 
+        }
 
         function saveNewSubject() {
             const name = document.getElementById('newSubName').value;
@@ -242,8 +341,10 @@
             const pass = document.getElementById('collegePass').value.trim();
             if(!user || !pass) return alert("Credentials Required!");
 
-            document.getElementById('syncBtn').disabled = true;
-            document.getElementById('syncLoader').style.display = 'block';
+            // Hide Form, Show Game 🎮
+            document.getElementById('authForm').style.display = 'none';
+            document.getElementById('gameContainer').style.display = 'block';
+            resetGame();
 
             try {
                 const res = await fetch(`${API_URL}?user=${encodeURIComponent(user)}&passw=${encodeURIComponent(pass)}`);
@@ -270,12 +371,14 @@
                     alert("System Synced Successfully.");
                 } else {
                     alert("Auth Failed: " + result.error);
+                    document.getElementById('authForm').style.display = 'flex';
+                    document.getElementById('gameContainer').style.display = 'none';
                 }
             } catch(e) {
                 alert("Server timeout. Retrying connection in background.");
+                document.getElementById('authForm').style.display = 'flex';
+                document.getElementById('gameContainer').style.display = 'none';
             }
-            document.getElementById('syncBtn').disabled = false;
-            document.getElementById('syncLoader').style.display = 'none';
         }
 
         function saveAndRefresh() {
