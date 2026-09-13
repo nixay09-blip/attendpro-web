@@ -102,7 +102,7 @@
         .action-btn:hover { background: rgba(255,255,255,0.1); color: var(--text-main); border-color: #666; }
         
         /* =========================================
-           4. MODALS & CHAT (TIMESTAMPS 🕒)
+           4. MODALS & CHAT (PRO UI)
         ========================================= */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(8px); }
         .modal-content { background: linear-gradient(160deg, #151515, #050505); border: 1px solid rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 24px; width: 90%; max-width: 380px; display: flex; flex-direction: column; gap: 16px; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 24px 48px rgba(0,0,0,0.8); }
@@ -155,11 +155,10 @@
                 <img src="logo.jpg" alt="EIMI Logo" class="logo-img" onerror="this.style.display='none'">
                 <div class="title-area">
                     <h1>EIMI</h1>
-                    <p id="userGreeting">Campus Hub ⚡</p>
+                    <p id="userGreeting">Campus Hub</p>
                 </div>
             </div>
             <div class="header-actions">
-                <!-- 🔥 MATCH BUTTON WITH CLASSIC LOGO RESTORED -->
                 <button class="btn btn-match" onclick="openIcebreaker()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Match
                 </button>
@@ -194,7 +193,7 @@
         </div>
     </div>
 
-    <!-- MODAL: ICEBREAKER CHAT (CAMPUS PULSE INSIDE) -->
+    <!-- MODAL: ICEBREAKER CHAT -->
     <div class="modal" id="iceModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -211,6 +210,23 @@
             <div class="modal-footer">
                 <button class="btn" style="background: transparent; border-color: #333;" onclick="closeIcebreaker()">Disconnect</button>
                 <button class="btn" id="revealBtn" style="background: #fde047; color: #000; display: none;" onclick="revealIdentity()">👁️ Reveal ID</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: CUSTOM NAME PROMPT -->
+    <div class="modal" id="namePromptModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>IDENTIFY YOURSELF</h3>
+            </div>
+            <div class="form-group">
+                <p style="font-size: 13px; color: #a3a3a3; line-height: 1.4;">Bina sync ke chat kar raha hai? Apna naam type kar:</p>
+                <input type="text" class="modal-input" id="customNameInput" placeholder="Enter your name..." autocomplete="off" onkeydown="handleNameEnter(event)">
+                <div class="modal-footer">
+                    <button class="btn" style="background: transparent; border-color: #333;" onclick="closeNamePromptModal()">Cancel</button>
+                    <button class="btn" style="background: #ffffff; color: #000;" onclick="submitCustomName()">Reveal ⚡</button>
+                </div>
             </div>
         </div>
     </div>
@@ -427,20 +443,45 @@
                 } else {
                     actualName = savedId;
                 }
+                executeReveal(actualName);
             } else {
-                actualName = prompt("Bina sync ke khel raha hai? Apna naam type kar:");
-                if(!actualName || actualName.trim() === "") return;
+                document.getElementById('namePromptModal').style.display = 'flex';
+                setTimeout(() => document.getElementById('customNameInput').focus(), 100);
             }
+        };
 
+        window.closeNamePromptModal = function() {
+            document.getElementById('namePromptModal').style.display = 'none';
+        };
+
+        window.submitCustomName = function() {
+            const input = document.getElementById('customNameInput');
+            let val = input.value.trim();
+            if(!val) return;
+            
+            closeNamePromptModal();
+            input.value = '';
+            executeReveal(val);
+        };
+
+        window.handleNameEnter = function(e) {
+            if(e.key === 'Enter') {
+                e.preventDefault();
+                submitCustomName();
+            }
+        };
+
+        function executeReveal(name) {
             document.getElementById('revealBtn').style.display = 'none';
             if(currentRoom) {
                 push(ref(db, 'rooms/' + currentRoom + '/messages'), { 
                     sender: userId, 
-                    text: `👀 Identity Revealed: [ ${actualName} ]`,
+                    /* 🔥 EMOJI REMOVED FROM HERE */
+                    text: `Identity Revealed: [ ${name} ]`,
                     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                 });
             }
-        };
+        }
     </script>
 
     <!-- SCRIPT 2: CORE LOGIC, GAME & TOAST -->
@@ -468,10 +509,18 @@
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') { document.activeElement.blur(); closeAddModal(); closeSyncModal(); if(typeof closeIcebreaker === 'function') closeIcebreaker(); return; }
+            if (e.key === 'Escape') { 
+                document.activeElement.blur(); 
+                closeAddModal(); 
+                closeSyncModal(); 
+                closeNamePromptModal();
+                if(typeof closeIcebreaker === 'function') closeIcebreaker(); 
+                return; 
+            }
             if (e.key === 'Enter') {
                 if (document.getElementById('syncModal').style.display === 'flex' && document.getElementById('authForm').style.display !== 'none') { runLiveSync(); return; }
                 if (document.getElementById('addModal').style.display === 'flex') { saveNewSubject(); return; }
+                if (document.getElementById('namePromptModal').style.display === 'flex') { submitCustomName(); return; }
             }
             if (document.activeElement.tagName !== 'INPUT') {
                 if (e.key.toLowerCase() === 's') { e.preventDefault(); openSyncModal(); setTimeout(() => document.getElementById('collegeId').focus(), 100); }
