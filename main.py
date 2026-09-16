@@ -33,43 +33,27 @@ def sync_attendance(user: str, passw: str):
             )
             page = context.new_page()
 
-            # Heavy images, fonts, aur media block karo speed badhane ke liye
-            def block_assets(route):
-                req_type = route.request.resource_type
-                if req_type in ["image", "media", "font"]:
-                    if "captcha" in route.request.url.lower():
-                        route.continue_()
-                    else:
-                        route.abort()
-                else:
-                    route.continue_()
-
-            page.route("**/*", block_assets)
-
             login_success = False
-            max_retries = 5
+            max_retries = 6
 
             for attempt in range(max_retries):
-                page.goto("http://report.aldel.org/student_page.php", wait_until="domcontentloaded", timeout=25000)
+                page.goto("http://report.aldel.org/student_page.php", timeout=30000)
+                page.wait_for_selector("#captcha", timeout=10000)
+
                 page.fill('[name="studentid"]', user)
                 page.fill('[name="studentpwd"]', passw)
 
-                # Direct RAM bytes me screenshot lena, no disk save
+                # Direct memory bytes se captcha read hoga
                 captcha_bytes = page.locator("#captcha").screenshot()
                 captcha_text = ocr.classification(captcha_bytes).strip()
 
                 page.fill('[name="captcha_code"]', captcha_text)
                 page.click('[name="student_submit"]')
 
-                # Smart wait: ya toh URL change ho jaye ya captcha reload ho jaye
-                try:
-                    page.wait_for_function(
-                        "() => !window.location.href.includes('student_page.php') || document.querySelector('#captcha') !== null",
-                        timeout=3500
-                    )
-                except Exception:
-                    pass
+                # Form submit hone aur redirect hone ke liye wait
+                page.wait_for_timeout(2500)
 
+                # Check agar login successful hua aur URL badla
                 if "student_page.php" not in page.url:
                     login_success = True
                     break
@@ -80,9 +64,10 @@ def sync_attendance(user: str, passw: str):
                 browser.close()
                 return {"success": False, "error": "Login Failed. Password ya Captcha galat hai."}
 
-            # Scrape attendance page
-            page.goto("http://report.aldel.org/student/attendance_report.php", wait_until="domcontentloaded", timeout=20000)
-            page.wait_for_selector("table tr", timeout=7000)
+            # Attendance report page scrape
+            page.goto("http://report.aldel.org/student/attendance_report.php", timeout=25000)
+            page.wait_for_selector("table tr", timeout=10000)
+            page.wait_for_timeout(1000)
 
             data = []
             rows = page.locator("table tr")
