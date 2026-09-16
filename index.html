@@ -74,11 +74,11 @@
         }
 
         @keyframes revealGlow {
-            0%, 100% {
+            0%, 100% { 
                 box-shadow: 0 0 16px rgba(253, 224, 71, 0.35), inset 0 0 12px rgba(253, 224, 71, 0.2);
                 border-color: rgba(253, 224, 71, 0.8);
             }
-            50% {
+            50% { 
                 box-shadow: 0 0 28px rgba(253, 224, 71, 0.65), inset 0 0 18px rgba(253, 224, 71, 0.4);
                 border-color: #fde047;
             }
@@ -472,34 +472,41 @@
             position: fixed; 
             top: 0; left: 0; 
             width: 100%; height: 100%; 
-            background: rgba(0, 0, 0, 0.82); 
+            background: rgba(0, 0, 0, 0.85); 
             align-items: center; 
             justify-content: center; 
             z-index: 100; 
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(8px);
             padding: 16px;
         }
         .modal-content { 
             background: #111116; 
             border: 1px solid rgba(255, 255, 255, 0.12); 
-            border-radius: 16px; 
+            border-radius: 18px; 
             padding: 20px; 
             width: 100%; 
-            max-width: 360px; 
+            max-width: 400px; 
             display: flex; 
             flex-direction: column; 
             gap: 12px; 
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
             animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.25s ease;
         }
         @keyframes modalPop {
             from { opacity: 0; transform: scale(0.94); }
             to { opacity: 1; transform: scale(1); }
         }
 
+        /* DYNAMIC EXPANDED SCREEN FOR PHONE & LAPTOP */
+        .modal-content.game-mode-active {
+            max-width: 880px;
+            width: clamp(320px, 86vw, 880px);
+            height: clamp(380px, 75vh, 700px);
+            padding: 16px;
+        }
+
         .modal-header { display: flex; justify-content: space-between; align-items: center; }
-        
-        /* 🔥 BLANKA FONT FOR ALL MAIN MODAL HEADINGS */
         .modal-header h3 { 
             font-family: 'Blanka', sans-serif;
             font-size: 16px; 
@@ -523,7 +530,7 @@
         .modal-input::placeholder { color: #52525b; }
         .modal-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
 
-        /* FAST RENDERING CHAT BOX */
+        /* CHAT BOX */
         .chat-box { 
             height: 240px; 
             background: #09090c; 
@@ -546,20 +553,46 @@
         .timer-text { font-family: 'Blanka', monospace; font-size: 18px; color: #fde047; letter-spacing: 2px; }
         .chat-input-wrapper { display: flex; gap: 6px; }
 
-        /* GAME */
+        /* RESPONSIVE GAME CONTAINER */
         .game-container { 
             display: none; 
-            text-align: center; 
+            flex-direction: column;
             background: #09090c; 
             border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-radius: 12px; 
-            padding: 10px; 
+            border-radius: 14px; 
+            padding: 12px; 
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            overflow: hidden;
         }
         .game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .game-header-tag { font-size: 10px; color: #71717a; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .game-score-badge { font-family: monospace; font-size: 12px; font-weight: 700; color: #86efac; }
-        #flappyCanvas { background: #000; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 9px; display: block; margin: 0 auto; cursor: pointer; max-width: 100%; }
-        .game-footer-hint { font-size: 10px; color: #71717a; margin-top: 6px; }
+        .game-header-tag { font-size: 11px; color: #71717a; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .game-score-badge { font-family: monospace; font-size: 14px; font-weight: 700; color: #86efac; background: rgba(134,239,172,0.1); padding: 2px 10px; border-radius: 6px; border: 1px solid rgba(134,239,172,0.2); }
+        
+        #canvasWrapper {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+            position: relative;
+            background: #050508;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #flappyCanvas { 
+            display: block; 
+            width: 100%;
+            height: 100%;
+        }
+
+        .game-footer-hint { font-size: 11px; color: #86efac; margin-top: 8px; font-weight: 600; text-align: center; }
 
         .toast { 
             position: fixed; 
@@ -579,28 +612,18 @@
         .toast.error { background: #ef4444; color: #fff; }
         .toast.success { background: #86efac; color: #000; }
 
-        /* FLUID DESKTOP VIEW */
+        /* DESKTOP CONTENT GRID */
         @media (min-width: 860px) {
-            .container { 
-                max-width: 880px; 
-            }
+            .container { max-width: 880px; }
             .desktop-content-grid { 
                 display: grid; 
                 grid-template-columns: 290px 1fr; 
                 gap: 24px; 
                 align-items: start; 
             }
-            .desktop-sidebar { 
-                position: sticky; 
-                top: 20px; 
-            }
-            .stats-wrapper { 
-                flex-direction: column; 
-            }
-            .overall-card {
-                flex: none;
-                width: 100%;
-            }
+            .desktop-sidebar { position: sticky; top: 20px; }
+            .stats-wrapper { flex-direction: column; }
+            .overall-card { flex: none; width: 100%; }
         }
     </style>
 </head>
@@ -709,9 +732,9 @@
         </div>
     </div>
 
-    <!-- MODAL: SYNC & FLAPPY DOT -->
+    <!-- MODAL: SYNC & FLAPPY GAME -->
     <div class="modal" id="syncModal">
-        <div class="modal-content">
+        <div class="modal-content" id="syncModalContent">
             <div class="modal-header"><h3>SYSTEM SYNC</h3></div>
             <div id="authForm" style="display: flex; flex-direction: column; gap: 10px;">
                 <p style="font-size: 12px; color: #a1a1aa; line-height: 1.4;">Enter your MIS College ID & Password</p>
@@ -723,13 +746,16 @@
                 </div>
             </div>
             
+            <!-- GAME CONTAINER -->
             <div class="game-container" id="gameContainer">
                 <div class="game-header">
                     <span class="game-header-tag">Syncing...</span>
                     <span class="game-score-badge" id="flappyScore">00</span>
                 </div>
-                <canvas id="flappyCanvas" width="300" height="160"></canvas>
-                <p class="game-footer-hint">Tap screen or press Spacebar</p>
+                <div id="canvasWrapper">
+                    <canvas id="flappyCanvas"></canvas>
+                </div>
+                <p class="game-footer-hint">Tap anywhere on screen or press Spacebar</p>
             </div>
         </div>
     </div>
@@ -750,7 +776,7 @@
         </div>
     </div>
 
-    <!-- FIREBASE LIVE CHAT LOGIC (HIGH PERFORMANCE) -->
+    <!-- FIREBASE LIVE CHAT LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, set, push, onChildAdded, onValue, remove, onDisconnect, off } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
@@ -834,7 +860,7 @@
 
         function startChatRoom(roomId) {
             const chatBox = document.getElementById('chatBox');
-            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; color:#86efac; margin-top:10px; font-weight:600;">Connected! Say hi.</p>';
+            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; color:#86efac; margin-top:10px; font-weight:600;">Connected. Say hi.</p>';
             setTimeout(() => { document.getElementById('chatInput').focus(); }, 150);
             
             onDisconnect(ref(db, 'rooms/' + roomId)).remove();
@@ -842,7 +868,7 @@
             disconnectRef = ref(db, 'rooms/' + roomId);
             onValue(disconnectRef, (snapshot) => {
                 if (!snapshot.exists() && currentRoom === roomId) {
-                    addSysMsg("Partner disconnected.");
+                    addSysMsg("Stranger disconnected.");
                     if(timerInterval) clearInterval(timerInterval);
                     if(msgRefQuery) off(msgRefQuery);
                     currentRoom = null;
@@ -869,10 +895,10 @@
                 if (msg.text && msg.text.includes("Identity Revealed:")) {
                     revealedCount++;
                     if (revealedCount >= 2) {
-                        addSysMsg("Both identities revealed! Closing chat in 10s... 🚀");
+                        addSysMsg("Both identities revealed. Closing chat in 10s...");
                         autoDisconnectTimeout = setTimeout(() => {
                             closeIcebreaker();
-                            showToast("Chat completed & room closed!");
+                            showToast("Chat completed and room closed");
                         }, 10000);
                     }
                 }
@@ -995,7 +1021,7 @@
         }
     </script>
 
-    <!-- CORE LOGIC & FLAPPY DOT -->
+    <!-- CORE LOGIC & SYNC/FLAPPY FIX -->
     <script>
         let currentSubjects = [];
         const API_URL = "https://attendpro-web-2.onrender.com/sync";
@@ -1021,7 +1047,6 @@
             }
         }
 
-        /* DATA WIPE LOGOUT LOGIC */
         function handleLogout() {
             localStorage.removeItem('eimi_college_id');
             localStorage.removeItem('user_attendance');
@@ -1035,100 +1060,171 @@
             renderSubjects([]);
             updateGreeting();
 
-            showToast("Logged out & local data wiped!", "error");
+            showToast("Logged out and local data wiped", "error");
         }
 
-        /* FLAPPY DOT LOGIC */
+        /* BALANCED FLAPPY ENGINE */
         let canvas, ctx, dotY, dotVelocity, pipes = [], score = 0, flappyLoopId = null, isGameOver = false, isStarted = false;
+        let resizeObserver = null;
+
+        const BALANCED_GAP = 88;
+        const BALANCED_SPACING = 190;
+
+        function resizeGameCanvas() {
+            if (!canvas) return;
+            const wrapper = document.getElementById('canvasWrapper');
+            if (wrapper && wrapper.clientWidth > 0 && wrapper.clientHeight > 0) {
+                canvas.width = wrapper.clientWidth;
+                canvas.height = wrapper.clientHeight;
+                
+                if (dotY > canvas.height) dotY = canvas.height / 2;
+                
+                if (!isStarted && !isGameOver) {
+                    renderWaiting();
+                } else if (isGameOver) {
+                    ctx.fillStyle = 'rgba(5, 5, 8, 0.85)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#fde047';
+                    ctx.font = '700 16px "Space Grotesk"';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('CRASHED', canvas.width / 2, canvas.height / 2 - 8);
+                    ctx.fillStyle = '#71717a';
+                    ctx.font = '500 12px "Space Grotesk"';
+                    ctx.fillText('Tap to retry', canvas.width / 2, canvas.height / 2 + 16);
+                }
+            }
+        }
 
         function initFlappyDot() {
             canvas = document.getElementById('flappyCanvas');
             if(!canvas) return;
-            ctx = canvas.getContext('2d');
-            dotY = canvas.height / 2;
-            dotVelocity = 0;
-            pipes = [];
-            score = 0;
-            isGameOver = false;
-            isStarted = false;
-            document.getElementById('flappyScore').innerText = "00";
 
-            canvas.onpointerdown = (e) => { e.preventDefault(); flapJump(); };
+            const wrapper = document.getElementById('canvasWrapper');
+            if (resizeObserver) resizeObserver.disconnect();
+            resizeObserver = new ResizeObserver(() => {
+                resizeGameCanvas();
+            });
+            if (wrapper) resizeObserver.observe(wrapper);
+
+            setTimeout(() => {
+                resizeGameCanvas();
+                ctx = canvas.getContext('2d');
+                dotY = canvas.height / 2;
+                dotVelocity = 0;
+                pipes = [];
+                score = 0;
+                isGameOver = false;
+                isStarted = false;
+                document.getElementById('flappyScore').innerText = "00";
+
+                renderWaiting();
+            }, 60);
+
+            const container = document.getElementById('gameContainer');
+            container.onpointerdown = (e) => {
+                if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') return;
+                if (document.getElementById('gameContainer').style.display === 'flex') {
+                    e.preventDefault();
+                    flapJump();
+                }
+            };
+
             if(flappyLoopId) cancelAnimationFrame(flappyLoopId);
-            renderWaiting();
         }
 
         function renderWaiting() {
-            ctx.fillStyle = '#000';
+            if(!ctx) return;
+            ctx.fillStyle = '#050508';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
-            ctx.arc(50, canvas.height / 2, 5, 0, Math.PI * 2);
+            ctx.arc(60, canvas.height / 2, 6, 0, Math.PI * 2);
             ctx.fillStyle = '#86efac';
             ctx.fill();
             ctx.fillStyle = '#71717a';
-            ctx.font = '600 11px "Space Grotesk"';
+            ctx.font = '600 13px "Space Grotesk"';
             ctx.textAlign = 'center';
-            ctx.fillText('CLICK TO PLAY', canvas.width / 2, canvas.height / 2 + 4);
+            ctx.fillText('TAP TO PLAY', canvas.width / 2, canvas.height / 2 + 5);
         }
 
         function flapJump() {
             if(isGameOver) { initFlappyDot(); return; }
-            if(!isStarted) { isStarted = true; dotVelocity = -3.8; runLoop(); return; }
-            dotVelocity = -3.8;
+            if(!isStarted) { 
+                isStarted = true; 
+                dotVelocity = -3.4; 
+                
+                pipes = [];
+                for(let px = 300; px <= canvas.width + BALANCED_SPACING; px += BALANCED_SPACING) {
+                    const topH = Math.floor(Math.random() * (canvas.height - BALANCED_GAP - 50)) + 25;
+                    pipes.push({ x: px, top: topH, bottom: canvas.height - (topH + BALANCED_GAP), passed: false });
+                }
+                
+                runLoop(); 
+                return; 
+            }
+            dotVelocity = -3.4; 
         }
 
         function runLoop() {
             if(!isStarted || isGameOver) return;
-            dotVelocity += 0.18;
-            if(dotVelocity > 4) dotVelocity = 4;
+
+            dotVelocity += 0.17;
+            if(dotVelocity > 4.0) dotVelocity = 4.0;
             dotY += dotVelocity;
 
-            if (pipes.length === 0 || pipes[pipes.length - 1].x < canvas.width - 120) {
-                let gap = 70;
-                let topH = Math.floor(Math.random() * (canvas.height - gap - 30)) + 15;
-                pipes.push({ x: canvas.width, top: topH, bottom: canvas.height - (topH + gap), passed: false });
+            if (pipes.length === 0 || pipes[pipes.length - 1].x < canvas.width - BALANCED_SPACING) {
+                const topH = Math.floor(Math.random() * (canvas.height - BALANCED_GAP - 50)) + 25;
+                pipes.push({ x: canvas.width, top: topH, bottom: canvas.height - (topH + BALANCED_GAP), passed: false });
             }
 
-            ctx.fillStyle = '#000';
+            ctx.fillStyle = '#050508';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+            const pipeWidth = 20;
             for (let i = 0; i < pipes.length; i++) {
                 let p = pipes[i];
-                p.x -= 1.1;
-                ctx.fillStyle = '#1c1c22';
-                ctx.fillRect(p.x, 0, 14, p.top);
-                ctx.fillRect(p.x, canvas.height - p.bottom, 14, p.bottom);
+                p.x -= 1.3; 
 
-                if (55 > p.x && 45 < p.x + 14) {
-                    if (dotY - 5 < p.top || dotY + 5 > canvas.height - p.bottom) isGameOver = true;
+                ctx.fillStyle = '#171720';
+                ctx.fillRect(p.x, 0, pipeWidth, p.top);
+                ctx.fillRect(p.x, canvas.height - p.bottom, pipeWidth, p.bottom);
+
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+                ctx.fillRect(p.x, p.top - 2, pipeWidth, 2);
+                ctx.fillRect(p.x, canvas.height - p.bottom, pipeWidth, 2);
+
+                if (66 > p.x && 54 < p.x + pipeWidth) {
+                    if (dotY - 6 < p.top || dotY + 6 > canvas.height - p.bottom) isGameOver = true;
                 }
-                if (!p.passed && p.x + 14 < 45) {
+                if (!p.passed && p.x + pipeWidth < 54) {
                     p.passed = true;
                     score++;
                     document.getElementById('flappyScore').innerText = score < 10 ? `0${score}` : score;
                 }
             }
 
-            pipes = pipes.filter(p => p.x > -20);
-            if (dotY + 5 >= canvas.height || dotY - 5 <= 0) isGameOver = true;
+            pipes = pipes.filter(p => p.x > -40);
+            if (dotY + 6 >= canvas.height || dotY - 6 <= 0) isGameOver = true;
 
             ctx.beginPath();
-            ctx.arc(50, dotY, 5, 0, Math.PI * 2);
+            ctx.arc(60, dotY, 6, 0, Math.PI * 2);
             ctx.fillStyle = '#86efac';
+            ctx.shadowColor = 'rgba(134, 239, 172, 0.45)';
+            ctx.shadowBlur = 8;
             ctx.fill();
+            ctx.shadowBlur = 0;
 
             if (!isGameOver) {
                 flappyLoopId = requestAnimationFrame(runLoop);
             } else {
-                ctx.fillStyle = 'rgba(0,0,0,0.85)';
+                ctx.fillStyle = 'rgba(5, 5, 8, 0.85)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#fde047';
-                ctx.font = '700 12px "Space Grotesk"';
+                ctx.font = '700 16px "Space Grotesk"';
                 ctx.textAlign = 'center';
-                ctx.fillText('CRASHED', canvas.width / 2, canvas.height / 2 - 4);
+                ctx.fillText('CRASHED', canvas.width / 2, canvas.height / 2 - 8);
                 ctx.fillStyle = '#71717a';
-                ctx.font = '500 10px "Space Grotesk"';
-                ctx.fillText('Click to retry', canvas.width / 2, canvas.height / 2 + 12);
+                ctx.font = '500 12px "Space Grotesk"';
+                ctx.fillText('Tap to retry', canvas.width / 2, canvas.height / 2 + 16);
             }
         }
 
@@ -1140,7 +1236,7 @@
                 if(typeof closeIcebreaker === 'function') closeIcebreaker(); 
                 return; 
             }
-            if (e.code === 'Space' && document.getElementById('gameContainer').style.display === 'block') {
+            if (e.code === 'Space' && document.getElementById('gameContainer').style.display === 'flex') {
                 e.preventDefault();
                 flapJump();
                 return;
@@ -1262,14 +1358,24 @@
 
         function openAddModal() { document.getElementById('addModal').style.display = 'flex'; setTimeout(()=>document.getElementById('newSubName').focus(), 100); }
         function closeAddModal() { document.getElementById('addModal').style.display = 'none'; }
+        
         function openSyncModal() { 
-            document.getElementById('syncModal').style.display = 'flex'; 
+            const modal = document.getElementById('syncModal');
+            document.getElementById('syncModalContent').classList.remove('game-mode-active');
+            
+            modal.style.display = 'flex'; 
             document.getElementById('authForm').style.display = 'flex'; 
             document.getElementById('gameContainer').style.display = 'none'; 
+            
             setTimeout(()=>document.getElementById('collegeId').focus(), 100); 
         }
+
         function closeSyncModal() { 
-            document.getElementById('syncModal').style.display = 'none'; 
+            const modal = document.getElementById('syncModal');
+            document.getElementById('syncModalContent').classList.remove('game-mode-active');
+            
+            modal.style.display = 'none'; 
+            if (resizeObserver) resizeObserver.disconnect();
             if(flappyLoopId) cancelAnimationFrame(flappyLoopId);
         }
         
@@ -1290,7 +1396,10 @@
             if(!user || !pass) return showToast("Credentials required!", "error");
             
             document.getElementById('authForm').style.display = 'none'; 
-            document.getElementById('gameContainer').style.display = 'block'; 
+            
+            document.getElementById('syncModalContent').classList.add('game-mode-active');
+            document.getElementById('gameContainer').style.display = 'flex'; 
+
             initFlappyDot();
             
             try {
@@ -1315,13 +1424,15 @@
                     closeSyncModal(); 
                     showToast("Attendance updated");
                 } else { 
-                    showToast("Sync failed: " + result.error, "error"); 
+                    showToast(result.error || "Login Failed", "error"); 
+                    document.getElementById('syncModalContent').classList.remove('game-mode-active');
                     document.getElementById('authForm').style.display = 'flex'; 
                     document.getElementById('gameContainer').style.display = 'none'; 
                     if(flappyLoopId) cancelAnimationFrame(flappyLoopId);
                 }
             } catch(e) { 
-                showToast("Server error, retrying...", "error"); 
+                showToast(e.message || "Server error, retrying...", "error"); 
+                document.getElementById('syncModalContent').classList.remove('game-mode-active');
                 document.getElementById('authForm').style.display = 'flex'; 
                 document.getElementById('gameContainer').style.display = 'none'; 
                 if(flappyLoopId) cancelAnimationFrame(flappyLoopId);
@@ -1340,6 +1451,8 @@
         }
         
         document.addEventListener('DOMContentLoaded', () => { 
+            fetch('https://attendpro-web-2.onrender.com/').catch(() => {});
+            
             updateGreeting(); 
             const saved = localStorage.getItem('user_attendance'); 
             if (saved) { 
