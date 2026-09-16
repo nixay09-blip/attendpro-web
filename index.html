@@ -295,21 +295,32 @@
             flex-shrink: 0;
         }
 
-        /* SEARCH & LIST */
+        /* SEARCH & LIST (VS Code Clean & No White Patch) */
         .search-box { 
             width: 100%; 
             padding: 11px 14px; 
-            background: rgba(14, 14, 18, 0.8); 
+            background: #0e0e12 !important; 
             border: 1px solid rgba(255, 255, 255, 0.07); 
             border-radius: 11px; 
-            color: #fff; 
+            color: #ffffff !important; 
             font-size: 13px; 
             outline: none; 
+            appearance: none;
+            -webkit-appearance: none;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
         .search-box:focus { 
             border-color: #86efac; 
             box-shadow: 0 0 0 2px rgba(134, 239, 172, 0.12);
+        }
+        .search-box:-webkit-autofill,
+        .search-box:-webkit-autofill:hover, 
+        .search-box:-webkit-autofill:focus,
+        .search-box:-webkit-autofill:active {
+            -webkit-text-fill-color: #ffffff !important;
+            -webkit-box-shadow: 0 0 0px 1000px #0e0e12 inset !important;
+            box-shadow: 0 0 0px 1000px #0e0e12 inset !important;
+            transition: background-color 50000s ease-in-out 0s;
         }
         
         .section-title { 
@@ -502,7 +513,7 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* DYNAMIC EXPANDED SCREEN FOR PHONE & LAPTOP */
+        /* DYNAMIC EXPANDED SCREEN FOR ALL DEVICES */
         .modal-content.game-mode-active {
             max-width: 880px;
             width: clamp(320px, 86vw, 880px);
@@ -579,7 +590,7 @@
             flex: 1;
             width: 100%;
             height: 100%;
-            min-height: 0;
+            min-height: 220px;
             position: relative;
             background: #050508;
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -677,7 +688,20 @@
                         <div class="overall-ring" id="pracRing">0%</div>
                     </div>
                 </div>
-                <input type="text" class="search-box" id="searchInput" placeholder="Search modules... (Press '/')" onkeyup="filterSubjects()">
+                <!-- MODULE SEARCH (Autofill Immune) -->
+                <input 
+                    type="text" 
+                    class="search-box" 
+                    id="searchInput" 
+                    placeholder="Search modules... (Press '/')" 
+                    autocomplete="new-password" 
+                    autocorrect="off" 
+                    autocapitalize="off" 
+                    spellcheck="false" 
+                    name="not_a_username_field" 
+                    readonly 
+                    onfocus="this.removeAttribute('readonly');" 
+                    onkeyup="filterSubjects()">
             </div>
 
             <div class="desktop-main">
@@ -714,7 +738,7 @@
                 <button class="btn" onclick="closeIcebreaker()">Exit</button>
                 <button class="btn-reveal-prime" id="revealBtn" style="display: none;" onclick="revealIdentity()">
                     <svg class="svg-icon reveal-eye-icon" viewBox="0 0 24 24">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
                         <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
                     </svg>
                     Reveal ID
@@ -1025,7 +1049,7 @@
         }
     </script>
 
-    <!-- CORE LOGIC & SYNC/FLAPPY FIX -->
+    <!-- CORE LOGIC & ALL-DEVICE BALANCED ENGINE -->
     <script>
         let currentSubjects = [];
         const API_URL = "https://attendpro-web-2.onrender.com/sync";
@@ -1058,7 +1082,12 @@
 
             document.getElementById('collegeId').value = '';
             document.getElementById('collegePass').value = '';
-            document.getElementById('searchInput').value = '';
+            
+            const sInput = document.getElementById('searchInput');
+            if (sInput) { 
+                sInput.value = ''; 
+                sInput.setAttribute('readonly', 'true'); 
+            }
 
             updateOverallStats([]);
             renderSubjects([]);
