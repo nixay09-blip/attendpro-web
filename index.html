@@ -297,23 +297,20 @@
 
         /* SEARCH & LIST */
         .search-box { 
-    width: 100%; 
-    padding: 11px 14px; 
-    background: #0e0e12 !important; 
-    border: 1px solid rgba(255, 255, 255, 0.07); 
-    border-radius: 11px; 
-    color: #fff !important; 
-    font-size: 13px; 
-    outline: none; 
-}
-/* Autofill white background ko roko */
-.search-box:-webkit-autofill,
-.search-box:-webkit-autofill:hover, 
-.search-box:-webkit-autofill:focus {
-    -webkit-text-fill-color: #ffffff !important;
-    -webkit-box-shadow: 0 0 0px 1000px #0e0e12 inset !important;
-    transition: background-color 5000s ease-in-out 0s;
-}
+            width: 100%; 
+            padding: 11px 14px; 
+            background: rgba(14, 14, 18, 0.8); 
+            border: 1px solid rgba(255, 255, 255, 0.07); 
+            border-radius: 11px; 
+            color: #fff; 
+            font-size: 13px; 
+            outline: none; 
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-box:focus { 
+            border-color: #86efac; 
+            box-shadow: 0 0 0 2px rgba(134, 239, 172, 0.12);
+        }
         
         .section-title { 
             font-family: 'Blanka', sans-serif;
@@ -680,17 +677,7 @@
                         <div class="overall-ring" id="pracRing">0%</div>
                     </div>
                 </div>
-                <input 
-    type="search" 
-    class="search-box" 
-    id="searchInput" 
-    placeholder="Search modules... (Press '/')" 
-    autocomplete="off" 
-    autocorrect="off" 
-    autocapitalize="off" 
-    spellcheck="false" 
-    name="search_query_eimi" 
-    onkeyup="filterSubjects()">
+                <input type="text" class="search-box" id="searchInput" placeholder="Search modules... (Press '/')" onkeyup="filterSubjects()">
             </div>
 
             <div class="desktop-main">
