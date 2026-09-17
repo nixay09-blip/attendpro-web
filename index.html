@@ -374,7 +374,6 @@
             box-shadow: none;
         }
 
-        /* TICKS & CROSS PERMANENT COLORS */
         .action-btn.btn-present .svg-icon { stroke: #16a34a !important; }
         .action-btn.btn-bunk .svg-icon { stroke: #dc2626 !important; }
 
@@ -458,7 +457,7 @@
             letter-spacing: 1px;
         }
 
-        /* MODALS */
+        /* MODALS (FIT-TO-SCREEN FIX) */
         .modal {
             display: none;
             position: fixed;
@@ -530,7 +529,7 @@
             width: 100%;
         }
         .modal-input:disabled {
-            background: #eee;
+            background: #f0f0f0;
             cursor: not-allowed;
         }
         .modal-footer {
@@ -566,21 +565,16 @@
             border: 2px solid var(--border);
             box-shadow: var(--shadow-sm);
         }
-
-        /* MY MESSAGE: SOLID BLACK BACKGROUND WITH WHITE TEXT */
         .msg-wrapper.me .msg { 
             background: #0c0c0e; 
             color: #ffffff; 
             border-bottom-right-radius: 2px; 
         }
-
-        /* STRANGER MESSAGE: WHITE BACKGROUND WITH BLACK TEXT */
         .msg-wrapper.stranger .msg { 
             background: #fff; 
             color: var(--text);
             border-bottom-left-radius: 2px; 
         }
-
         .msg-time { font-size: 10px; font-weight: 700; color: var(--muted); margin-top: 3px; }
 
         .timer-text {
@@ -838,7 +832,7 @@
         </div>
     </div>
 
-    <!-- FIREBASE LIVE CHAT LOGIC -->
+    <!-- FIREBASE LIVE CHAT LOGIC (100% FIXED HANDSHAKE & PRESENCE) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, set, push, onChildAdded, onValue, remove, onDisconnect, off, get } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
@@ -857,14 +851,16 @@
         let currentRoom = null;
         let userId = "user_" + Math.random().toString(36).substr(2, 9);
         let timerInterval = null, timeLeft = 300;
-        let roomInfoRef = null, msgRefQuery = null, userStatusRef = null;
+        let roomInfoRef = null, msgRefQuery = null, userWaitRef = null;
         let revealedCount = 0, autoDisconnectTimeout = null;
+        let partnerJoined = false;
 
         const escapeHTML = str => String(str).replace(/[&<>'"]/g, t => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[t]));
 
         window.openIcebreaker = async function() {
             cleanupSession();
             revealedCount = 0;
+            partnerJoined = false;
             
             const chatBox = document.getElementById('chatBox');
             chatBox.innerHTML = '<p style="text-align:center; font-size:12px; font-weight:700; color:var(--muted); margin-top:30px;">Finding random student on radar...</p>';
@@ -884,7 +880,7 @@
 
                 if (waitingUsers) {
                     for (let pid in waitingUsers) {
-                        if (pid !== userId && !waitingUsers[pid].matchedWith) {
+                        if (pid !== userId && waitingUsers[pid] && !waitingUsers[pid].matchedRoom) {
                             matchedPartnerId = pid;
                             break;
                         }
@@ -894,9 +890,11 @@
                 if (matchedPartnerId) {
                     currentRoom = matchedPartnerId + "_" + userId;
                     
+                    // Assign room to partner
                     await set(ref(db, 'waiting/' + matchedPartnerId + '/matchedRoom'), currentRoom);
                     await remove(ref(db, 'waiting/' + userId));
 
+                    // Create active room
                     await set(ref(db, 'rooms/' + currentRoom + '/info'), { 
                         status: "active", 
                         users: [matchedPartnerId, userId] 
@@ -904,16 +902,16 @@
 
                     startChatRoom(currentRoom);
                 } else {
-                    const myWaitRef = ref(db, 'waiting/' + userId);
-                    await set(myWaitRef, { timestamp: Date.now(), matchedRoom: false });
-                    onDisconnect(myWaitRef).remove();
+                    // Put self in waiting queue
+                    userWaitRef = ref(db, 'waiting/' + userId);
+                    await set(userWaitRef, { timestamp: Date.now(), matchedRoom: false });
+                    onDisconnect(userWaitRef).remove();
 
-                    userStatusRef = myWaitRef;
-                    onValue(userStatusRef, (snap) => {
+                    onValue(userWaitRef, (snap) => {
                         const data = snap.val();
                         if (data && data.matchedRoom && !currentRoom) {
                             currentRoom = data.matchedRoom;
-                            remove(myWaitRef);
+                            remove(userWaitRef);
                             startChatRoom(currentRoom);
                         }
                     });
@@ -924,9 +922,9 @@
         };
 
         function startChatRoom(roomId) {
-            if (userStatusRef) {
-                off(userStatusRef);
-                userStatusRef = null;
+            if (userWaitRef) {
+                off(userWaitRef);
+                userWaitRef = null;
             }
 
             const chatBox = document.getElementById('chatBox');
@@ -939,12 +937,22 @@
             chatInput.value = '';
             setTimeout(() => chatInput.focus(), 150);
 
+            // Clean onDisconnect hook
             onDisconnect(ref(db, 'rooms/' + roomId + '/info/status')).set('disconnected');
 
             roomInfoRef = ref(db, 'rooms/' + roomId + '/info');
             onValue(roomInfoRef, (snapshot) => {
                 const info = snapshot.val();
-                if (!info || info.status === 'disconnected') {
+                
+                // Track initial state
+                if (info && info.status === 'active') {
+                    partnerJoined = true;
+                    return;
+                }
+                
+                // Only fire disconnect if room was previously active
+                if (partnerJoined && (!info || info.status === 'disconnected')) {
+                    partnerJoined = false;
                     addSysMsg("Partner disconnected.");
                     chatInput.disabled = true;
                     sendBtn.disabled = true;
@@ -952,9 +960,12 @@
                 }
             });
 
+            // Listen for messages
             msgRefQuery = ref(db, 'rooms/' + roomId + '/messages');
             onChildAdded(msgRefQuery, (data) => {
                 const msg = data.val();
+                if (!msg) return;
+                
                 const isMe = msg.sender === userId;
                 const html = `
                     <div class="msg-wrapper ${isMe ? "me" : "stranger"}">
@@ -976,6 +987,7 @@
                 }
             });
 
+            // Start countdown timer
             timeLeft = 300;
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
@@ -1018,11 +1030,11 @@
             clearInterval(timerInterval);
             clearTimeout(autoDisconnectTimeout);
             
-            if (userStatusRef) off(userStatusRef);
-            if (roomInfoRef) off(roomInfoRef);
-            if (msgRefQuery) off(msgRefQuery);
+            if (userWaitRef) { off(userWaitRef); userWaitRef = null; }
+            if (roomInfoRef) { off(roomInfoRef); roomInfoRef = null; }
+            if (msgRefQuery) { off(msgRefQuery); msgRefQuery = null; }
             
-            userStatusRef = roomInfoRef = msgRefQuery = null;
+            partnerJoined = false;
         }
 
         window.closeIcebreaker = function() {
