@@ -457,7 +457,7 @@
             letter-spacing: 1px;
         }
 
-        /* MODALS (FIT-TO-SCREEN FIX) */
+        /* MODALS */
         .modal {
             display: none;
             position: fixed;
@@ -538,17 +538,18 @@
             align-items: center;
         }
 
-        /* CHAT */
+        /* CHAT BUBBLES */
         .chat-box {
             height: 240px;
-            background: #FAF5EA;
+            background: #ffffff !important;
             border: 2.5px solid var(--border);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 12px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
         }
         .msg-wrapper {
             display: flex;
@@ -564,17 +565,28 @@
             font-weight: 700;
             border: 2px solid var(--border);
             box-shadow: var(--shadow-sm);
+            line-height: 1.4;
+            word-break: break-word;
         }
+
+        /* SENDER (ME): ELECTRIC YELLOW */
         .msg-wrapper.me .msg { 
-            background: #0c0c0e; 
-            color: #ffffff; 
+            background: #FFE54C !important; 
+            color: #0c0c0e !important; 
+            border: 2.5px solid #0c0c0e !important;
+            box-shadow: 2.5px 2.5px 0px #0c0c0e !important;
             border-bottom-right-radius: 2px; 
         }
+
+        /* RECEIVER (STRANGER): CRISP WHITE */
         .msg-wrapper.stranger .msg { 
-            background: #fff; 
-            color: var(--text);
+            background: #ffffff !important; 
+            color: #0c0c0e !important;
+            border: 2.5px solid #0c0c0e !important;
+            box-shadow: 2.5px 2.5px 0px #0c0c0e !important;
             border-bottom-left-radius: 2px; 
         }
+
         .msg-time { font-size: 10px; font-weight: 700; color: var(--muted); margin-top: 3px; }
 
         .timer-text {
@@ -586,6 +598,63 @@
             padding: 3px 8px;
             border-radius: 8px;
             font-weight: 700;
+        }
+
+        /* COMBINED INPUT + SEND BAR (EXACT MOCKUP MATCH) */
+        .chat-input-bar {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            border: 2.5px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            width: 100%;
+        }
+        .chat-text-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 12px 14px;
+            background: transparent;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .chat-text-input::placeholder {
+            color: #71717a;
+            font-weight: 600;
+        }
+        .chat-send-btn {
+            background: transparent;
+            border: none;
+            border-left: 2.5px solid var(--border);
+            padding: 0 16px;
+            height: 100%;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text);
+            transition: background 0.12s ease;
+        }
+        .chat-send-btn:hover {
+            background: var(--yellow);
+        }
+        .chat-send-btn:active {
+            background: #ffd814;
+        }
+        .chat-send-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+            background: transparent;
+        }
+        .chat-send-btn .svg-icon {
+            width: 17px;
+            height: 17px;
+            stroke: var(--text);
+            stroke-width: 2.4;
         }
 
         /* FLAPPY GAME */
@@ -756,12 +825,15 @@
                 <div class="timer-text" id="chatTimer">05:00</div>
             </div>
             <div class="chat-box" id="chatBox"></div>
-            <div style="display: flex; gap: 8px;">
-                <input type="text" class="modal-input" id="chatInput" placeholder="Type a message..." style="flex: 1;" onkeydown="handleChatEnter(event)" disabled>
-                <button class="btn btn-match" id="sendMsgBtn" onclick="sendMsg()" style="padding: 0 14px;" disabled>
+            
+            <!-- COMBINED INPUT & SEND BAR -->
+            <div class="chat-input-bar">
+                <input type="text" class="chat-text-input" id="chatInput" placeholder="Type a message..." onkeydown="handleChatEnter(event)" disabled>
+                <button class="chat-send-btn" id="sendMsgBtn" onclick="sendMsg()" disabled>
                     <svg class="svg-icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                 </button>
             </div>
+
             <div class="modal-footer">
                 <button class="btn" onclick="closeIcebreaker()">Exit</button>
                 <button class="btn-reveal-prime" id="revealBtn" style="display: none;" onclick="revealIdentity()">
@@ -785,7 +857,7 @@
         </div>
     </div>
 
-    <!-- MODAL: SYNC & FLAPPY GAME -->
+    <!-- MODAL: SYSTEM SYNC & FLAPPY GAME -->
     <div class="modal" id="syncModal">
         <div class="modal-content" id="syncModalContent">
             <div class="modal-header">
@@ -832,7 +904,7 @@
         </div>
     </div>
 
-    <!-- FIREBASE LIVE CHAT LOGIC (100% FIXED HANDSHAKE & PRESENCE) -->
+    <!-- FIREBASE LIVE CHAT LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, set, push, onChildAdded, onValue, remove, onDisconnect, off, get } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
@@ -890,11 +962,9 @@
                 if (matchedPartnerId) {
                     currentRoom = matchedPartnerId + "_" + userId;
                     
-                    // Assign room to partner
                     await set(ref(db, 'waiting/' + matchedPartnerId + '/matchedRoom'), currentRoom);
                     await remove(ref(db, 'waiting/' + userId));
 
-                    // Create active room
                     await set(ref(db, 'rooms/' + currentRoom + '/info'), { 
                         status: "active", 
                         users: [matchedPartnerId, userId] 
@@ -902,7 +972,6 @@
 
                     startChatRoom(currentRoom);
                 } else {
-                    // Put self in waiting queue
                     userWaitRef = ref(db, 'waiting/' + userId);
                     await set(userWaitRef, { timestamp: Date.now(), matchedRoom: false });
                     onDisconnect(userWaitRef).remove();
@@ -928,7 +997,7 @@
             }
 
             const chatBox = document.getElementById('chatBox');
-            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; color:var(--text); background:var(--green); border:2px solid var(--border); border-radius:8px; padding:6px; box-shadow:var(--shadow-sm); font-weight:800;">Connected! Say hi.</p>';
+            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; color:var(--text); background:var(--green); border:2px solid var(--border); border-radius:8px; padding:6px; box-shadow:var(--shadow-sm); font-weight:800;">Connected. Say hi.</p>';
             
             const chatInput = document.getElementById('chatInput');
             const sendBtn = document.getElementById('sendMsgBtn');
@@ -937,20 +1006,17 @@
             chatInput.value = '';
             setTimeout(() => chatInput.focus(), 150);
 
-            // Clean onDisconnect hook
             onDisconnect(ref(db, 'rooms/' + roomId + '/info/status')).set('disconnected');
 
             roomInfoRef = ref(db, 'rooms/' + roomId + '/info');
             onValue(roomInfoRef, (snapshot) => {
                 const info = snapshot.val();
                 
-                // Track initial state
                 if (info && info.status === 'active') {
                     partnerJoined = true;
                     return;
                 }
                 
-                // Only fire disconnect if room was previously active
                 if (partnerJoined && (!info || info.status === 'disconnected')) {
                     partnerJoined = false;
                     addSysMsg("Partner disconnected.");
@@ -960,7 +1026,6 @@
                 }
             });
 
-            // Listen for messages
             msgRefQuery = ref(db, 'rooms/' + roomId + '/messages');
             onChildAdded(msgRefQuery, (data) => {
                 const msg = data.val();
@@ -978,16 +1043,15 @@
                 if (msg.text && msg.text.includes("Identity Revealed:")) {
                     revealedCount++;
                     if (revealedCount >= 2) {
-                        addSysMsg("Both revealed. Closing in 10s...");
+                        addSysMsg("Both identities revealed. Closing in 10s...");
                         autoDisconnectTimeout = setTimeout(() => {
                             closeIcebreaker();
-                            showToast("Chat completed", "success");
+                            showToast("Chat completed and room closed");
                         }, 10000);
                     }
                 }
             });
 
-            // Start countdown timer
             timeLeft = 300;
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
