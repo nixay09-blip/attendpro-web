@@ -374,6 +374,7 @@
             box-shadow: none;
         }
 
+        /* TICKS & CROSS PERMANENT COLORS */
         .action-btn.btn-present .svg-icon { stroke: #16a34a !important; }
         .action-btn.btn-bunk .svg-icon { stroke: #dc2626 !important; }
 
@@ -457,7 +458,7 @@
             letter-spacing: 1px;
         }
 
-        /* MODALS (FIT-TO-SCREEN FIX) */
+        /* MODALS */
         .modal {
             display: none;
             position: fixed;
@@ -486,7 +487,6 @@
             box-sizing: border-box;
         }
 
-        /* SYSTEM SYNC MODAL FIX */
         #syncModalContent.game-mode-active {
             max-width: 840px;
             width: min(840px, 94vw);
@@ -529,6 +529,10 @@
             outline: none;
             width: 100%;
         }
+        .modal-input:disabled {
+            background: #eee;
+            cursor: not-allowed;
+        }
         .modal-footer {
             display: flex;
             justify-content: space-between;
@@ -562,8 +566,21 @@
             border: 2px solid var(--border);
             box-shadow: var(--shadow-sm);
         }
-        .msg-wrapper.me .msg { background: var(--yellow); border-bottom-right-radius: 2px; }
-        .msg-wrapper.stranger .msg { background: #fff; border-bottom-left-radius: 2px; }
+
+        /* MY MESSAGE: SOLID BLACK BACKGROUND WITH WHITE TEXT */
+        .msg-wrapper.me .msg { 
+            background: #0c0c0e; 
+            color: #ffffff; 
+            border-bottom-right-radius: 2px; 
+        }
+
+        /* STRANGER MESSAGE: WHITE BACKGROUND WITH BLACK TEXT */
+        .msg-wrapper.stranger .msg { 
+            background: #fff; 
+            color: var(--text);
+            border-bottom-left-radius: 2px; 
+        }
+
         .msg-time { font-size: 10px; font-weight: 700; color: var(--muted); margin-top: 3px; }
 
         .timer-text {
@@ -577,7 +594,7 @@
             font-weight: 700;
         }
 
-        /* FLAPPY GAME AREA (FITS INSIDE MODAL CLEANLY) */
+        /* FLAPPY GAME */
         .game-container {
             display: none;
             flex-direction: column;
@@ -746,8 +763,8 @@
             </div>
             <div class="chat-box" id="chatBox"></div>
             <div style="display: flex; gap: 8px;">
-                <input type="text" class="modal-input" id="chatInput" placeholder="Type a message..." style="flex: 1;" onkeydown="handleChatEnter(event)">
-                <button class="btn btn-match" onclick="sendMsg()" style="padding: 0 14px;">
+                <input type="text" class="modal-input" id="chatInput" placeholder="Type a message..." style="flex: 1;" onkeydown="handleChatEnter(event)" disabled>
+                <button class="btn btn-match" id="sendMsgBtn" onclick="sendMsg()" style="padding: 0 14px;" disabled>
                     <svg class="svg-icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                 </button>
             </div>
@@ -821,10 +838,10 @@
         </div>
     </div>
 
-    <!-- FIREBASE CHAT -->
+    <!-- FIREBASE LIVE CHAT LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, set, push, onChildAdded, onValue, remove, onDisconnect, off } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        import { getDatabase, ref, set, push, onChildAdded, onValue, remove, onDisconnect, off, get } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDwQ-BbV6rKhjrfRHg6okUskBhYGhypF4o",
@@ -837,73 +854,104 @@
         };
 
         const db = getDatabase(initializeApp(firebaseConfig));
-        let currentRoom = null, userId = "user_" + Math.random().toString(36).substr(2, 9);
-        let timerInterval = null, timeLeft = 300, disconnectRef = null, msgRefQuery = null, matchListenerRef = null;
+        let currentRoom = null;
+        let userId = "user_" + Math.random().toString(36).substr(2, 9);
+        let timerInterval = null, timeLeft = 300;
+        let roomInfoRef = null, msgRefQuery = null, userStatusRef = null;
         let revealedCount = 0, autoDisconnectTimeout = null;
 
         const escapeHTML = str => String(str).replace(/[&<>'"]/g, t => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[t]));
 
-        window.openIcebreaker = function() {
+        window.openIcebreaker = async function() {
             cleanupSession();
             revealedCount = 0;
-            document.getElementById('chatBox').innerHTML = '<p style="text-align:center; font-size:12px; font-weight:700; color:var(--muted); margin-top:30px;">Finding random student on radar...</p>';
+            
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; font-weight:700; color:var(--muted); margin-top:30px;">Finding random student on radar...</p>';
+            
             document.getElementById('revealBtn').style.display = 'none';
             document.getElementById('chatTimer').innerText = "05:00";
+            document.getElementById('chatInput').disabled = true;
+            document.getElementById('sendMsgBtn').disabled = true;
             document.getElementById('iceModal').style.display = 'flex';
-            
-            const waitingRef = ref(db, 'waiting');
-            onValue(waitingRef, (snapshot) => {
-                if (currentRoom) return; 
+
+            const waitingPoolRef = ref(db, 'waiting');
+
+            try {
+                const snapshot = await get(waitingPoolRef);
                 const waitingUsers = snapshot.val();
-                let foundPartner = false;
-                
+                let matchedPartnerId = null;
+
                 if (waitingUsers) {
-                    for (let partnerId in waitingUsers) {
-                        if (partnerId !== userId) {
-                            currentRoom = partnerId + "_" + userId;
-                            remove(ref(db, 'waiting/' + partnerId)); 
-                            set(ref(db, 'rooms/' + currentRoom + '/info'), { status: "active", users: [partnerId, userId] }); 
-                            startChatRoom(currentRoom);
-                            foundPartner = true;
+                    for (let pid in waitingUsers) {
+                        if (pid !== userId && !waitingUsers[pid].matchedWith) {
+                            matchedPartnerId = pid;
                             break;
                         }
                     }
                 }
-                
-                if (!foundPartner) {
-                    set(ref(db, 'waiting/' + userId), { timestamp: Date.now() });
-                    onDisconnect(ref(db, 'waiting/' + userId)).remove();
+
+                if (matchedPartnerId) {
+                    currentRoom = matchedPartnerId + "_" + userId;
                     
-                    matchListenerRef = ref(db, 'rooms');
-                    onValue(matchListenerRef, (roomSnap) => {
-                        if (currentRoom) return;
-                        roomSnap.forEach(room => {
-                            if (room.key.includes(userId) && !currentRoom) {
-                                currentRoom = room.key;
-                                if(matchListenerRef) { off(matchListenerRef); matchListenerRef = null; }
-                                startChatRoom(currentRoom);
-                            }
-                        });
+                    await set(ref(db, 'waiting/' + matchedPartnerId + '/matchedRoom'), currentRoom);
+                    await remove(ref(db, 'waiting/' + userId));
+
+                    await set(ref(db, 'rooms/' + currentRoom + '/info'), { 
+                        status: "active", 
+                        users: [matchedPartnerId, userId] 
+                    });
+
+                    startChatRoom(currentRoom);
+                } else {
+                    const myWaitRef = ref(db, 'waiting/' + userId);
+                    await set(myWaitRef, { timestamp: Date.now(), matchedRoom: false });
+                    onDisconnect(myWaitRef).remove();
+
+                    userStatusRef = myWaitRef;
+                    onValue(userStatusRef, (snap) => {
+                        const data = snap.val();
+                        if (data && data.matchedRoom && !currentRoom) {
+                            currentRoom = data.matchedRoom;
+                            remove(myWaitRef);
+                            startChatRoom(currentRoom);
+                        }
                     });
                 }
-            }, { onlyOnce: true });
+            } catch (err) {
+                chatBox.innerHTML = '<p style="text-align:center; font-size:12px; color:var(--coral); font-weight:700; margin-top:30px;">Connection failed. Try again.</p>';
+            }
         };
 
         function startChatRoom(roomId) {
+            if (userStatusRef) {
+                off(userStatusRef);
+                userStatusRef = null;
+            }
+
             const chatBox = document.getElementById('chatBox');
-            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; color:var(--text); background:var(--green); border:2px solid var(--border); border-radius:8px; padding:6px; box-shadow:var(--shadow-sm); font-weight:800;">Connected. Say hi.</p>';
-            setTimeout(() => document.getElementById('chatInput').focus(), 150);
+            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; color:var(--text); background:var(--green); border:2px solid var(--border); border-radius:8px; padding:6px; box-shadow:var(--shadow-sm); font-weight:800;">Connected! Say hi.</p>';
             
-            onDisconnect(ref(db, 'rooms/' + roomId)).remove();
-            disconnectRef = ref(db, 'rooms/' + roomId);
-            onValue(disconnectRef, (snapshot) => {
-                if (!snapshot.exists() && currentRoom === roomId) {
-                    addSysMsg("Stranger disconnected.");
-                    cleanupSession();
-                    currentRoom = null;
+            const chatInput = document.getElementById('chatInput');
+            const sendBtn = document.getElementById('sendMsgBtn');
+            chatInput.disabled = false;
+            sendBtn.disabled = false;
+            chatInput.value = '';
+            setTimeout(() => chatInput.focus(), 150);
+
+            onDisconnect(ref(db, 'rooms/' + roomId + '/info/status')).set('disconnected');
+
+            roomInfoRef = ref(db, 'rooms/' + roomId + '/info');
+            onValue(roomInfoRef, (snapshot) => {
+                const info = snapshot.val();
+                if (!info || info.status === 'disconnected') {
+                    addSysMsg("Partner disconnected.");
+                    chatInput.disabled = true;
+                    sendBtn.disabled = true;
+                    clearInterval(timerInterval);
                 }
             });
-            
+
             msgRefQuery = ref(db, 'rooms/' + roomId + '/messages');
             onChildAdded(msgRefQuery, (data) => {
                 const msg = data.val();
@@ -922,7 +970,7 @@
                         addSysMsg("Both revealed. Closing in 10s...");
                         autoDisconnectTimeout = setTimeout(() => {
                             closeIcebreaker();
-                            showToast("Chat completed");
+                            showToast("Chat completed", "success");
                         }, 10000);
                     }
                 }
@@ -935,7 +983,7 @@
                 const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
                 const s = (timeLeft % 60).toString().padStart(2, '0');
                 document.getElementById('chatTimer').innerText = `${m}:${s}`;
-                if(timeLeft <= 0) {
+                if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     document.getElementById('revealBtn').style.display = 'inline-flex';
                     addSysMsg("Time up. You can now reveal ID.");
@@ -946,33 +994,47 @@
         window.sendMsg = function() {
             const input = document.getElementById('chatInput');
             const txt = input.value.trim();
-            if(!txt || !currentRoom) return;
+            if (!txt || !currentRoom || input.disabled) return;
+            
             input.value = ''; 
             const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-            push(ref(db, 'rooms/' + currentRoom + '/messages'), { sender: userId, text: txt, time: timeString });
+            
+            push(ref(db, 'rooms/' + currentRoom + '/messages'), { 
+                sender: userId, 
+                text: txt, 
+                time: timeString 
+            });
             input.focus();
         };
 
-        window.handleChatEnter = e => { if(e.key === 'Enter') { e.preventDefault(); sendMsg(); } };
+        window.handleChatEnter = e => { 
+            if (e.key === 'Enter') { 
+                e.preventDefault(); 
+                sendMsg(); 
+            } 
+        };
 
         function cleanupSession() {
             clearInterval(timerInterval);
             clearTimeout(autoDisconnectTimeout);
-            if(disconnectRef) off(disconnectRef);
-            if(msgRefQuery) off(msgRefQuery);
-            if(matchListenerRef) off(matchListenerRef);
-            disconnectRef = msgRefQuery = matchListenerRef = null;
+            
+            if (userStatusRef) off(userStatusRef);
+            if (roomInfoRef) off(roomInfoRef);
+            if (msgRefQuery) off(msgRefQuery);
+            
+            userStatusRef = roomInfoRef = msgRefQuery = null;
         }
 
         window.closeIcebreaker = function() {
             document.getElementById('iceModal').style.display = 'none';
             cleanupSession();
+            
             if (currentRoom) {
+                set(ref(db, 'rooms/' + currentRoom + '/info/status'), 'disconnected');
                 remove(ref(db, 'rooms/' + currentRoom)); 
                 currentRoom = null;
-            } else {
-                remove(ref(db, 'waiting/' + userId));
             }
+            remove(ref(db, 'waiting/' + userId));
         };
 
         window.addSysMsg = function(text) {
@@ -996,18 +1058,22 @@
         window.submitCustomName = function() {
             const input = document.getElementById('customNameInput');
             const val = input.value.trim();
-            if(!val) return;
+            if (!val) return;
             closeNamePromptModal();
             input.value = '';
             executeReveal(val);
         };
-        window.handleNameEnter = e => { if(e.key === 'Enter') { e.preventDefault(); submitCustomName(); } };
+        window.handleNameEnter = e => { if (e.key === 'Enter') { e.preventDefault(); submitCustomName(); } };
 
         function executeReveal(name) {
             document.getElementById('revealBtn').style.display = 'none';
-            if(currentRoom) {
+            if (currentRoom) {
                 const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-                push(ref(db, 'rooms/' + currentRoom + '/messages'), { sender: userId, text: `Identity Revealed: [ ${name} ]`, time: timeString });
+                push(ref(db, 'rooms/' + currentRoom + '/messages'), { 
+                    sender: userId, 
+                    text: `Identity Revealed: [ ${name} ]`, 
+                    time: timeString 
+                });
             }
         }
     </script>
@@ -1060,7 +1126,7 @@
         function resizeGameCanvas() {
             if (!canvas) return;
             const wrapper = document.getElementById('canvasWrapper');
-            if (wrapper && wrapper.clientWidth > 0 && wrapper.clientHeight > 0) {
+            if (wrapper && wrapper.clientWidth > 0) {
                 canvas.width = wrapper.clientWidth;
                 canvas.height = wrapper.clientHeight;
                 if (dotY > canvas.height) dotY = canvas.height / 2;
@@ -1071,7 +1137,7 @@
 
         function initFlappyDot() {
             canvas = document.getElementById('flappyCanvas');
-            if(!canvas) return;
+            if (!canvas) return;
 
             const wrapper = document.getElementById('canvasWrapper');
             if (resizeObserver) resizeObserver.disconnect();
@@ -1095,11 +1161,11 @@
                     flapJump();
                 }
             };
-            if(flappyLoopId) cancelAnimationFrame(flappyLoopId);
+            if (flappyLoopId) cancelAnimationFrame(flappyLoopId);
         }
 
         function renderWaiting() {
-            if(!ctx) return;
+            if (!ctx) return;
             ctx.fillStyle = '#FFFDF9';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
@@ -1128,12 +1194,12 @@
         }
 
         function flapJump() {
-            if(isGameOver) { initFlappyDot(); return; }
-            if(!isStarted) { 
+            if (isGameOver) { initFlappyDot(); return; }
+            if (!isStarted) { 
                 isStarted = true; 
                 dotVelocity = -3.4; 
                 pipes = [];
-                for(let px = 300; px <= canvas.width + SPACING; px += SPACING) {
+                for (let px = 300; px <= canvas.width + SPACING; px += SPACING) {
                     const topH = Math.floor(Math.random() * (canvas.height - GAP - 50)) + 25;
                     pipes.push({ x: px, top: topH, bottom: canvas.height - (topH + GAP), passed: false });
                 }
@@ -1144,7 +1210,7 @@
         }
 
         function runLoop() {
-            if(!isStarted || isGameOver) return;
+            if (!isStarted || isGameOver) return;
 
             dotVelocity = Math.min(dotVelocity + 0.17, 4.0);
             dotY += dotVelocity;
@@ -1198,7 +1264,7 @@
             if (e.key === 'Escape') { 
                 document.activeElement.blur(); 
                 closeAddModal(); closeSyncModal(); closeNamePromptModal();
-                if(typeof closeIcebreaker === 'function') closeIcebreaker(); 
+                if (typeof closeIcebreaker === 'function') closeIcebreaker(); 
             } else if (e.code === 'Space' && document.getElementById('gameContainer').style.display === 'flex') {
                 e.preventDefault();
                 flapJump();
@@ -1339,7 +1405,7 @@
             document.getElementById('syncModalContent').classList.remove('game-mode-active');
             document.getElementById('syncModal').style.display = 'none'; 
             if (resizeObserver) resizeObserver.disconnect();
-            if(flappyLoopId) cancelAnimationFrame(flappyLoopId);
+            if (flappyLoopId) cancelAnimationFrame(flappyLoopId);
         }
         
         function saveNewSubject() { 
@@ -1356,7 +1422,7 @@
         async function runLiveSync() {
             const user = document.getElementById('collegeId').value.trim(); 
             const pass = document.getElementById('collegePass').value.trim(); 
-            if(!user || !pass) return showToast("Credentials required!", "error"); 
+            if (!user || !pass) return showToast("Credentials required!", "error"); 
             
             document.getElementById('authForm').style.display = 'none'; 
             document.getElementById('syncModalContent').classList.add('game-mode-active');
@@ -1366,7 +1432,7 @@
             try {
                 const res = await fetch(`${API_URL}?user=${encodeURIComponent(user)}&passw=${encodeURIComponent(pass)}`); 
                 const result = await res.json();
-                if(result.success) {
+                if (result.success) {
                     localStorage.setItem('eimi_college_id', user);
                     updateGreeting(); 
                     let nameCount = {}, currentNameCount = {};
@@ -1386,7 +1452,7 @@
                     showToast(result.error || "Login Failed", "error"); 
                     closeSyncModal();
                 }
-            } catch(e) { 
+            } catch (e) { 
                 showToast("Server error, retrying...", "error"); 
                 closeSyncModal();
             }
@@ -1406,7 +1472,7 @@
         document.addEventListener('DOMContentLoaded', () => { 
             fetch('https://attendpro-web-2.onrender.com/').catch(() => {});
             const sInput = document.getElementById('searchInput');
-            if(sInput) sInput.value = '';
+            if (sInput) sInput.value = '';
             updateGreeting(); 
             const saved = localStorage.getItem('user_attendance'); 
             if (saved) { 
