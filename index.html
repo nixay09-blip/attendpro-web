@@ -304,7 +304,7 @@
             line-height: 1;
         }
 
-        /* SEARCH INPUT (AUTOFILL RESISTANT) */
+        /* SEARCH INPUT */
         .search-box {
             width: 100%;
             padding: 12px 14px;
@@ -328,15 +328,6 @@
         .search-box::placeholder {
             color: #7a7a85;
             font-weight: 600;
-        }
-        .search-box:-webkit-autofill,
-        .search-box:-webkit-autofill:hover, 
-        .search-box:-webkit-autofill:focus,
-        .search-box:-webkit-autofill:active {
-            -webkit-text-fill-color: var(--text-dark) !important;
-            -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
-            box-shadow: 0 0 0px 1000px #ffffff inset !important;
-            transition: background-color 50000s ease-in-out 0s;
         }
 
         .section-title {
@@ -467,13 +458,43 @@
             text-transform: uppercase;
         }
         .action-btn:hover {
-            background: var(--yellow);
             transform: translate(-1px, -1px);
             box-shadow: 3.5px 3.5px 0px var(--border-color);
         }
         .action-btn:active {
             transform: translate(1.5px, 1.5px);
             box-shadow: 0px 0px 0px;
+        }
+
+        /* TICK AND CROSS PRE-STYLED COLORS */
+        .action-btn.btn-present .svg-icon {
+            stroke: #16a34a !important;
+        }
+        .action-btn.btn-bunk .svg-icon {
+            stroke: #dc2626 !important;
+        }
+
+        /* HOVER & ACTIVE (ALWAYS BLACK TEXT AND ICON) */
+        .action-btn.btn-present:hover,
+        .action-btn.btn-present:active {
+            background: var(--green) !important;
+            border-color: var(--border-color) !important;
+            color: #0c0c0e !important;
+        }
+        .action-btn.btn-present:hover .svg-icon,
+        .action-btn.btn-present:active .svg-icon {
+            stroke: #0c0c0e !important;
+        }
+
+        .action-btn.btn-bunk:hover,
+        .action-btn.btn-bunk:active {
+            background: var(--coral) !important;
+            border-color: var(--border-color) !important;
+            color: #0c0c0e !important;
+        }
+        .action-btn.btn-bunk:hover .svg-icon,
+        .action-btn.btn-bunk:active .svg-icon {
+            stroke: #0c0c0e !important;
         }
 
         /* NO MODULE HERO CARD */
@@ -583,7 +604,6 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* DYNAMIC EXPANDED MODAL (SYNC/GAME) */
         #syncModal .modal-content {
             background: #ffffff;
             border: 3.5px solid var(--border-color);
@@ -1641,11 +1661,11 @@
                             <div class="progress-fill" style="width: ${fillWidth}%; background: ${barColor};"></div>
                         </div>
                         <div class="quick-actions">
-                            <button class="action-btn" onclick="quickMark(${index}, true)">
+                            <button class="action-btn btn-present" onclick="quickMark(${index}, true)">
                                 <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                 +1 Present
                             </button>
-                            <button class="action-btn" onclick="quickMark(${index}, false)">
+                            <button class="action-btn btn-bunk" onclick="quickMark(${index}, false)">
                                 <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                 +1 Bunk
                             </button>
