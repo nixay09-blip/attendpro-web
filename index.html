@@ -304,7 +304,7 @@
             line-height: 1;
         }
 
-        /* SEARCH INPUT */
+        /* SEARCH INPUT (AUTOFILL RESISTANT) */
         .search-box {
             width: 100%;
             padding: 12px 14px;
@@ -317,6 +317,8 @@
             font-weight: 700;
             outline: none;
             transition: all 0.15s ease;
+            appearance: none;
+            -webkit-appearance: none;
         }
         .search-box:focus {
             transform: translate(-1px, -1px);
@@ -326,6 +328,15 @@
         .search-box::placeholder {
             color: #7a7a85;
             font-weight: 600;
+        }
+        .search-box:-webkit-autofill,
+        .search-box:-webkit-autofill:hover, 
+        .search-box:-webkit-autofill:focus,
+        .search-box:-webkit-autofill:active {
+            -webkit-text-fill-color: var(--text-dark) !important;
+            -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+            box-shadow: 0 0 0px 1000px #ffffff inset !important;
+            transition: background-color 50000s ease-in-out 0s;
         }
 
         .section-title {
@@ -865,20 +876,27 @@
                     </div>
                 </div>
 
-                <!-- MODULE SEARCH -->
-                <input 
-                    type="text" 
-                    class="search-box" 
-                    id="searchInput" 
-                    placeholder="Search modules... (Press '/')" 
-                    autocomplete="new-password" 
-                    autocorrect="off" 
-                    autocapitalize="off" 
-                    spellcheck="false" 
-                    name="not_a_username_field" 
-                    readonly 
-                    onfocus="this.removeAttribute('readonly');" 
-                    onkeyup="filterSubjects()">
+                <!-- MODULE SEARCH (AUTOFILL IMMUNE VIA HIDDEN SINK) -->
+                <div style="position: relative; width: 100%;">
+                    <!-- Dummy hidden fields to consume browser autofill trap -->
+                    <input type="text" style="display:none !important;" tabindex="-1" autocomplete="username">
+                    <input type="password" style="display:none !important;" tabindex="-1" autocomplete="current-password">
+
+                    <input 
+                        type="search" 
+                        class="search-box" 
+                        id="searchInput" 
+                        placeholder="Search modules... (Press '/')" 
+                        autocomplete="off" 
+                        autocorrect="off" 
+                        autocapitalize="off" 
+                        spellcheck="false" 
+                        name="eimi_subject_search_field" 
+                        value="" 
+                        readonly 
+                        onfocus="this.removeAttribute('readonly');" 
+                        onkeyup="filterSubjects()">
+                </div>
             </div>
 
             <div class="desktop-main">
@@ -1742,6 +1760,13 @@
         document.addEventListener('DOMContentLoaded', () => { 
             fetch('https://attendpro-web-2.onrender.com/').catch(() => {});
             
+            // Hard wipe search box on reload to kill persistent browser autofill ghosts
+            const sInput = document.getElementById('searchInput');
+            if(sInput) {
+                sInput.value = '';
+                setTimeout(() => { sInput.value = ''; }, 100);
+            }
+
             updateGreeting(); 
             const saved = localStorage.getItem('user_attendance'); 
             if (saved) { 
