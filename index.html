@@ -23,6 +23,7 @@
             --green: #9EEB68;
             --coral: #FF6666;
             --cyan: #5EEAD4;
+            --cyan-light: #A5F3FC;
             --text: #0c0c0e;
             --muted: #595963;
             --shadow-sm: 2.5px 2.5px 0px var(--border);
@@ -160,11 +161,12 @@
         .btn-match { background: var(--yellow); }
         .btn-logout { background: var(--coral); color: #fff; }
 
+        /* REVEAL ID - RESTORED TO ORIGINAL YELLOW */
         .btn-reveal-prime {
-            background: var(--yellow);
-            color: var(--text);
-            border: 2.5px solid var(--border);
-            box-shadow: var(--shadow-sm);
+            background: var(--yellow) !important;
+            color: var(--text) !important;
+            border: 2.5px solid var(--border) !important;
+            box-shadow: var(--shadow-sm) !important;
             padding: 8px 16px;
             border-radius: 10px;
             font-size: 12px;
@@ -174,6 +176,23 @@
             align-items: center;
             gap: 7px;
             text-transform: uppercase;
+        }
+        .btn-reveal-prime:hover {
+            background: #ffd814 !important;
+            transform: translate(-1.5px, -1.5px);
+            box-shadow: var(--shadow) !important;
+        }
+
+        /* RED EXIT BUTTON */
+        .btn-chat-exit {
+            background: var(--coral) !important;
+            color: #ffffff !important;
+            border: 2.5px solid var(--border) !important;
+            box-shadow: var(--shadow-sm) !important;
+            font-weight: 800 !important;
+        }
+        .btn-chat-exit:hover {
+            background: #e64545 !important;
         }
 
         /* LAYOUT & CARDS */
@@ -570,7 +589,7 @@
             word-break: break-word;
         }
 
-        /* SENDER (ME): ULTRA-LIGHT SOFT BUTTER PASTEL YELLOW */
+        /* SENDER (ME): SOFT BUTTER PASTEL YELLOW */
         .msg-wrapper.me .msg { 
             background: #FEF9C3 !important; 
             color: #0c0c0e !important; 
@@ -590,10 +609,12 @@
 
         .msg-time { font-size: 10px; font-weight: 700; color: var(--muted); margin-top: 3px; }
 
+        /* YELLOW TIMER BADGE */
         .timer-text {
             font-family: 'Space Mono', monospace;
             font-size: 14px;
-            background: var(--yellow);
+            background: var(--yellow) !important;
+            color: var(--text);
             border: 2px solid var(--border);
             box-shadow: var(--shadow-sm);
             padding: 3px 8px;
@@ -836,7 +857,7 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn" onclick="closeIcebreaker()">Exit</button>
+                <button class="btn btn-chat-exit" onclick="closeIcebreaker()">Exit</button>
                 <button class="btn-reveal-prime" id="revealBtn" style="display: none;" onclick="revealIdentity()">
                     <svg class="svg-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     Reveal ID
@@ -1116,7 +1137,10 @@
 
         window.addSysMsg = function(text) {
             const chatBox = document.getElementById('chatBox');
-            chatBox.insertAdjacentHTML('beforeend', `<p style="text-align:center; font-size:11px; font-weight:800; margin: 8px 0; background: var(--yellow); border:2px solid var(--border); padding: 5px; border-radius: 6px; box-shadow:var(--shadow-sm);">${escapeHTML(text)}</p>`);
+            const isTimeUp = text.toLowerCase().includes("time up");
+            const bg = isTimeUp ? "var(--cyan-light)" : "var(--yellow)";
+            
+            chatBox.insertAdjacentHTML('beforeend', `<p style="text-align:center; font-size:11px; font-weight:800; margin: 8px 0; background: ${bg}; border:2px solid var(--border); padding: 5px; border-radius: 6px; box-shadow:var(--shadow-sm);">${escapeHTML(text)}</p>`);
             chatBox.scrollTop = chatBox.scrollHeight;
         };
 
