@@ -8,95 +8,78 @@
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link rel="apple-touch-icon" href="logo.jpg">
     
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+    
     <style>
-        @font-face { font-family: 'Blanka'; src: url('blanka.otf') format('opentype'); }
+        @font-face { 
+            font-family: 'Blanka'; 
+            src: url('blanka.otf') format('opentype'); 
+        }
         ::-webkit-scrollbar { display: none; }
         
-        * { 
-            scrollbar-width: none; margin: 0; padding: 0; box-sizing: border-box; 
-            font-family: 'Space Grotesk', sans-serif;
-            -webkit-tap-highlight-color: transparent; 
-            user-select: none; 
+        :root {
+            --bg-color: #FAF5EA;
+            --border-color: #0c0c0e;
+            --shadow-color: #0c0c0e;
+            --card-bg: #FFFFFF;
+            --yellow: #FFE54C;
+            --green: #9EEB68;
+            --coral: #FF6666;
+            --blue: #60A5FA;
+            --purple: #C084FC;
+            --cyan: #5EEAD4;
+            --text-dark: #0c0c0e;
+            --text-muted: #595963;
+            --hard-shadow-sm: 2.5px 2.5px 0px var(--shadow-color);
+            --hard-shadow: 4px 4px 0px var(--shadow-color);
+            --hard-shadow-lg: 6px 6px 0px var(--shadow-color);
         }
-        
-        input, .msg, .toast { user-select: auto; }
-        *:focus-visible { outline: 1px solid #86efac; outline-offset: 2px; }
 
-        body { 
-            background: #060608;
-            background-image: 
-                radial-gradient(ellipse 60% 40% at 50% -10%, rgba(134, 239, 172, 0.12), transparent),
-                radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 20px 20px;
-            color: #ffffff; 
-            display: flex; 
-            justify-content: center; 
+        * {
+            scrollbar-width: none;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        input, .msg, .toast { user-select: auto; }
+        *:focus-visible { outline: 2.5px solid var(--border-color); outline-offset: 2px; }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(var(--border-color) 1.2px, transparent 1.2px);
+            background-size: 22px 22px;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
             align-items: flex-start;
-            padding: clamp(12px, 2.5vw, 24px); 
+            padding: clamp(12px, 2.5vw, 24px);
             min-height: 100vh;
         }
 
-        .container { 
-            width: 100%; 
-            max-width: 540px; 
-            display: flex; 
-            flex-direction: column; 
+        .container {
+            width: 100%;
+            max-width: 540px;
+            display: flex;
+            flex-direction: column;
             gap: 16px;
-            animation: appFadeIn 0.4s ease-out;
+            animation: appFadeIn 0.3s ease-out;
         }
 
         @keyframes appFadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes pulseDot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.85); }
-        }
-
-        @keyframes radarPulse {
-            0% { box-shadow: 0 0 0 0 rgba(253, 224, 71, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(253, 224, 71, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(253, 224, 71, 0); }
-        }
-
-        @keyframes badgeBreathingGlow {
-            0%, 100% { 
-                box-shadow: 0 0 15px rgba(134, 239, 172, 0.08), inset 0 0 0 1px rgba(134, 239, 172, 0.25); 
-            }
-            50% { 
-                box-shadow: 0 0 30px rgba(134, 239, 172, 0.25), inset 0 0 0 1px rgba(134, 239, 172, 0.6); 
-            }
-        }
-
-        @keyframes beaconPulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.3); opacity: 1; filter: drop-shadow(0 0 6px #86efac); }
-            100% { transform: scale(0.95); opacity: 0.8; }
-        }
-
-        @keyframes revealGlow {
-            0%, 100% { 
-                box-shadow: 0 0 16px rgba(253, 224, 71, 0.35), inset 0 0 12px rgba(253, 224, 71, 0.2);
-                border-color: rgba(253, 224, 71, 0.8);
-            }
-            50% { 
-                box-shadow: 0 0 28px rgba(253, 224, 71, 0.65), inset 0 0 18px rgba(253, 224, 71, 0.4);
-                border-color: #fde047;
-            }
-        }
-
-        @keyframes eyeScan {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.18); }
-        }
-
+        /* SVG ICONS ONLY */
         .svg-icon {
-            width: 14px;
-            height: 14px;
-            stroke-width: 2;
+            width: 15px;
+            height: 15px;
+            stroke-width: 2.4;
             stroke: currentColor;
             fill: none;
             stroke-linecap: round;
@@ -105,123 +88,141 @@
         }
 
         /* HEADER */
-        .header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            flex-wrap: wrap; 
-            gap: 12px; 
-            padding-bottom: 6px;
+        .header {
+            background: #ffffff;
+            border: 3px solid var(--border-color);
+            border-radius: 18px;
+            box-shadow: var(--hard-shadow);
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-        .logo-container { 
-            display: flex; 
-            align-items: center; 
-            gap: 10px;
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             min-width: 130px;
         }
-        .logo-img { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12); object-fit: cover; }
-        .title-area h1 { font-family: 'Blanka', sans-serif; font-size: 28px; letter-spacing: 2px; line-height: 1; margin: 0; }
-        .title-area p { 
-            font-size: 11px; 
-            color: #86efac; 
-            margin-top: 4px; 
-            font-weight: 500; 
-            display: flex; 
-            align-items: center; 
-            gap: 5px; 
+        .logo-img {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            border: 2.5px solid var(--border-color);
+            box-shadow: var(--hard-shadow-sm);
+            object-fit: cover;
+            background: var(--yellow);
+        }
+        .title-area h1 {
+            font-family: 'Blanka', 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            letter-spacing: 2px;
+            line-height: 1;
+            margin: 0;
+            color: var(--text-dark);
+        }
+        .title-area p {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
         .live-dot {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: #86efac;
-            box-shadow: 0 0 8px #86efac;
-            animation: pulseDot 1.8s infinite ease-in-out;
+            background: var(--green);
+            border: 1.5px solid var(--border-color);
+            display: inline-block;
         }
-        
-        .header-actions { 
-            display: flex; 
-            gap: 6px; 
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
             flex-wrap: wrap;
+            align-items: center;
         }
-        .btn { 
-            background: rgba(18, 18, 22, 0.8); 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            color: #fff; 
-            padding: 7px 11px; 
-            border-radius: 9px; 
-            cursor: pointer; 
-            font-size: 12px; 
-            font-weight: 600; 
-            display: flex; 
-            align-items: center; 
-            gap: 5px; 
+
+        /* NEO BRUTALIST BUTTONS */
+        .btn {
+            background: #ffffff;
+            border: 2.5px solid var(--border-color);
+            box-shadow: var(--hard-shadow-sm);
+            color: var(--text-dark);
+            padding: 7px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             white-space: nowrap;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.12s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
         }
-        .btn:hover { 
-            background: #1e1e24; 
-            border-color: rgba(255, 255, 255, 0.18);
-            transform: translateY(-1px);
+        .btn:hover {
+            transform: translate(-1.5px, -1.5px);
+            box-shadow: 4px 4px 0px var(--border-color);
         }
-        .btn:active { transform: scale(0.97); }
-        
-        .btn-match { 
-            border-color: #fde047; 
-            color: #fde047; 
-            background: rgba(253, 224, 71, 0.06); 
-            animation: radarPulse 2s infinite cubic-bezier(0.25, 0, 0, 1); 
+        .btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px var(--border-color);
         }
-        .btn-match:hover { 
-            background: #fde047; 
-            color: #000; 
-            box-shadow: 0 0 16px rgba(253, 224, 71, 0.5); 
-            animation: none; 
+
+        .btn-match {
+            background: var(--yellow);
+            color: var(--text-dark);
+        }
+        .btn-match:hover {
+            background: #ffd814;
         }
 
         .btn-logout {
-            color: #ef4444;
-            border-color: rgba(239, 68, 68, 0.3);
-            background: rgba(239, 68, 68, 0.05);
+            background: var(--coral);
+            color: #ffffff;
+            border-color: var(--border-color);
         }
         .btn-logout:hover {
-            background: #ef4444;
-            color: #fff;
-            border-color: #ef4444;
-            box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+            background: #e64545;
+            color: #ffffff;
         }
 
         .btn-reveal-prime {
             position: relative;
-            background: linear-gradient(135deg, #fde047 0%, #eab308 100%);
-            color: #050505;
-            border: 1px solid rgba(253, 224, 71, 0.9);
-            padding: 8px 18px;
+            background: var(--yellow);
+            color: var(--text-dark);
+            border: 2.5px solid var(--border-color);
+            box-shadow: var(--hard-shadow-sm);
+            padding: 8px 16px;
             border-radius: 10px;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: 0.8px;
             text-transform: uppercase;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            animation: revealGlow 2.2s infinite ease-in-out;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.12s ease;
         }
         .btn-reveal-prime:hover {
-            transform: translateY(-2px) scale(1.02);
+            transform: translate(-1.5px, -1.5px);
+            box-shadow: 4px 4px 0px var(--border-color);
             background: #ffffff;
-            color: #000000;
-            border-color: #ffffff;
-            box-shadow: 0 0 30px rgba(253, 224, 71, 0.85);
         }
-        .reveal-eye-icon {
-            width: 15px;
-            height: 15px;
-            stroke-width: 2.2;
-            animation: eyeScan 2.4s infinite ease-in-out;
+        .btn-reveal-prime:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px var(--border-color);
         }
 
         /* MAIN CONTENT LAYOUT */
@@ -248,188 +249,251 @@
         }
 
         /* STATS CARDS */
-        .stats-wrapper { 
-            display: flex; 
-            gap: 10px; 
+        .stats-wrapper {
+            display: flex;
+            gap: 12px;
             width: 100%;
             flex-wrap: wrap;
         }
-        .overall-card { 
-            background: rgba(16, 16, 20, 0.7); 
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.06); 
-            border-radius: 14px; 
-            padding: 14px 16px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            flex: 1 1 180px; 
+        .overall-card {
+            background: #ffffff;
+            border: 3px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: var(--hard-shadow);
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex: 1 1 180px;
             min-width: 140px;
-            transition: all 0.25s ease;
+            transition: all 0.15s ease;
         }
         .overall-card:hover {
-            border-color: rgba(255, 255, 255, 0.14);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            transform: translate(-2px, -2px);
+            box-shadow: var(--hard-shadow-lg);
         }
-        .overall-info h3 { 
-            font-family: 'Blanka', sans-serif;
-            font-size: 12px; 
-            color: #71717a; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px; 
-            margin-bottom: 4px; 
+        .overall-info h3 {
+            font-family: 'Blanka', 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
         }
-        .overall-info h2 { font-size: 15px; font-weight: 700; margin: 0; }
-        .overall-ring { 
-            font-size: 13px; 
-            font-weight: 700; 
-            border-radius: 50%; 
-            width: 44px; 
-            height: 44px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            border: 2px solid; 
-            transition: all 0.3s ease;
+        .overall-info h2 {
+            font-size: 15px;
+            font-weight: 800;
+            margin: 0;
+            text-transform: uppercase;
+        }
+        .overall-ring {
+            font-family: 'Space Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 12px;
+            padding: 6px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2.5px solid var(--border-color);
+            box-shadow: var(--hard-shadow-sm);
+            background: #ffffff;
             flex-shrink: 0;
+            line-height: 1;
         }
 
-        /* SEARCH & LIST (VS Code Clean & No White Patch) */
-        .search-box { 
-            width: 100%; 
-            padding: 11px 14px; 
-            background: #0e0e12 !important; 
-            border: 1px solid rgba(255, 255, 255, 0.07); 
-            border-radius: 11px; 
-            color: #ffffff !important; 
-            font-size: 13px; 
-            outline: none; 
-            appearance: none;
-            -webkit-appearance: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
+        /* SEARCH INPUT */
+        .search-box {
+            width: 100%;
+            padding: 12px 14px;
+            background: #ffffff !important;
+            border: 3px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--hard-shadow);
+            color: var(--text-dark) !important;
+            font-size: 13px;
+            font-weight: 700;
+            outline: none;
+            transition: all 0.15s ease;
         }
-        .search-box:focus { 
-            border-color: #86efac; 
-            box-shadow: 0 0 0 2px rgba(134, 239, 172, 0.12);
+        .search-box:focus {
+            transform: translate(-1px, -1px);
+            box-shadow: var(--hard-shadow-lg);
+            background: #FFFFFC !important;
         }
-        .search-box:-webkit-autofill,
-        .search-box:-webkit-autofill:hover, 
-        .search-box:-webkit-autofill:focus,
-        .search-box:-webkit-autofill:active {
-            -webkit-text-fill-color: #ffffff !important;
-            -webkit-box-shadow: 0 0 0px 1000px #0e0e12 inset !important;
-            box-shadow: 0 0 0px 1000px #0e0e12 inset !important;
-            transition: background-color 50000s ease-in-out 0s;
+        .search-box::placeholder {
+            color: #7a7a85;
+            font-weight: 600;
         }
-        
-        .section-title { 
-            font-family: 'Blanka', sans-serif;
-            font-size: 13px; 
-            color: #71717a; 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-        }
-        .section-title::after { content: ''; flex: 1; height: 1px; background: rgba(255, 255, 255, 0.06); }
 
-        .subject-list { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
+        .section-title {
+            font-family: 'Blanka', 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 2.5px;
+            background: var(--border-color);
+        }
+
+        /* SUBJECT LIST & CARDS */
+        .subject-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
             width: 100%;
         }
-        .subject-card { 
-            background: rgba(15, 15, 19, 0.7); 
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.06); 
-            border-radius: 14px; 
-            padding: 14px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            transition: all 0.2s ease;
+        .subject-card {
+            background: #ffffff;
+            border: 3px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: var(--hard-shadow);
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.15s ease;
             min-width: 0;
         }
         .subject-card:hover {
-            border-color: rgba(255, 255, 255, 0.14);
-            transform: translateY(-1px);
+            transform: translate(-2px, -2px);
+            box-shadow: var(--hard-shadow-lg);
         }
-        .card-top { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-start; 
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             gap: 12px;
         }
         .subject-info {
             min-width: 0;
             flex: 1;
         }
-        .subject-info h4 { 
-            font-size: 14px; 
-            font-weight: 600; 
-            margin-bottom: 2px; 
+        .subject-info h4 {
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 2px;
             word-break: break-word;
+            line-height: 1.3;
         }
-        
-        .status-tag { 
-            font-size: 11px; 
-            font-weight: 600; 
-            margin-top: 4px; 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 5px; 
-            padding: 3px 8px;
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.04);
+
+        .status-tag {
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 8px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--hard-shadow-sm);
             white-space: nowrap;
-            flex-wrap: wrap;
+            background: #ffffff;
         }
-        .status-tag.safe { color: #86efac; border-color: rgba(134, 239, 172, 0.2); }
-        .status-tag.risk { color: #fde047; border-color: rgba(253, 224, 71, 0.2); }
+        .status-tag.safe { background: #DCFCE7; color: #15803d; }
+        .status-tag.risk { background: #FEE2E2; color: #b91c1c; }
 
-        .percentage { 
-            font-weight: 700; 
-            font-size: 20px; 
-            text-align: right; 
+        .percentage {
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 20px;
+            text-align: right;
             flex-shrink: 0;
+            padding: 4px 8px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: var(--hard-shadow-sm);
+            background: #ffffff;
         }
 
-        .progress-bg { width: 100%; height: 4px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; overflow: hidden; }
-        .progress-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+        .progress-bg {
+            width: 100%;
+            height: 12px;
+            background: #FAF5EA;
+            border: 2.5px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 0;
+            border-right: 2px solid var(--border-color);
+            transition: width 0.4s ease;
+        }
 
-        .quick-actions { 
-            display: flex; 
-            gap: 6px; 
-            justify-content: flex-end; 
-            padding-top: 4px; 
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            padding-top: 4px;
             flex-wrap: wrap;
         }
-        .action-btn { 
-            background: rgba(24, 24, 28, 0.8); 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            color: #a1a1aa; 
-            padding: 5px 10px; 
-            border-radius: 7px; 
-            font-size: 11px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            gap: 4px; 
-            transition: all 0.15s ease;
+        .action-btn {
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--hard-shadow-sm);
+            color: var(--text-dark);
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.1s ease;
+            text-transform: uppercase;
         }
-        .action-btn:hover { background: #27272a; color: #fff; }
-        .action-btn:active { transform: scale(0.96); }
+        .action-btn:hover {
+            background: var(--yellow);
+            transform: translate(-1px, -1px);
+            box-shadow: 3.5px 3.5px 0px var(--border-color);
+        }
+        .action-btn:active {
+            transform: translate(1.5px, 1.5px);
+            box-shadow: 0px 0px 0px;
+        }
+
+        /* NO MODULE HERO CARD */
+        .empty-module-card {
+            background: #FFFFFF;
+            border: 3px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: var(--hard-shadow-lg);
+            padding: 36px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+        .empty-module-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--yellow);
+            border: 2.5px solid var(--border-color);
+            box-shadow: var(--hard-shadow-sm);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2px;
+        }
 
         /* CREATOR ATTENTION BADGE */
         .creator-badge-wrapper {
             display: flex;
             justify-content: center;
-            margin-top: 26px;
+            margin-top: 24px;
             margin-bottom: 12px;
             width: 100%;
         }
@@ -439,202 +503,306 @@
             gap: 10px;
             padding: 8px 18px;
             border-radius: 999px;
-            background: rgba(14, 14, 18, 0.95);
-            border: 1px solid rgba(134, 239, 172, 0.35);
-            animation: badgeBreathingGlow 3s infinite ease-in-out;
-            transition: all 0.25s ease;
+            background: var(--cyan);
+            border: 2.5px solid var(--border-color);
+            box-shadow: var(--hard-shadow);
+            transition: all 0.15s ease;
             text-decoration: none;
-            cursor: pointer;
+            cursor: default;
         }
         .creator-badge:hover {
-            transform: translateY(-2px);
-            border-color: #86efac;
-            box-shadow: 0 0 35px rgba(134, 239, 172, 0.4);
-            background: rgba(18, 22, 19, 0.95);
+            transform: translate(-1.5px, -1.5px);
+            box-shadow: var(--hard-shadow-lg);
         }
         .creator-beacon {
-            width: 7px;
-            height: 7px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: #86efac;
-            box-shadow: 0 0 10px #86efac;
-            animation: beaconPulse 2s infinite ease-in-out;
+            background: var(--green);
+            border: 1.5px solid var(--border-color);
+            box-shadow: 1px 1px 0px var(--border-color);
             flex-shrink: 0;
         }
         .creator-label {
             font-size: 10px;
-            color: #71717a;
+            color: var(--text-dark);
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            font-weight: 600;
+            font-weight: 800;
         }
         .creator-name {
-            color: #ffffff;
+            color: var(--text-dark);
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: 1.2px;
             text-transform: uppercase;
-            transition: color 0.2s ease;
-        }
-        .creator-badge:hover .creator-name {
-            color: #86efac;
-            text-shadow: 0 0 10px rgba(134, 239, 172, 0.6);
         }
 
         /* MODALS */
-        .modal { 
-            display: none; 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            background: rgba(0, 0, 0, 0.85); 
-            align-items: center; 
-            justify-content: center; 
-            z-index: 100; 
-            backdrop-filter: blur(8px);
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(12, 12, 14, 0.65);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
             padding: 16px;
         }
-        .modal-content { 
-            background: #111116; 
-            border: 1px solid rgba(255, 255, 255, 0.12); 
-            border-radius: 18px; 
-            padding: 20px; 
-            width: 100%; 
-            max-width: 400px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        .modal-content {
+            background: #ffffff;
+            border: 3.5px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: var(--hard-shadow-lg);
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             transition: all 0.25s ease;
         }
         @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.94); }
+            from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* DYNAMIC EXPANDED SCREEN FOR ALL DEVICES */
-        .modal-content.game-mode-active {
-            max-width: 880px;
-            width: clamp(320px, 86vw, 880px);
-            height: clamp(380px, 75vh, 700px);
-            padding: 16px;
+        /* DYNAMIC EXPANDED MODAL (SYNC/GAME) */
+        #syncModal .modal-content {
+            background: #ffffff;
+            border: 3.5px solid var(--border-color);
+            border-radius: 22px;
+            box-shadow: var(--hard-shadow-lg);
+            width: 100%;
+            max-width: 420px;
+            padding: 22px;
+            gap: 16px;
+            transition: max-width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s ease;
         }
 
-        .modal-header { display: flex; justify-content: space-between; align-items: center; }
-        .modal-header h3 { 
-            font-family: 'Blanka', sans-serif;
-            font-size: 16px; 
-            letter-spacing: 2px; 
-            color: #fff; 
-            text-transform: uppercase; 
+        #syncModalContent.game-mode-active {
+            max-width: 860px;
+            width: clamp(320px, 90vw, 860px);
+            height: clamp(430px, 80vh, 690px);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
         }
 
-        .modal-input { 
-            padding: 11px 12px; 
-            background: #09090c; 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 9px; 
-            color: #fff; 
-            font-size: 13px; 
-            outline: none; 
-            width: 100%; 
-            transition: border-color 0.2s;
+        .sync-instruction {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            line-height: 1.45;
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 12px;
+            box-shadow: var(--hard-shadow-sm);
         }
-        .modal-input:focus { border-color: #86efac; }
-        .modal-input::placeholder { color: #52525b; }
-        .modal-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+
+        .sync-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2.5px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+        .modal-header h3 {
+            font-family: 'Blanka', 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            letter-spacing: 2px;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .modal-input {
+            padding: 11px 13px;
+            background: #ffffff;
+            border: 2.5px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: var(--hard-shadow-sm);
+            color: var(--text-dark);
+            font-size: 13px;
+            font-weight: 700;
+            outline: none;
+            width: 100%;
+            transition: all 0.12s ease;
+        }
+        .modal-input:focus {
+            transform: translate(-1px, -1px);
+            box-shadow: var(--hard-shadow);
+        }
+        .modal-input::placeholder { color: #888892; font-weight: 600; }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+        }
 
         /* CHAT BOX */
-        .chat-box { 
-            height: 240px; 
-            background: #09090c; 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-radius: 11px; 
-            padding: 12px; 
-            overflow-y: auto; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 8px; 
+        .chat-box {
+            height: 240px;
+            background: #FAF5EA;
+            border: 2.5px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: inset 2px 2px 0px rgba(0,0,0,0.06);
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             contain: content;
         }
-        .msg-wrapper { display: flex; flex-direction: column; max-width: 85%; }
+        .msg-wrapper {
+            display: flex;
+            flex-direction: column;
+            max-width: 85%;
+        }
         .msg-wrapper.me { align-self: flex-end; align-items: flex-end; }
         .msg-wrapper.stranger { align-self: flex-start; align-items: flex-start; }
-        .msg { padding: 8px 12px; border-radius: 11px; font-size: 13px; line-height: 1.4; word-break: break-word; }
-        .msg-wrapper.me .msg { background: #fff; color: #000; }
-        .msg-wrapper.stranger .msg { background: #1c1c22; color: #fff; border: 1px solid rgba(255, 255, 255, 0.08); }
-        .msg-time { font-size: 9px; color: #71717a; margin-top: 3px; }
-        .timer-text { font-family: 'Blanka', monospace; font-size: 18px; color: #fde047; letter-spacing: 2px; }
-        .chat-input-wrapper { display: flex; gap: 6px; }
+        .msg {
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.4;
+            word-break: break-word;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--hard-shadow-sm);
+        }
+        .msg-wrapper.me .msg { background: var(--yellow); border-bottom-right-radius: 2px; }
+        .msg-wrapper.stranger .msg { background: #ffffff; border-bottom-left-radius: 2px; }
+        .msg-time { font-size: 10px; font-weight: 700; color: var(--text-muted); margin-top: 3px; }
+        
+        .timer-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            color: var(--text-dark);
+            background: var(--yellow);
+            border: 2px solid var(--border-color);
+            box-shadow: var(--hard-shadow-sm);
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+        .chat-input-wrapper { display: flex; gap: 8px; }
 
-        /* RESPONSIVE GAME CONTAINER */
-        .game-container { 
-            display: none; 
+        /* FLAPPY GAME CONTAINER */
+        .game-container {
+            display: none;
             flex-direction: column;
-            background: #09090c; 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-radius: 14px; 
-            padding: 12px; 
+            background: #ffffff;
+            border: 2.5px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px;
             flex: 1;
             width: 100%;
             height: 100%;
             cursor: pointer;
             overflow: hidden;
+            gap: 10px;
+            box-shadow: var(--hard-shadow);
         }
-        .game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .game-header-tag { font-size: 11px; color: #71717a; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .game-score-badge { font-family: monospace; font-size: 14px; font-weight: 700; color: #86efac; background: rgba(134,239,172,0.1); padding: 2px 10px; border-radius: 6px; border: 1px solid rgba(134,239,172,0.2); }
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+        .game-header-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-dark);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .game-score-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            background: var(--yellow);
+            padding: 3px 12px;
+            border-radius: 9px;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--hard-shadow-sm);
+        }
         
         #canvasWrapper {
             flex: 1;
             width: 100%;
             height: 100%;
-            min-height: 220px;
+            min-height: 240px;
             position: relative;
-            background: #050508;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 10px;
+            background: #FFFDF9;
+            border: 2.5px solid var(--border-color);
+            border-radius: 12px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-
-        #flappyCanvas { 
-            display: block; 
+        #flappyCanvas {
+            display: block;
             width: 100%;
             height: 100%;
         }
-
-        .game-footer-hint { font-size: 11px; color: #86efac; margin-top: 8px; font-weight: 600; text-align: center; }
-
-        .toast { 
-            position: fixed; 
-            bottom: 24px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            background: #fff; 
-            color: #000; 
-            padding: 10px 18px; 
-            border-radius: 10px; 
-            font-size: 12px; 
-            font-weight: 600; 
-            display: none; 
-            z-index: 1000; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .game-footer-hint {
+            font-size: 11px;
+            color: var(--text-dark);
+            font-weight: 800;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .toast.error { background: #ef4444; color: #fff; }
-        .toast.success { background: #86efac; color: #000; }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffffff;
+            border: 3px solid var(--border-color);
+            box-shadow: var(--hard-shadow);
+            color: var(--text-dark);
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            display: none;
+            z-index: 1000;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .toast.error { background: var(--coral); color: #ffffff; }
+        .toast.success { background: var(--green); color: var(--text-dark); }
 
         /* DESKTOP CONTENT GRID */
         @media (min-width: 860px) {
             .container { max-width: 880px; }
-            .desktop-content-grid { 
-                display: grid; 
-                grid-template-columns: 290px 1fr; 
-                gap: 24px; 
-                align-items: start; 
+            .desktop-content-grid {
+                display: grid;
+                grid-template-columns: 290px 1fr;
+                gap: 24px;
+                align-items: start;
             }
             .desktop-sidebar { position: sticky; top: 20px; }
             .stats-wrapper { flex-direction: column; }
@@ -669,7 +837,7 @@
                 <button class="btn" onclick="openSyncModal()">
                     <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg> Sync
                 </button>
-                <button class="btn btn-logout" id="logoutBtn" onclick="handleLogout()" title="Logout and clear local data">
+                <button class="btn btn-logout" id="logoutBtn" onclick="handleLogout()" style="display:none;" title="Logout and clear local data">
                     <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Exit
                 </button>
             </div>
@@ -680,15 +848,22 @@
             <div class="desktop-sidebar">
                 <div class="stats-wrapper">
                     <div class="overall-card">
-                        <div class="overall-info"><h3>THEORY</h3><h2 id="theoryStatusText">--</h2></div>
+                        <div class="overall-info">
+                            <h3>THEORY</h3>
+                            <h2 id="theoryStatusText">--</h2>
+                        </div>
                         <div class="overall-ring" id="theoryRing">0%</div>
                     </div>
                     <div class="overall-card">
-                        <div class="overall-info"><h3>PRACTICAL</h3><h2 id="pracStatusText">--</h2></div>
+                        <div class="overall-info">
+                            <h3>PRACTICAL</h3>
+                            <h2 id="pracStatusText">--</h2>
+                        </div>
                         <div class="overall-ring" id="pracRing">0%</div>
                     </div>
                 </div>
-                <!-- MODULE SEARCH (Autofill Immune) -->
+
+                <!-- MODULE SEARCH -->
                 <input 
                     type="text" 
                     class="search-box" 
@@ -724,22 +899,22 @@
     <div class="modal" id="iceModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 style="color: #fde047;">CAMPUS PULSE</h3>
+                <h3>CAMPUS PULSE</h3>
                 <div class="timer-text" id="chatTimer">05:00</div>
             </div>
             <div class="chat-box" id="chatBox"></div>
             <div class="chat-input-wrapper">
                 <input type="text" class="modal-input" id="chatInput" placeholder="Type a message..." style="flex: 1;" onkeydown="handleChatEnter(event)" autocomplete="off">
-                <button class="btn" onclick="sendMsg()" style="background: #fff; color: #000; padding: 0 14px;">
+                <button class="btn btn-match" onclick="sendMsg()" style="padding: 0 14px;">
                     <svg class="svg-icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                 </button>
             </div>
             <div class="modal-footer">
                 <button class="btn" onclick="closeIcebreaker()">Exit</button>
                 <button class="btn-reveal-prime" id="revealBtn" style="display: none;" onclick="revealIdentity()">
-                    <svg class="svg-icon reveal-eye-icon" viewBox="0 0 24 24">
+                    <svg class="svg-icon" viewBox="0 0 24 24">
                         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+                        <circle cx="12" cy="12" r="3"></circle>
                     </svg>
                     Reveal ID
                 </button>
@@ -751,39 +926,71 @@
     <div class="modal" id="namePromptModal">
         <div class="modal-content">
             <div class="modal-header"><h3>IDENTIFY YOURSELF</h3></div>
-            <p style="font-size: 12px; color: #71717a;">Bina sync ke chat? Apna naam type kar:</p>
+            <p style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Bina sync ke chat? Apna naam type kar:</p>
             <input type="text" class="modal-input" id="customNameInput" placeholder="Your name..." autocomplete="off" onkeydown="handleNameEnter(event)">
             <div class="modal-footer">
                 <button class="btn" onclick="closeNamePromptModal()">Cancel</button>
-                <button class="btn" style="background: #fff; color: #000;" onclick="submitCustomName()">Confirm</button>
+                <button class="btn btn-match" onclick="submitCustomName()">Confirm</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: SYNC & FLAPPY GAME -->
+    <!-- MODAL: SYSTEM SYNC & FLAPPY GAME -->
     <div class="modal" id="syncModal">
         <div class="modal-content" id="syncModalContent">
-            <div class="modal-header"><h3>SYSTEM SYNC</h3></div>
-            <div id="authForm" style="display: flex; flex-direction: column; gap: 10px;">
-                <p style="font-size: 12px; color: #a1a1aa; line-height: 1.4;">Enter your MIS College ID & Password</p>
-                <input type="text" class="modal-input" id="collegeId" placeholder="e.g. 126nixay12006">
-                <input type="password" class="modal-input" id="collegePass" placeholder="Password" onkeydown="if(event.key==='Enter') runLiveSync()">
-                <div class="modal-footer">
-                    <button class="btn" onclick="closeSyncModal()">Cancel</button>
-                    <button class="btn" style="background: #86efac; color: #000; border: none;" onclick="runLiveSync()">Sync Data</button>
+            <div class="modal-header">
+                <h3>SYSTEM SYNC</h3>
+                <button class="btn" style="padding: 4px 8px; border-radius: 8px;" onclick="closeSyncModal()">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+
+            <!-- AUTH FORM -->
+            <div id="authForm" style="display: flex; flex-direction: column; gap: 14px;">
+                <div class="sync-instruction">
+                    Enter your college MIS login ID and password to pull verified attendance.
+                </div>
+
+                <div class="sync-input-group">
+                    <input 
+                        type="text" 
+                        class="modal-input" 
+                        id="collegeId" 
+                        placeholder="College ID (e.g. 126nixay12006)"
+                        autocomplete="off">
+                    <input 
+                        type="password" 
+                        class="modal-input" 
+                        id="collegePass" 
+                        placeholder="Password" 
+                        onkeydown="if(event.key==='Enter') runLiveSync()">
+                </div>
+
+                <div class="modal-footer" style="padding-top: 4px;">
+                    <button class="btn" onclick="closeSyncModal()">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        Cancel
+                    </button>
+                    <button class="btn" style="background: var(--green);" onclick="runLiveSync()">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                        Sync Data
+                    </button>
                 </div>
             </div>
             
             <!-- GAME CONTAINER -->
             <div class="game-container" id="gameContainer">
                 <div class="game-header">
-                    <span class="game-header-tag">Syncing...</span>
+                    <span class="game-header-tag">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Syncing Data...
+                    </span>
                     <span class="game-score-badge" id="flappyScore">00</span>
                 </div>
                 <div id="canvasWrapper">
                     <canvas id="flappyCanvas"></canvas>
                 </div>
-                <p class="game-footer-hint">Tap anywhere on screen or press Spacebar</p>
+                <p class="game-footer-hint">Tap screen or press Spacebar to avoid pillars</p>
             </div>
         </div>
     </div>
@@ -799,7 +1006,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn" onclick="closeAddModal()">Cancel</button>
-                <button class="btn" onclick="saveNewSubject()" style="background: #fff; color: #000;">Save</button>
+                <button class="btn btn-match" onclick="saveNewSubject()">Save</button>
             </div>
         </div>
     </div>
@@ -843,7 +1050,7 @@
             revealedCount = 0;
 
             const chatBox = document.getElementById('chatBox');
-            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; color:#71717a; margin-top:30px;">Finding random student on radar...</p>';
+            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; font-weight:700; color:var(--text-muted); margin-top:30px;">Finding random student on radar...</p>';
             document.getElementById('revealBtn').style.display = 'none';
             document.getElementById('chatTimer').innerText = "05:00";
             document.getElementById('iceModal').style.display = 'flex';
@@ -888,7 +1095,7 @@
 
         function startChatRoom(roomId) {
             const chatBox = document.getElementById('chatBox');
-            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; color:#86efac; margin-top:10px; font-weight:600;">Connected. Say hi.</p>';
+            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; color:var(--text-dark); background:var(--green); border:2px solid var(--border-color); border-radius:8px; padding:6px; box-shadow:var(--hard-shadow-sm); margin-top:6px; font-weight:800;">Connected. Say hi.</p>';
             setTimeout(() => { document.getElementById('chatInput').focus(); }, 150);
             
             onDisconnect(ref(db, 'rooms/' + roomId)).remove();
@@ -958,17 +1165,17 @@
 
             push(ref(db, 'rooms/' + currentRoom + '/messages'), { 
                 sender: userId, 
-                text: txt,
-                time: timeString
+                text: txt, 
+                time: timeString 
             });
             input.focus();
         };
 
         window.handleChatEnter = function(e) { 
-            if(e.key === 'Enter') {
+            if(e.key === 'Enter') { 
                 e.preventDefault(); 
                 sendMsg(); 
-            }
+            } 
         };
 
         function cleanupActiveSession() {
@@ -996,7 +1203,7 @@
 
         window.addSysMsg = function(text) {
             const chatBox = document.getElementById('chatBox');
-            const sysHtml = `<p style="text-align:center; font-size:11px; color:#fde047; margin: 8px 0; background: rgba(253, 224, 71, 0.08); padding: 5px; border-radius: 6px;">${escapeHTML(text)}</p>`;
+            const sysHtml = `<p style="text-align:center; font-size:11px; font-weight:800; color:var(--text-dark); margin: 8px 0; background: var(--yellow); border:2px solid var(--border-color); padding: 5px; border-radius: 6px; box-shadow:var(--hard-shadow-sm);">${escapeHTML(text)}</p>`;
             chatBox.insertAdjacentHTML('beforeend', sysHtml);
             chatBox.scrollTop = chatBox.scrollHeight;
         };
@@ -1042,14 +1249,14 @@
                 const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
                 push(ref(db, 'rooms/' + currentRoom + '/messages'), { 
                     sender: userId, 
-                    text: `Identity Revealed: [ ${name} ]`,
-                    time: timeString
+                    text: `Identity Revealed: [ ${name} ]`, 
+                    time: timeString 
                 });
             }
         }
     </script>
 
-    <!-- CORE LOGIC & ALL-DEVICE BALANCED ENGINE -->
+    <!-- CORE LOGIC & BALANCED NEO-BRUTALIST ENGINE -->
     <script>
         let currentSubjects = [];
         const API_URL = "https://attendpro-web-2.onrender.com/sync";
@@ -1068,7 +1275,7 @@
                 let extracted = savedId.replace(/[^a-zA-Z]/g, ''); 
                 let name = extracted ? (extracted.charAt(0).toUpperCase() + extracted.slice(1).toLowerCase()) : savedId;
                 document.getElementById('userGreeting').innerHTML = `<span class="live-dot"></span> Welcome, ${name}`;
-                document.getElementById('logoutBtn').style.display = 'flex';
+                document.getElementById('logoutBtn').style.display = 'inline-flex';
             } else {
                 document.getElementById('userGreeting').innerHTML = `<span class="live-dot"></span> Campus Hub`;
                 document.getElementById('logoutBtn').style.display = 'none';
@@ -1096,11 +1303,11 @@
             showToast("Logged out and local data wiped", "error");
         }
 
-        /* BALANCED FLAPPY ENGINE */
+        /* NEO-BRUTALIST BALANCED FLAPPY ENGINE */
         let canvas, ctx, dotY, dotVelocity, pipes = [], score = 0, flappyLoopId = null, isGameOver = false, isStarted = false;
         let resizeObserver = null;
 
-        const BALANCED_GAP = 88;
+        const BALANCED_GAP = 90;
         const BALANCED_SPACING = 190;
 
         function resizeGameCanvas() {
@@ -1115,15 +1322,7 @@
                 if (!isStarted && !isGameOver) {
                     renderWaiting();
                 } else if (isGameOver) {
-                    ctx.fillStyle = 'rgba(5, 5, 8, 0.85)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = '#fde047';
-                    ctx.font = '700 16px "Space Grotesk"';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('CRASHED', canvas.width / 2, canvas.height / 2 - 8);
-                    ctx.fillStyle = '#71717a';
-                    ctx.font = '500 12px "Space Grotesk"';
-                    ctx.fillText('Tap to retry', canvas.width / 2, canvas.height / 2 + 16);
+                    renderGameOver();
                 }
             }
         }
@@ -1167,16 +1366,34 @@
 
         function renderWaiting() {
             if(!ctx) return;
-            ctx.fillStyle = '#050508';
+            ctx.fillStyle = '#FFFDF9';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Neo Brutalist Circle Player
             ctx.beginPath();
-            ctx.arc(60, canvas.height / 2, 6, 0, Math.PI * 2);
-            ctx.fillStyle = '#86efac';
+            ctx.arc(60, canvas.height / 2, 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#FFE54C';
             ctx.fill();
-            ctx.fillStyle = '#71717a';
-            ctx.font = '600 13px "Space Grotesk"';
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = '#0c0c0e';
+            ctx.stroke();
+
+            ctx.fillStyle = '#0c0c0e';
+            ctx.font = '800 13px "Space Grotesk"';
             ctx.textAlign = 'center';
             ctx.fillText('TAP TO PLAY', canvas.width / 2, canvas.height / 2 + 5);
+        }
+
+        function renderGameOver() {
+            ctx.fillStyle = 'rgba(255, 253, 249, 0.9)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#FF6666';
+            ctx.font = '800 16px "Space Grotesk"';
+            ctx.textAlign = 'center';
+            ctx.fillText('CRASHED', canvas.width / 2, canvas.height / 2 - 8);
+            ctx.fillStyle = '#0c0c0e';
+            ctx.font = '700 12px "Space Grotesk"';
+            ctx.fillText('Tap to retry', canvas.width / 2, canvas.height / 2 + 16);
         }
 
         function flapJump() {
@@ -1209,26 +1426,28 @@
                 pipes.push({ x: canvas.width, top: topH, bottom: canvas.height - (topH + BALANCED_GAP), passed: false });
             }
 
-            ctx.fillStyle = '#050508';
+            ctx.fillStyle = '#FFFDF9';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            const pipeWidth = 20;
+            const pipeWidth = 24;
             for (let i = 0; i < pipes.length; i++) {
                 let p = pipes[i];
                 p.x -= 1.3; 
 
-                ctx.fillStyle = '#171720';
+                // Neo Brutalist Pillar
+                ctx.fillStyle = '#9EEB68';
                 ctx.fillRect(p.x, 0, pipeWidth, p.top);
                 ctx.fillRect(p.x, canvas.height - p.bottom, pipeWidth, p.bottom);
 
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-                ctx.fillRect(p.x, p.top - 2, pipeWidth, 2);
-                ctx.fillRect(p.x, canvas.height - p.bottom, pipeWidth, 2);
+                ctx.lineWidth = 2.5;
+                ctx.strokeStyle = '#0c0c0e';
+                ctx.strokeRect(p.x, 0, pipeWidth, p.top);
+                ctx.strokeRect(p.x, canvas.height - p.bottom, pipeWidth, p.bottom);
 
-                if (66 > p.x && 54 < p.x + pipeWidth) {
-                    if (dotY - 6 < p.top || dotY + 6 > canvas.height - p.bottom) isGameOver = true;
+                if (68 > p.x && 52 < p.x + pipeWidth) {
+                    if (dotY - 8 < p.top || dotY + 8 > canvas.height - p.bottom) isGameOver = true;
                 }
-                if (!p.passed && p.x + pipeWidth < 54) {
+                if (!p.passed && p.x + pipeWidth < 52) {
                     p.passed = true;
                     score++;
                     document.getElementById('flappyScore').innerText = score < 10 ? `0${score}` : score;
@@ -1236,28 +1455,21 @@
             }
 
             pipes = pipes.filter(p => p.x > -40);
-            if (dotY + 6 >= canvas.height || dotY - 6 <= 0) isGameOver = true;
+            if (dotY + 8 >= canvas.height || dotY - 8 <= 0) isGameOver = true;
 
+            // Player Dot
             ctx.beginPath();
-            ctx.arc(60, dotY, 6, 0, Math.PI * 2);
-            ctx.fillStyle = '#86efac';
-            ctx.shadowColor = 'rgba(134, 239, 172, 0.45)';
-            ctx.shadowBlur = 8;
+            ctx.arc(60, dotY, 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#FFE54C';
             ctx.fill();
-            ctx.shadowBlur = 0;
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = '#0c0c0e';
+            ctx.stroke();
 
             if (!isGameOver) {
                 flappyLoopId = requestAnimationFrame(runLoop);
             } else {
-                ctx.fillStyle = 'rgba(5, 5, 8, 0.85)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#fde047';
-                ctx.font = '700 16px "Space Grotesk"';
-                ctx.textAlign = 'center';
-                ctx.fillText('CRASHED', canvas.width / 2, canvas.height / 2 - 8);
-                ctx.fillStyle = '#71717a';
-                ctx.font = '500 12px "Space Grotesk"';
-                ctx.fillText('Tap to retry', canvas.width / 2, canvas.height / 2 + 16);
+                renderGameOver();
             }
         }
 
@@ -1306,17 +1518,24 @@
                 const text = document.getElementById(id + 'StatusText');
                 ring.innerText = pct + '%'; 
                 text.innerText = isSafe ? 'Secure' : 'At Risk';
-                const color = isSafe ? '#86efac' : '#fde047';
-                ring.style.color = color; 
-                ring.style.borderColor = color; 
-                text.style.color = color;
+                ring.style.background = isSafe ? '#DCFCE7' : '#FEE2E2';
+                ring.style.color = isSafe ? '#15803d' : '#b91c1c';
+                text.style.color = isSafe ? '#15803d' : '#b91c1c';
             };
 
             if (!data || data.length === 0) {
-                setRing('theory', 0, true);
-                setRing('prac', 0, true);
+                const rTheory = document.getElementById('theoryRing');
+                const rPrac = document.getElementById('pracRing');
+                rTheory.innerText = '0%';
+                rTheory.style.background = '#ffffff';
+                rTheory.style.color = '#0c0c0e';
+                rPrac.innerText = '0%';
+                rPrac.style.background = '#ffffff';
+                rPrac.style.color = '#0c0c0e';
                 document.getElementById('theoryStatusText').innerText = '--';
                 document.getElementById('pracStatusText').innerText = '--';
+                document.getElementById('theoryStatusText').style.color = '#0c0c0e';
+                document.getElementById('pracStatusText').style.color = '#0c0c0e';
                 return;
             }
 
@@ -1340,9 +1559,38 @@
             list.innerHTML = '';
             if (!data || data.length === 0) { 
                 list.innerHTML = `
-                    <div style="text-align:center; padding:30px; background:rgba(18, 18, 22, 0.6); border-radius:12px; border:1px dashed rgba(255,255,255,0.08);">
-                        <p style="color:#71717a; font-size:12px; margin-bottom:10px;">No modules loaded.</p>
-                        <button class="btn" style="margin:0 auto;" onclick="openSyncModal()">Sync Portal</button>
+                    <div class="empty-module-card">
+                        <div class="empty-module-icon">
+                            <svg class="svg-icon" style="width: 28px; height: 28px; stroke-width: 2.2;" viewBox="0 0 24 24">
+                                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                                <path d="M6 6h10M6 10h10"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 style="
+                                font-size: 16px;
+                                font-weight: 800;
+                                color: var(--text-dark);
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                                margin-bottom: 4px;
+                            ">No modules loaded</h4>
+                            <p style="
+                                color: var(--text-muted);
+                                font-size: 12px;
+                                font-weight: 700;
+                                max-width: 260px;
+                                line-height: 1.4;
+                                margin: 0 auto;
+                            ">Sync your portal to automatically load modules and attendance.</p>
+                        </div>
+                        <button class="btn btn-match" style="margin-top: 6px; padding: 9px 18px;" onclick="openSyncModal()">
+                            <svg class="svg-icon" viewBox="0 0 24 24">
+                                <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+                                <path d="M21 3v5h-5"></path>
+                            </svg>
+                            Sync Portal
+                        </button>
                     </div>`; 
                 return; 
             }
@@ -1350,7 +1598,7 @@
             data.forEach((sub, index) => {
                 const isRisk = sub.pct < 75; 
                 const fillWidth = sub.pct > 100 ? 100 : sub.pct;
-                const barColor = isRisk ? '#fde047' : '#86efac';
+                const barColor = isRisk ? 'var(--coral)' : 'var(--green)';
                 const statusClass = isRisk ? 'risk' : 'safe';
 
                 list.innerHTML += `
@@ -1358,23 +1606,29 @@
                         <div class="card-top">
                             <div class="subject-info">
                                 <h4>${sub.name}</h4>
-                                <div style="font-size:11px; color:#71717a; margin:2px 0;">${sub.present} / ${sub.total} Classes</div>
+                                <div style="font-size:11px; font-weight:700; color:var(--text-muted); margin:2px 0;">${sub.present} / ${sub.total} Classes</div>
                                 <div class="status-tag ${statusClass}">
                                     ${isRisk ? 
-                                        '<svg class="svg-icon" viewBox="0 0 24 24" style="width:12px; height:12px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>' : 
-                                        '<svg class="svg-icon" viewBox="0 0 24 24" style="width:10px; height:10px; fill: currentColor; stroke: none;"><circle cx="12" cy="12" r="5"></circle></svg>'
+                                        '<svg class="svg-icon" viewBox="0 0 24 24" style="width:13px; height:13px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>' : 
+                                        '<svg class="svg-icon" viewBox="0 0 24 24" style="width:12px; height:12px;"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 8 8 12"></polyline><line x1="12" y1="16" x2="12" y2="8"></line></svg>'
                                     } 
                                     ${sub.status}
                                 </div>
                             </div>
-                            <div class="percentage" style="color: ${barColor}">${sub.pct}%</div>
+                            <div class="percentage" style="background: ${isRisk ? '#FEE2E2' : '#DCFCE7'}; color: ${isRisk ? '#b91c1c' : '#15803d'}">${sub.pct}%</div>
                         </div>
                         <div class="progress-bg">
                             <div class="progress-fill" style="width: ${fillWidth}%; background: ${barColor};"></div>
                         </div>
                         <div class="quick-actions">
-                            <button class="action-btn" onclick="quickMark(${index}, true)">+1 Present</button>
-                            <button class="action-btn" onclick="quickMark(${index}, false)">+1 Bunk</button>
+                            <button class="action-btn" onclick="quickMark(${index}, true)">
+                                <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                +1 Present
+                            </button>
+                            <button class="action-btn" onclick="quickMark(${index}, false)">
+                                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                +1 Bunk
+                            </button>
                         </div>
                     </div>`;
             });
@@ -1413,7 +1667,7 @@
         }
         
         function saveNewSubject() { 
-            const name = document.getElementById('newSubName').value; 
+            const name = document.getElementById('newSubName').value.trim(); 
             const present = parseInt(document.getElementById('newSubPresent').value) || 0; 
             const total = parseInt(document.getElementById('newSubTotal').value) || 0; 
             if (!name || total <= 0) return showToast("Enter valid details", "error"); 
@@ -1425,8 +1679,8 @@
         
         async function runLiveSync() {
             const user = document.getElementById('collegeId').value.trim(); 
-            const pass = document.getElementById('collegePass').value.trim();
-            if(!user || !pass) return showToast("Credentials required!", "error");
+            const pass = document.getElementById('collegePass').value.trim(); 
+            if(!user || !pass) return showToast("Credentials required!", "error"); 
             
             document.getElementById('authForm').style.display = 'none'; 
             
