@@ -4,61 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EIMI - Campus Hub</title>
-    <!-- Favicon / Tab Logo -->
     <link rel="icon" type="image/jpeg" href="logo.jpg">
-    <link rel="apple-touch-icon" href="logo.jpg">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
     
     <style>
         @font-face { 
             font-family: 'Blanka'; 
             src: url('blanka.otf') format('opentype'); 
         }
-        ::-webkit-scrollbar { display: none; }
-        
+
         :root {
-            --bg-color: #FAF5EA;
-            --border-color: #0c0c0e;
-            --shadow-color: #0c0c0e;
-            --card-bg: #FFFFFF;
+            --bg: #FAF5EA;
+            --border: #0c0c0e;
             --yellow: #FFE54C;
             --green: #9EEB68;
             --coral: #FF6666;
-            --blue: #60A5FA;
-            --purple: #C084FC;
             --cyan: #5EEAD4;
-            --text-dark: #0c0c0e;
-            --text-muted: #595963;
-            --hard-shadow-sm: 2.5px 2.5px 0px var(--shadow-color);
-            --hard-shadow: 4px 4px 0px var(--shadow-color);
-            --hard-shadow-lg: 6px 6px 0px var(--shadow-color);
+            --text: #0c0c0e;
+            --muted: #595963;
+            --shadow-sm: 2.5px 2.5px 0px var(--border);
+            --shadow: 4px 4px 0px var(--border);
+            --shadow-lg: 6px 6px 0px var(--border);
         }
 
         * {
-            scrollbar-width: none;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
+            scrollbar-width: none;
             -webkit-tap-highlight-color: transparent;
         }
-
-        input, .msg, .toast { user-select: auto; }
-        *:focus-visible { outline: 2.5px solid var(--border-color); outline-offset: 2px; }
+        *::-webkit-scrollbar { display: none; }
 
         body {
-            background-color: #FAF5EA;
+            background-color: var(--bg);
             background-image: 
                 linear-gradient(rgba(12, 12, 14, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(12, 12, 14, 0.05) 1px, transparent 1px);
             background-size: 24px 24px;
-            color: var(--text-dark);
+            color: var(--text);
             display: flex;
             justify-content: center;
-            align-items: flex-start;
             padding: clamp(12px, 2.5vw, 24px);
             min-height: 100vh;
         }
@@ -69,15 +59,8 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
-            animation: appFadeIn 0.3s ease-out;
         }
 
-        @keyframes appFadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* SVG ICONS ONLY */
         .svg-icon {
             width: 15px;
             height: 15px;
@@ -91,10 +74,10 @@
 
         /* HEADER */
         .header {
-            background: #ffffff;
-            border: 3px solid var(--border-color);
+            background: #fff;
+            border: 3px solid var(--border);
             border-radius: 18px;
-            box-shadow: var(--hard-shadow);
+            box-shadow: var(--shadow);
             padding: 14px 18px;
             display: flex;
             justify-content: space-between;
@@ -107,34 +90,30 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            min-width: 130px;
         }
         .logo-img {
             width: 42px;
             height: 42px;
             border-radius: 12px;
-            border: 2.5px solid var(--border-color);
-            box-shadow: var(--hard-shadow-sm);
+            border: 2.5px solid var(--border);
+            box-shadow: var(--shadow-sm);
             object-fit: cover;
             background: var(--yellow);
         }
         .title-area h1 {
-            font-family: 'Blanka', 'Space Grotesk', sans-serif;
+            font-family: 'Blanka', sans-serif;
             font-size: 28px;
             letter-spacing: 2px;
             line-height: 1;
-            margin: 0;
-            color: var(--text-dark);
         }
         .title-area p {
             font-size: 11px;
-            color: var(--text-muted);
+            color: var(--muted);
             margin-top: 4px;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 6px;
-            letter-spacing: 0.5px;
             text-transform: uppercase;
         }
         .live-dot {
@@ -142,23 +121,22 @@
             height: 8px;
             border-radius: 50%;
             background: var(--green);
-            border: 1.5px solid var(--border-color);
-            display: inline-block;
+            border: 1.5px solid var(--border);
         }
 
         .header-actions {
             display: flex;
             gap: 8px;
-            flex-wrap: wrap;
             align-items: center;
+            flex-wrap: wrap;
         }
 
-        /* NEO BRUTALIST BUTTONS */
+        /* BUTTONS */
         .btn {
-            background: #ffffff;
-            border: 2.5px solid var(--border-color);
-            box-shadow: var(--hard-shadow-sm);
-            color: var(--text-dark);
+            background: #fff;
+            border: 2.5px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            color: var(--text);
             padding: 7px 12px;
             border-radius: 10px;
             cursor: pointer;
@@ -167,67 +145,38 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            white-space: nowrap;
-            transition: all 0.12s ease;
             text-transform: uppercase;
-            letter-spacing: 0.4px;
+            transition: transform 0.1s, box-shadow 0.1s;
         }
         .btn:hover {
             transform: translate(-1.5px, -1.5px);
-            box-shadow: 4px 4px 0px var(--border-color);
+            box-shadow: var(--shadow);
         }
         .btn:active {
             transform: translate(2px, 2px);
-            box-shadow: 0px 0px 0px var(--border-color);
+            box-shadow: none;
         }
 
-        .btn-match {
-            background: var(--yellow);
-            color: var(--text-dark);
-        }
-        .btn-match:hover {
-            background: #ffd814;
-        }
-
-        .btn-logout {
-            background: var(--coral);
-            color: #ffffff;
-            border-color: var(--border-color);
-        }
-        .btn-logout:hover {
-            background: #e64545;
-            color: #ffffff;
-        }
+        .btn-match { background: var(--yellow); }
+        .btn-logout { background: var(--coral); color: #fff; }
 
         .btn-reveal-prime {
-            position: relative;
             background: var(--yellow);
-            color: var(--text-dark);
-            border: 2.5px solid var(--border-color);
-            box-shadow: var(--hard-shadow-sm);
+            color: var(--text);
+            border: 2.5px solid var(--border);
+            box-shadow: var(--shadow-sm);
             padding: 8px 16px;
             border-radius: 10px;
             font-size: 12px;
             font-weight: 800;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            transition: all 0.12s ease;
-        }
-        .btn-reveal-prime:hover {
-            transform: translate(-1.5px, -1.5px);
-            box-shadow: 4px 4px 0px var(--border-color);
-            background: #ffffff;
-        }
-        .btn-reveal-prime:active {
-            transform: translate(2px, 2px);
-            box-shadow: 0px 0px 0px var(--border-color);
+            text-transform: uppercase;
         }
 
-        /* MAIN CONTENT LAYOUT */
+        /* LAYOUT & CARDS */
         .desktop-content-grid {
             display: flex;
             flex-direction: column;
@@ -239,53 +188,42 @@
             display: flex;
             flex-direction: column;
             gap: 14px;
-            width: 100%;
         }
 
         .desktop-main {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            width: 100%;
             min-width: 0;
         }
 
-        /* STATS CARDS */
         .stats-wrapper {
             display: flex;
             gap: 12px;
-            width: 100%;
             flex-wrap: wrap;
         }
+
         .overall-card {
-            background: #ffffff;
-            border: 3px solid var(--border-color);
+            background: #fff;
+            border: 3px solid var(--border);
             border-radius: 16px;
-            box-shadow: var(--hard-shadow);
+            box-shadow: var(--shadow);
             padding: 14px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex: 1 1 180px;
-            min-width: 140px;
-            transition: all 0.15s ease;
-        }
-        .overall-card:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: var(--hard-shadow-lg);
         }
         .overall-info h3 {
-            font-family: 'Blanka', 'Space Grotesk', sans-serif;
+            font-family: 'Blanka', sans-serif;
             font-size: 12px;
-            color: var(--text-muted);
-            text-transform: uppercase;
+            color: var(--muted);
             letter-spacing: 1.5px;
             margin-bottom: 4px;
         }
         .overall-info h2 {
             font-size: 15px;
             font-weight: 800;
-            margin: 0;
             text-transform: uppercase;
         }
         .overall-ring {
@@ -294,47 +232,32 @@
             font-weight: 700;
             border-radius: 12px;
             padding: 6px 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2.5px solid var(--border-color);
-            box-shadow: var(--hard-shadow-sm);
-            background: #ffffff;
-            flex-shrink: 0;
-            line-height: 1;
+            border: 2.5px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            background: #fff;
         }
 
         /* SEARCH INPUT */
         .search-box {
             width: 100%;
             padding: 12px 14px;
-            background: #ffffff !important;
-            border: 3px solid var(--border-color);
+            background: #fff;
+            border: 3px solid var(--border);
             border-radius: 12px;
-            box-shadow: var(--hard-shadow);
-            color: var(--text-dark) !important;
+            box-shadow: var(--shadow);
+            color: var(--text);
             font-size: 13px;
             font-weight: 700;
             outline: none;
-            transition: all 0.15s ease;
-            appearance: none;
-            -webkit-appearance: none;
         }
         .search-box:focus {
             transform: translate(-1px, -1px);
-            box-shadow: var(--hard-shadow-lg);
-            background: #FFFFFC !important;
-        }
-        .search-box::placeholder {
-            color: #7a7a85;
-            font-weight: 600;
+            box-shadow: var(--shadow-lg);
         }
 
         .section-title {
-            font-family: 'Blanka', 'Space Grotesk', sans-serif;
+            font-family: 'Blanka', sans-serif;
             font-size: 13px;
-            color: var(--text-dark);
-            text-transform: uppercase;
             letter-spacing: 2px;
             display: flex;
             align-items: center;
@@ -345,31 +268,29 @@
             content: '';
             flex: 1;
             height: 2.5px;
-            background: var(--border-color);
+            background: var(--border);
         }
 
-        /* SUBJECT LIST & CARDS */
         .subject-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            width: 100%;
         }
+
         .subject-card {
-            background: #ffffff;
-            border: 3px solid var(--border-color);
+            background: #fff;
+            border: 3px solid var(--border);
             border-radius: 16px;
-            box-shadow: var(--hard-shadow);
+            box-shadow: var(--shadow);
             padding: 14px 16px;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            transition: all 0.15s ease;
-            min-width: 0;
+            transition: transform 0.1s, box-shadow 0.1s;
         }
         .subject-card:hover {
             transform: translate(-2px, -2px);
-            box-shadow: var(--hard-shadow-lg);
+            box-shadow: var(--shadow-lg);
         }
         .card-top {
             display: flex;
@@ -377,18 +298,12 @@
             align-items: flex-start;
             gap: 12px;
         }
-        .subject-info {
-            min-width: 0;
-            flex: 1;
-        }
         .subject-info h4 {
             font-size: 15px;
             font-weight: 800;
             margin-bottom: 2px;
-            word-break: break-word;
             line-height: 1.3;
         }
-
         .status-tag {
             font-size: 11px;
             font-weight: 700;
@@ -398,10 +313,8 @@
             gap: 5px;
             padding: 4px 8px;
             border-radius: 8px;
-            border: 2px solid var(--border-color);
-            box-shadow: var(--hard-shadow-sm);
-            white-space: nowrap;
-            background: #ffffff;
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow-sm);
         }
         .status-tag.safe { background: #DCFCE7; color: #15803d; }
         .status-tag.risk { background: #FEE2E2; color: #b91c1c; }
@@ -410,28 +323,25 @@
             font-family: 'Space Mono', monospace;
             font-weight: 700;
             font-size: 20px;
-            text-align: right;
-            flex-shrink: 0;
             padding: 4px 8px;
-            border: 2px solid var(--border-color);
+            border: 2px solid var(--border);
             border-radius: 10px;
-            box-shadow: var(--hard-shadow-sm);
-            background: #ffffff;
+            box-shadow: var(--shadow-sm);
+            background: #fff;
         }
 
         .progress-bg {
             width: 100%;
             height: 12px;
             background: #FAF5EA;
-            border: 2.5px solid var(--border-color);
+            border: 2.5px solid var(--border);
             border-radius: 8px;
             overflow: hidden;
         }
         .progress-fill {
             height: 100%;
-            border-radius: 0;
-            border-right: 2px solid var(--border-color);
-            transition: width 0.4s ease;
+            border-right: 2px solid var(--border);
+            transition: width 0.3s ease;
         }
 
         .quick-actions {
@@ -439,13 +349,12 @@
             gap: 8px;
             justify-content: flex-end;
             padding-top: 4px;
-            flex-wrap: wrap;
         }
         .action-btn {
-            background: #ffffff;
-            border: 2px solid var(--border-color);
-            box-shadow: var(--hard-shadow-sm);
-            color: var(--text-dark);
+            background: #fff;
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            color: var(--text);
             padding: 5px 10px;
             border-radius: 8px;
             font-size: 11px;
@@ -454,55 +363,45 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            transition: all 0.1s ease;
             text-transform: uppercase;
         }
         .action-btn:hover {
             transform: translate(-1px, -1px);
-            box-shadow: 3.5px 3.5px 0px var(--border-color);
+            box-shadow: 3.5px 3.5px 0px var(--border);
         }
         .action-btn:active {
             transform: translate(1.5px, 1.5px);
-            box-shadow: 0px 0px 0px;
+            box-shadow: none;
         }
 
-        /* TICK AND CROSS PRE-STYLED COLORS */
-        .action-btn.btn-present .svg-icon {
-            stroke: #16a34a !important;
-        }
-        .action-btn.btn-bunk .svg-icon {
-            stroke: #dc2626 !important;
-        }
+        /* TICKS & CROSS PERMANENT COLORS */
+        .action-btn.btn-present .svg-icon { stroke: #16a34a !important; }
+        .action-btn.btn-bunk .svg-icon { stroke: #dc2626 !important; }
 
-        /* HOVER & ACTIVE (ALWAYS BLACK TEXT AND ICON) */
         .action-btn.btn-present:hover,
         .action-btn.btn-present:active {
             background: var(--green) !important;
-            border-color: var(--border-color) !important;
+            border-color: var(--border) !important;
             color: #0c0c0e !important;
         }
         .action-btn.btn-present:hover .svg-icon,
-        .action-btn.btn-present:active .svg-icon {
-            stroke: #0c0c0e !important;
-        }
+        .action-btn.btn-present:active .svg-icon { stroke: #0c0c0e !important; }
 
         .action-btn.btn-bunk:hover,
         .action-btn.btn-bunk:active {
             background: var(--coral) !important;
-            border-color: var(--border-color) !important;
+            border-color: var(--border) !important;
             color: #0c0c0e !important;
         }
         .action-btn.btn-bunk:hover .svg-icon,
-        .action-btn.btn-bunk:active .svg-icon {
-            stroke: #0c0c0e !important;
-        }
+        .action-btn.btn-bunk:active .svg-icon { stroke: #0c0c0e !important; }
 
-        /* NO MODULE HERO CARD */
+        /* EMPTY STATE */
         .empty-module-card {
-            background: #FFFFFF;
-            border: 3px solid var(--border-color);
+            background: #fff;
+            border: 3px solid var(--border);
             border-radius: 20px;
-            box-shadow: var(--hard-shadow-lg);
+            box-shadow: var(--shadow-lg);
             padding: 36px 20px;
             text-align: center;
             display: flex;
@@ -514,22 +413,19 @@
             width: 60px;
             height: 60px;
             background: var(--yellow);
-            border: 2.5px solid var(--border-color);
-            box-shadow: var(--hard-shadow-sm);
+            border: 2.5px solid var(--border);
+            box-shadow: var(--shadow-sm);
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 2px;
         }
 
-        /* CREATOR ATTENTION BADGE */
+        /* CREATOR BADGE */
         .creator-badge-wrapper {
             display: flex;
             justify-content: center;
-            margin-top: 24px;
-            margin-bottom: 12px;
-            width: 100%;
+            margin: 20px 0 10px;
         }
         .creator-badge {
             display: inline-flex;
@@ -538,46 +434,35 @@
             padding: 8px 18px;
             border-radius: 999px;
             background: var(--cyan);
-            border: 2.5px solid var(--border-color);
-            box-shadow: var(--hard-shadow);
-            transition: all 0.15s ease;
-            text-decoration: none;
-            cursor: default;
-        }
-        .creator-badge:hover {
-            transform: translate(-1.5px, -1.5px);
-            box-shadow: var(--hard-shadow-lg);
+            border: 2.5px solid var(--border);
+            box-shadow: var(--shadow);
+            text-transform: uppercase;
         }
         .creator-beacon {
             width: 8px;
             height: 8px;
             border-radius: 50%;
             background: var(--green);
-            border: 1.5px solid var(--border-color);
-            box-shadow: 1px 1px 0px var(--border-color);
-            flex-shrink: 0;
+            border: 1.5px solid var(--border);
         }
         .creator-label {
-            font-size: 10px;
-            color: var(--text-dark);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            font-weight: 800;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: 0.5px;
         }
         .creator-name {
-            color: var(--text-dark);
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 900;
+            color: var(--text);
+            letter-spacing: 1px;
         }
 
         /* MODALS */
         .modal {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            inset: 0;
             background: rgba(12, 12, 14, 0.65);
             backdrop-filter: blur(4px);
             align-items: center;
@@ -586,118 +471,71 @@
             padding: 16px;
         }
         .modal-content {
-            background: #ffffff;
-            border: 3.5px solid var(--border-color);
+            background: #fff;
+            border: 3.5px solid var(--border);
             border-radius: 20px;
-            box-shadow: var(--hard-shadow-lg);
+            box-shadow: var(--shadow-lg);
             padding: 20px;
             width: 100%;
             max-width: 400px;
             display: flex;
             flex-direction: column;
             gap: 14px;
-            animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            transition: all 0.25s ease;
         }
-        @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        #syncModal .modal-content {
-            background: #ffffff;
-            border: 3.5px solid var(--border-color);
-            border-radius: 22px;
-            box-shadow: var(--hard-shadow-lg);
-            width: 100%;
-            max-width: 420px;
-            padding: 22px;
-            gap: 16px;
-            transition: max-width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s ease;
-        }
-
         #syncModalContent.game-mode-active {
             max-width: 860px;
             width: clamp(320px, 90vw, 860px);
             height: clamp(430px, 80vh, 690px);
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
         }
-
         .sync-instruction {
             font-size: 12px;
             font-weight: 700;
-            color: var(--text-muted);
-            line-height: 1.45;
-            background: var(--bg-color);
-            border: 2px solid var(--border-color);
+            color: var(--muted);
+            background: var(--bg);
+            border: 2px solid var(--border);
             border-radius: 10px;
             padding: 10px 12px;
-            box-shadow: var(--hard-shadow-sm);
+            box-shadow: var(--shadow-sm);
         }
-
-        .sync-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2.5px solid var(--border-color);
+            border-bottom: 2.5px solid var(--border);
             padding-bottom: 8px;
         }
         .modal-header h3 {
-            font-family: 'Blanka', 'Space Grotesk', sans-serif;
+            font-family: 'Blanka', sans-serif;
             font-size: 16px;
             letter-spacing: 2px;
-            color: var(--text-dark);
-            text-transform: uppercase;
-            font-weight: 800;
         }
-
         .modal-input {
             padding: 11px 13px;
-            background: #ffffff;
-            border: 2.5px solid var(--border-color);
+            border: 2.5px solid var(--border);
             border-radius: 10px;
-            box-shadow: var(--hard-shadow-sm);
-            color: var(--text-dark);
+            box-shadow: var(--shadow-sm);
             font-size: 13px;
             font-weight: 700;
             outline: none;
             width: 100%;
-            transition: all 0.12s ease;
         }
-        .modal-input:focus {
-            transform: translate(-1px, -1px);
-            box-shadow: var(--hard-shadow);
-        }
-        .modal-input::placeholder { color: #888892; font-weight: 600; }
-        
         .modal-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 6px;
         }
 
-        /* CHAT BOX */
+        /* CHAT */
         .chat-box {
             height: 240px;
             background: #FAF5EA;
-            border: 2.5px solid var(--border-color);
+            border: 2.5px solid var(--border);
             border-radius: 12px;
-            box-shadow: inset 2px 2px 0px rgba(0,0,0,0.06);
             padding: 12px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            contain: content;
         }
         .msg-wrapper {
             display: flex;
@@ -711,111 +549,76 @@
             border-radius: 12px;
             font-size: 13px;
             font-weight: 700;
-            line-height: 1.4;
-            word-break: break-word;
-            border: 2px solid var(--border-color);
-            box-shadow: var(--hard-shadow-sm);
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow-sm);
         }
         .msg-wrapper.me .msg { background: var(--yellow); border-bottom-right-radius: 2px; }
-        .msg-wrapper.stranger .msg { background: #ffffff; border-bottom-left-radius: 2px; }
-        .msg-time { font-size: 10px; font-weight: 700; color: var(--text-muted); margin-top: 3px; }
-        
+        .msg-wrapper.stranger .msg { background: #fff; border-bottom-left-radius: 2px; }
+        .msg-time { font-size: 10px; font-weight: 700; color: var(--muted); margin-top: 3px; }
+
         .timer-text {
             font-family: 'Space Mono', monospace;
             font-size: 14px;
-            color: var(--text-dark);
             background: var(--yellow);
-            border: 2px solid var(--border-color);
-            box-shadow: var(--hard-shadow-sm);
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow-sm);
             padding: 3px 8px;
             border-radius: 8px;
             font-weight: 700;
         }
-        .chat-input-wrapper { display: flex; gap: 8px; }
 
-        /* FLAPPY GAME CONTAINER */
+        /* FLAPPY GAME */
         .game-container {
             display: none;
             flex-direction: column;
-            background: #ffffff;
-            border: 2.5px solid var(--border-color);
+            background: #fff;
+            border: 2.5px solid var(--border);
             border-radius: 16px;
             padding: 14px;
             flex: 1;
-            width: 100%;
             height: 100%;
             cursor: pointer;
-            overflow: hidden;
             gap: 10px;
-            box-shadow: var(--hard-shadow);
         }
         .game-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid var(--border-color);
+            border-bottom: 2px solid var(--border);
             padding-bottom: 8px;
-        }
-        .game-header-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            color: var(--text-dark);
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         .game-score-badge {
             font-family: 'Space Mono', monospace;
             font-size: 15px;
             font-weight: 700;
-            color: var(--text-dark);
             background: var(--yellow);
             padding: 3px 12px;
             border-radius: 9px;
-            border: 2px solid var(--border-color);
-            box-shadow: var(--hard-shadow-sm);
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow-sm);
         }
-        
         #canvasWrapper {
             flex: 1;
-            width: 100%;
-            height: 100%;
             min-height: 240px;
-            position: relative;
             background: #FFFDF9;
-            border: 2.5px solid var(--border-color);
+            border: 2.5px solid var(--border);
             border-radius: 12px;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         #flappyCanvas {
             display: block;
             width: 100%;
             height: 100%;
         }
-        .game-footer-hint {
-            font-size: 11px;
-            color: var(--text-dark);
-            font-weight: 800;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
 
-        /* TOAST */
         .toast {
             position: fixed;
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: #ffffff;
-            border: 3px solid var(--border-color);
-            box-shadow: var(--hard-shadow);
-            color: var(--text-dark);
+            background: #fff;
+            border: 3px solid var(--border);
+            box-shadow: var(--shadow);
             padding: 10px 18px;
             border-radius: 12px;
             font-size: 12px;
@@ -823,12 +626,10 @@
             display: none;
             z-index: 1000;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
         }
-        .toast.error { background: var(--coral); color: #ffffff; }
-        .toast.success { background: var(--green); color: var(--text-dark); }
+        .toast.error { background: var(--coral); color: #fff; }
+        .toast.success { background: var(--green); color: var(--text); }
 
-        /* DESKTOP CONTENT GRID */
         @media (min-width: 860px) {
             .container { max-width: 880px; }
             .desktop-content-grid {
@@ -847,17 +648,14 @@
 
     <div id="toast" class="toast">Message here</div>
 
-    <!-- MAIN APP CONTAINER -->
     <div class="container" id="mainApp">
         <!-- HEADER -->
-        <div class="header">
+        <header class="header">
             <div class="logo-container">
                 <img src="logo.jpg" alt="Logo" class="logo-img" onerror="this.style.display='none'">
                 <div class="title-area">
                     <h1>EIMI</h1>
-                    <p id="userGreeting">
-                        <span class="live-dot"></span> Campus Hub
-                    </p>
+                    <p id="userGreeting"><span class="live-dot"></span> Campus Hub</p>
                 </div>
             </div>
             <div class="header-actions">
@@ -870,15 +668,15 @@
                 <button class="btn" onclick="openSyncModal()">
                     <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg> Sync
                 </button>
-                <button class="btn btn-logout" id="logoutBtn" onclick="handleLogout()" style="display:none;" title="Logout and clear local data">
+                <button class="btn btn-logout" id="logoutBtn" onclick="handleLogout()" style="display:none;" title="Logout">
                     <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Exit
                 </button>
             </div>
-        </div>
+        </header>
 
         <!-- MAIN LAYOUT -->
-        <div class="desktop-content-grid">
-            <div class="desktop-sidebar">
+        <main class="desktop-content-grid">
+            <aside class="desktop-sidebar">
                 <div class="stats-wrapper">
                     <div class="overall-card">
                         <div class="overall-info">
@@ -896,43 +694,32 @@
                     </div>
                 </div>
 
-                <!-- MODULE SEARCH (AUTOFILL IMMUNE VIA HIDDEN SINK) -->
-                <div style="position: relative; width: 100%;">
-                    <!-- Dummy hidden fields to consume browser autofill trap -->
-                    <input type="text" style="display:none !important;" tabindex="-1" autocomplete="username">
-                    <input type="password" style="display:none !important;" tabindex="-1" autocomplete="current-password">
+                <input 
+                    type="search" 
+                    class="search-box" 
+                    id="searchInput" 
+                    placeholder="Search modules... (Press '/')" 
+                    autocomplete="off" 
+                    autocorrect="off" 
+                    spellcheck="false" 
+                    readonly 
+                    onfocus="this.removeAttribute('readonly');" 
+                    onkeyup="filterSubjects()">
+            </aside>
 
-                    <input 
-                        type="search" 
-                        class="search-box" 
-                        id="searchInput" 
-                        placeholder="Search modules... (Press '/')" 
-                        autocomplete="off" 
-                        autocorrect="off" 
-                        autocapitalize="off" 
-                        spellcheck="false" 
-                        name="eimi_subject_search_field" 
-                        value="" 
-                        readonly 
-                        onfocus="this.removeAttribute('readonly');" 
-                        onkeyup="filterSubjects()">
-                </div>
-            </div>
-
-            <div class="desktop-main">
+            <section class="desktop-main">
                 <div class="section-title">YOUR ATTENDANCE</div>
                 <div class="subject-list" id="subjectList" style="margin-top: 10px;"></div>
-            </div>
-        </div>
+            </section>
+        </main>
 
-        <!-- CREATOR BADGE -->
-        <div class="creator-badge-wrapper">
+        <footer class="creator-badge-wrapper">
             <div class="creator-badge">
                 <span class="creator-beacon"></span>
                 <span class="creator-label">BUILT BY</span>
                 <span class="creator-name">NIXAY RAUT</span>
             </div>
-        </div>
+        </footer>
     </div>
 
     <!-- MODAL: CAMPUS PULSE -->
@@ -943,8 +730,8 @@
                 <div class="timer-text" id="chatTimer">05:00</div>
             </div>
             <div class="chat-box" id="chatBox"></div>
-            <div class="chat-input-wrapper">
-                <input type="text" class="modal-input" id="chatInput" placeholder="Type a message..." style="flex: 1;" onkeydown="handleChatEnter(event)" autocomplete="off">
+            <div style="display: flex; gap: 8px;">
+                <input type="text" class="modal-input" id="chatInput" placeholder="Type a message..." style="flex: 1;" onkeydown="handleChatEnter(event)">
                 <button class="btn btn-match" onclick="sendMsg()" style="padding: 0 14px;">
                     <svg class="svg-icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                 </button>
@@ -952,22 +739,19 @@
             <div class="modal-footer">
                 <button class="btn" onclick="closeIcebreaker()">Exit</button>
                 <button class="btn-reveal-prime" id="revealBtn" style="display: none;" onclick="revealIdentity()">
-                    <svg class="svg-icon" viewBox="0 0 24 24">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     Reveal ID
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: CUSTOM NAME PROMPT -->
+    <!-- MODAL: NAME PROMPT -->
     <div class="modal" id="namePromptModal">
         <div class="modal-content">
             <div class="modal-header"><h3>IDENTIFY YOURSELF</h3></div>
-            <p style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Bina sync ke chat? Apna naam type kar:</p>
-            <input type="text" class="modal-input" id="customNameInput" placeholder="Your name..." autocomplete="off" onkeydown="handleNameEnter(event)">
+            <p style="font-size: 12px; font-weight: 700; color: var(--muted);">Bina sync ke chat? Apna naam type kar:</p>
+            <input type="text" class="modal-input" id="customNameInput" placeholder="Your name..." onkeydown="handleNameEnter(event)">
             <div class="modal-footer">
                 <button class="btn" onclick="closeNamePromptModal()">Cancel</button>
                 <button class="btn btn-match" onclick="submitCustomName()">Confirm</button>
@@ -975,62 +759,33 @@
         </div>
     </div>
 
-    <!-- MODAL: SYSTEM SYNC & FLAPPY GAME -->
+    <!-- MODAL: SYNC & FLAPPY GAME -->
     <div class="modal" id="syncModal">
         <div class="modal-content" id="syncModalContent">
             <div class="modal-header">
                 <h3>SYSTEM SYNC</h3>
-                <button class="btn" style="padding: 4px 8px; border-radius: 8px;" onclick="closeSyncModal()">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </button>
+                <button class="btn" style="padding: 4px 8px;" onclick="closeSyncModal()">✕</button>
             </div>
 
-            <!-- AUTH FORM -->
             <div id="authForm" style="display: flex; flex-direction: column; gap: 14px;">
                 <div class="sync-instruction">
                     Enter your college MIS login ID and password to pull verified attendance.
                 </div>
-
-                <div class="sync-input-group">
-                    <input 
-                        type="text" 
-                        class="modal-input" 
-                        id="collegeId" 
-                        placeholder="College ID (e.g. 126nixay12006)"
-                        autocomplete="off">
-                    <input 
-                        type="password" 
-                        class="modal-input" 
-                        id="collegePass" 
-                        placeholder="Password" 
-                        onkeydown="if(event.key==='Enter') runLiveSync()">
-                </div>
-
-                <div class="modal-footer" style="padding-top: 4px;">
-                    <button class="btn" onclick="closeSyncModal()">
-                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                        Cancel
-                    </button>
-                    <button class="btn" style="background: var(--green);" onclick="runLiveSync()">
-                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-                        Sync Data
-                    </button>
+                <input type="text" class="modal-input" id="collegeId" placeholder="College ID (e.g. 126nixay12006)">
+                <input type="password" class="modal-input" id="collegePass" placeholder="Password" onkeydown="if(event.key==='Enter') runLiveSync()">
+                <div class="modal-footer">
+                    <button class="btn" onclick="closeSyncModal()">Cancel</button>
+                    <button class="btn" style="background: var(--green);" onclick="runLiveSync()">Sync Data</button>
                 </div>
             </div>
             
-            <!-- GAME CONTAINER -->
             <div class="game-container" id="gameContainer">
                 <div class="game-header">
-                    <span class="game-header-tag">
-                        <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        Syncing Data...
-                    </span>
+                    <span style="font-size: 12px; font-weight: 800; text-transform: uppercase;">Syncing Data...</span>
                     <span class="game-score-badge" id="flappyScore">00</span>
                 </div>
-                <div id="canvasWrapper">
-                    <canvas id="flappyCanvas"></canvas>
-                </div>
-                <p class="game-footer-hint">Tap screen or press Spacebar to avoid pillars</p>
+                <div id="canvasWrapper"><canvas id="flappyCanvas"></canvas></div>
+                <p style="font-size: 11px; font-weight: 800; text-align: center;">TAP SCREEN OR PRESS SPACEBAR</p>
             </div>
         </div>
     </div>
@@ -1051,7 +806,7 @@
         </div>
     </div>
 
-    <!-- FIREBASE LIVE CHAT LOGIC -->
+    <!-- FIREBASE CHAT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, set, push, onChildAdded, onValue, remove, onDisconnect, off } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
@@ -1066,31 +821,17 @@
             appId: "1:1098210161751:web:c4d6a78631118391909f12"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        const db = getDatabase(initializeApp(firebaseConfig));
+        let currentRoom = null, userId = "user_" + Math.random().toString(36).substr(2, 9);
+        let timerInterval = null, timeLeft = 300, disconnectRef = null, msgRefQuery = null, matchListenerRef = null;
+        let revealedCount = 0, autoDisconnectTimeout = null;
 
-        let currentRoom = null;
-        let userId = "user_" + Math.random().toString(36).substr(2, 9);
-        let timerInterval = null;
-        let timeLeft = 300;
-        let disconnectRef = null;
-        let msgRefQuery = null;
-        let matchListenerRef = null;
-        let revealedCount = 0;
-        let autoDisconnectTimeout = null;
-
-        function escapeHTML(str) {
-            return String(str).replace(/[&<>'"]/g, 
-                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-            );
-        }
+        const escapeHTML = str => String(str).replace(/[&<>'"]/g, t => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[t]));
 
         window.openIcebreaker = function() {
-            cleanupActiveSession();
+            cleanupSession();
             revealedCount = 0;
-
-            const chatBox = document.getElementById('chatBox');
-            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; font-weight:700; color:var(--text-muted); margin-top:30px;">Finding random student on radar...</p>';
+            document.getElementById('chatBox').innerHTML = '<p style="text-align:center; font-size:12px; font-weight:700; color:var(--muted); margin-top:30px;">Finding random student on radar...</p>';
             document.getElementById('revealBtn').style.display = 'none';
             document.getElementById('chatTimer').innerText = "05:00";
             document.getElementById('iceModal').style.display = 'flex';
@@ -1135,17 +876,15 @@
 
         function startChatRoom(roomId) {
             const chatBox = document.getElementById('chatBox');
-            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; color:var(--text-dark); background:var(--green); border:2px solid var(--border-color); border-radius:8px; padding:6px; box-shadow:var(--hard-shadow-sm); margin-top:6px; font-weight:800;">Connected. Say hi.</p>';
-            setTimeout(() => { document.getElementById('chatInput').focus(); }, 150);
+            chatBox.innerHTML = '<p style="text-align:center; font-size:12px; color:var(--text); background:var(--green); border:2px solid var(--border); border-radius:8px; padding:6px; box-shadow:var(--shadow-sm); font-weight:800;">Connected. Say hi.</p>';
+            setTimeout(() => document.getElementById('chatInput').focus(), 150);
             
             onDisconnect(ref(db, 'rooms/' + roomId)).remove();
-
             disconnectRef = ref(db, 'rooms/' + roomId);
             onValue(disconnectRef, (snapshot) => {
                 if (!snapshot.exists() && currentRoom === roomId) {
                     addSysMsg("Stranger disconnected.");
-                    if(timerInterval) clearInterval(timerInterval);
-                    if(msgRefQuery) off(msgRefQuery);
+                    cleanupSession();
                     currentRoom = null;
                 }
             });
@@ -1154,37 +893,32 @@
             onChildAdded(msgRefQuery, (data) => {
                 const msg = data.val();
                 const isMe = msg.sender === userId;
-                const msgClass = isMe ? "me" : "stranger";
-                const safeText = escapeHTML(msg.text || "");
-                const safeTime = escapeHTML(msg.time || "");
-                
                 const html = `
-                    <div class="msg-wrapper ${msgClass}">
-                        <div class="msg">${safeText}</div>
-                        <div class="msg-time">${safeTime}</div>
+                    <div class="msg-wrapper ${isMe ? "me" : "stranger"}">
+                        <div class="msg">${escapeHTML(msg.text || "")}</div>
+                        <div class="msg-time">${escapeHTML(msg.time || "")}</div>
                     </div>`;
-                
                 chatBox.insertAdjacentHTML('beforeend', html);
                 chatBox.scrollTop = chatBox.scrollHeight; 
 
                 if (msg.text && msg.text.includes("Identity Revealed:")) {
                     revealedCount++;
                     if (revealedCount >= 2) {
-                        addSysMsg("Both identities revealed. Closing chat in 10s...");
+                        addSysMsg("Both revealed. Closing in 10s...");
                         autoDisconnectTimeout = setTimeout(() => {
                             closeIcebreaker();
-                            showToast("Chat completed and room closed");
+                            showToast("Chat completed");
                         }, 10000);
                     }
                 }
             });
 
             timeLeft = 300;
-            if(timerInterval) clearInterval(timerInterval);
+            clearInterval(timerInterval);
             timerInterval = setInterval(() => {
                 timeLeft--;
-                let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-                let s = (timeLeft % 60).toString().padStart(2, '0');
+                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                const s = (timeLeft % 60).toString().padStart(2, '0');
                 document.getElementById('chatTimer').innerText = `${m}:${s}`;
                 if(timeLeft <= 0) {
                     clearInterval(timerInterval);
@@ -1197,42 +931,27 @@
         window.sendMsg = function() {
             const input = document.getElementById('chatInput');
             const txt = input.value.trim();
-            if(txt === '' || !currentRoom) return;
-            
+            if(!txt || !currentRoom) return;
             input.value = ''; 
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-
-            push(ref(db, 'rooms/' + currentRoom + '/messages'), { 
-                sender: userId, 
-                text: txt, 
-                time: timeString 
-            });
+            const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+            push(ref(db, 'rooms/' + currentRoom + '/messages'), { sender: userId, text: txt, time: timeString });
             input.focus();
         };
 
-        window.handleChatEnter = function(e) { 
-            if(e.key === 'Enter') { 
-                e.preventDefault(); 
-                sendMsg(); 
-            } 
-        };
+        window.handleChatEnter = e => { if(e.key === 'Enter') { e.preventDefault(); sendMsg(); } };
 
-        function cleanupActiveSession() {
-            if(timerInterval) clearInterval(timerInterval);
-            if(autoDisconnectTimeout) clearTimeout(autoDisconnectTimeout);
+        function cleanupSession() {
+            clearInterval(timerInterval);
+            clearTimeout(autoDisconnectTimeout);
             if(disconnectRef) off(disconnectRef);
             if(msgRefQuery) off(msgRefQuery);
             if(matchListenerRef) off(matchListenerRef);
-            disconnectRef = null;
-            msgRefQuery = null;
-            matchListenerRef = null;
+            disconnectRef = msgRefQuery = matchListenerRef = null;
         }
 
         window.closeIcebreaker = function() {
             document.getElementById('iceModal').style.display = 'none';
-            cleanupActiveSession();
-            
+            cleanupSession();
             if (currentRoom) {
                 remove(ref(db, 'rooms/' + currentRoom)); 
                 currentRoom = null;
@@ -1243,60 +962,42 @@
 
         window.addSysMsg = function(text) {
             const chatBox = document.getElementById('chatBox');
-            const sysHtml = `<p style="text-align:center; font-size:11px; font-weight:800; color:var(--text-dark); margin: 8px 0; background: var(--yellow); border:2px solid var(--border-color); padding: 5px; border-radius: 6px; box-shadow:var(--hard-shadow-sm);">${escapeHTML(text)}</p>`;
-            chatBox.insertAdjacentHTML('beforeend', sysHtml);
+            chatBox.insertAdjacentHTML('beforeend', `<p style="text-align:center; font-size:11px; font-weight:800; margin: 8px 0; background: var(--yellow); border:2px solid var(--border); padding: 5px; border-radius: 6px; box-shadow:var(--shadow-sm);">${escapeHTML(text)}</p>`);
             chatBox.scrollTop = chatBox.scrollHeight;
         };
 
         window.revealIdentity = function() {
-            let savedId = localStorage.getItem('eimi_college_id');
-            let actualName = "";
-
-            if (savedId && savedId.trim() !== "") {
-                let extracted = savedId.replace(/[^a-zA-Z]/g, ''); 
-                actualName = extracted ? (extracted.charAt(0).toUpperCase() + extracted.slice(1).toLowerCase()) : savedId;
-                executeReveal(actualName);
+            const savedId = localStorage.getItem('eimi_college_id');
+            if (savedId && savedId.trim()) {
+                const extracted = savedId.replace(/[^a-zA-Z]/g, ''); 
+                executeReveal(extracted ? (extracted.charAt(0).toUpperCase() + extracted.slice(1).toLowerCase()) : savedId);
             } else {
                 document.getElementById('namePromptModal').style.display = 'flex';
                 setTimeout(() => document.getElementById('customNameInput').focus(), 100);
             }
         };
 
-        window.closeNamePromptModal = function() {
-            document.getElementById('namePromptModal').style.display = 'none';
-        };
-
+        window.closeNamePromptModal = () => document.getElementById('namePromptModal').style.display = 'none';
         window.submitCustomName = function() {
             const input = document.getElementById('customNameInput');
-            let val = input.value.trim();
+            const val = input.value.trim();
             if(!val) return;
             closeNamePromptModal();
             input.value = '';
             executeReveal(val);
         };
-
-        window.handleNameEnter = function(e) {
-            if(e.key === 'Enter') {
-                e.preventDefault(); 
-                submitCustomName();
-            }
-        };
+        window.handleNameEnter = e => { if(e.key === 'Enter') { e.preventDefault(); submitCustomName(); } };
 
         function executeReveal(name) {
             document.getElementById('revealBtn').style.display = 'none';
             if(currentRoom) {
-                const now = new Date();
-                const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-                push(ref(db, 'rooms/' + currentRoom + '/messages'), { 
-                    sender: userId, 
-                    text: `Identity Revealed: [ ${name} ]`, 
-                    time: timeString 
-                });
+                const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+                push(ref(db, 'rooms/' + currentRoom + '/messages'), { sender: userId, text: `Identity Revealed: [ ${name} ]`, time: timeString });
             }
         }
     </script>
 
-    <!-- CORE LOGIC & BALANCED NEO-BRUTALIST ENGINE -->
+    <!-- CORE LOGIC & FLAPPY GAME -->
     <script>
         let currentSubjects = [];
         const API_URL = "https://attendpro-web-2.onrender.com/sync";
@@ -1306,19 +1007,21 @@
             toast.innerText = message;
             toast.className = `toast ${type}`;
             toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 5500);
+            setTimeout(() => { toast.style.display = 'none'; }, 4500);
         }
 
         function updateGreeting() {
-            let savedId = localStorage.getItem('eimi_college_id');
-            if (savedId && savedId.trim() !== "") {
-                let extracted = savedId.replace(/[^a-zA-Z]/g, ''); 
-                let name = extracted ? (extracted.charAt(0).toUpperCase() + extracted.slice(1).toLowerCase()) : savedId;
-                document.getElementById('userGreeting').innerHTML = `<span class="live-dot"></span> Welcome, ${name}`;
-                document.getElementById('logoutBtn').style.display = 'inline-flex';
+            const savedId = localStorage.getItem('eimi_college_id');
+            const greeting = document.getElementById('userGreeting');
+            const logout = document.getElementById('logoutBtn');
+            if (savedId && savedId.trim()) {
+                const extracted = savedId.replace(/[^a-zA-Z]/g, ''); 
+                const name = extracted ? (extracted.charAt(0).toUpperCase() + extracted.slice(1).toLowerCase()) : savedId;
+                greeting.innerHTML = `<span class="live-dot"></span> Welcome, ${name}`;
+                logout.style.display = 'inline-flex';
             } else {
-                document.getElementById('userGreeting').innerHTML = `<span class="live-dot"></span> Campus Hub`;
-                document.getElementById('logoutBtn').style.display = 'none';
+                greeting.innerHTML = `<span class="live-dot"></span> Campus Hub`;
+                logout.style.display = 'none';
             }
         }
 
@@ -1326,44 +1029,28 @@
             localStorage.removeItem('eimi_college_id');
             localStorage.removeItem('user_attendance');
             currentSubjects = [];
-
             document.getElementById('collegeId').value = '';
             document.getElementById('collegePass').value = '';
-            
-            const sInput = document.getElementById('searchInput');
-            if (sInput) { 
-                sInput.value = ''; 
-                sInput.setAttribute('readonly', 'true'); 
-            }
-
+            document.getElementById('searchInput').value = '';
             updateOverallStats([]);
             renderSubjects([]);
             updateGreeting();
-
-            showToast("Logged out and local data wiped", "error");
+            showToast("Logged out successfully", "error");
         }
 
-        /* NEO-BRUTALIST BALANCED FLAPPY ENGINE */
-        let canvas, ctx, dotY, dotVelocity, pipes = [], score = 0, flappyLoopId = null, isGameOver = false, isStarted = false;
-        let resizeObserver = null;
-
-        const BALANCED_GAP = 90;
-        const BALANCED_SPACING = 190;
+        /* FLAPPY GAME ENGINE */
+        let canvas, ctx, dotY, dotVelocity, pipes = [], score = 0, flappyLoopId = null, isGameOver = false, isStarted = false, resizeObserver = null;
+        const GAP = 90, SPACING = 190;
 
         function resizeGameCanvas() {
             if (!canvas) return;
             const wrapper = document.getElementById('canvasWrapper');
-            if (wrapper && wrapper.clientWidth > 0 && wrapper.clientHeight > 0) {
+            if (wrapper && wrapper.clientWidth > 0) {
                 canvas.width = wrapper.clientWidth;
                 canvas.height = wrapper.clientHeight;
-                
                 if (dotY > canvas.height) dotY = canvas.height / 2;
-                
-                if (!isStarted && !isGameOver) {
-                    renderWaiting();
-                } else if (isGameOver) {
-                    renderGameOver();
-                }
+                if (!isStarted && !isGameOver) renderWaiting();
+                else if (isGameOver) renderGameOver();
             }
         }
 
@@ -1373,34 +1060,26 @@
 
             const wrapper = document.getElementById('canvasWrapper');
             if (resizeObserver) resizeObserver.disconnect();
-            resizeObserver = new ResizeObserver(() => {
-                resizeGameCanvas();
-            });
+            resizeObserver = new ResizeObserver(() => resizeGameCanvas());
             if (wrapper) resizeObserver.observe(wrapper);
 
             setTimeout(() => {
                 resizeGameCanvas();
                 ctx = canvas.getContext('2d');
                 dotY = canvas.height / 2;
-                dotVelocity = 0;
+                dotVelocity = score = 0;
                 pipes = [];
-                score = 0;
-                isGameOver = false;
-                isStarted = false;
+                isGameOver = isStarted = false;
                 document.getElementById('flappyScore').innerText = "00";
-
                 renderWaiting();
             }, 60);
 
-            const container = document.getElementById('gameContainer');
-            container.onpointerdown = (e) => {
-                if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') return;
-                if (document.getElementById('gameContainer').style.display === 'flex') {
+            document.getElementById('gameContainer').onpointerdown = e => {
+                if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
                     e.preventDefault();
                     flapJump();
                 }
             };
-
             if(flappyLoopId) cancelAnimationFrame(flappyLoopId);
         }
 
@@ -1408,8 +1087,6 @@
             if(!ctx) return;
             ctx.fillStyle = '#FFFDF9';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Neo Brutalist Circle Player
             ctx.beginPath();
             ctx.arc(60, canvas.height / 2, 8, 0, Math.PI * 2);
             ctx.fillStyle = '#FFE54C';
@@ -1417,7 +1094,6 @@
             ctx.lineWidth = 2.5;
             ctx.strokeStyle = '#0c0c0e';
             ctx.stroke();
-
             ctx.fillStyle = '#0c0c0e';
             ctx.font = '800 13px "Space Grotesk"';
             ctx.textAlign = 'center';
@@ -1441,13 +1117,11 @@
             if(!isStarted) { 
                 isStarted = true; 
                 dotVelocity = -3.4; 
-                
                 pipes = [];
-                for(let px = 300; px <= canvas.width + BALANCED_SPACING; px += BALANCED_SPACING) {
-                    const topH = Math.floor(Math.random() * (canvas.height - BALANCED_GAP - 50)) + 25;
-                    pipes.push({ x: px, top: topH, bottom: canvas.height - (topH + BALANCED_GAP), passed: false });
+                for(let px = 300; px <= canvas.width + SPACING; px += SPACING) {
+                    const topH = Math.floor(Math.random() * (canvas.height - GAP - 50)) + 25;
+                    pipes.push({ x: px, top: topH, bottom: canvas.height - (topH + GAP), passed: false });
                 }
-                
                 runLoop(); 
                 return; 
             }
@@ -1457,28 +1131,23 @@
         function runLoop() {
             if(!isStarted || isGameOver) return;
 
-            dotVelocity += 0.17;
-            if(dotVelocity > 4.0) dotVelocity = 4.0;
+            dotVelocity = Math.min(dotVelocity + 0.17, 4.0);
             dotY += dotVelocity;
 
-            if (pipes.length === 0 || pipes[pipes.length - 1].x < canvas.width - BALANCED_SPACING) {
-                const topH = Math.floor(Math.random() * (canvas.height - BALANCED_GAP - 50)) + 25;
-                pipes.push({ x: canvas.width, top: topH, bottom: canvas.height - (topH + BALANCED_GAP), passed: false });
+            if (pipes.length === 0 || pipes[pipes.length - 1].x < canvas.width - SPACING) {
+                const topH = Math.floor(Math.random() * (canvas.height - GAP - 50)) + 25;
+                pipes.push({ x: canvas.width, top: topH, bottom: canvas.height - (topH + GAP), passed: false });
             }
 
             ctx.fillStyle = '#FFFDF9';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             const pipeWidth = 24;
-            for (let i = 0; i < pipes.length; i++) {
-                let p = pipes[i];
+            pipes.forEach(p => {
                 p.x -= 1.3; 
-
-                // Neo Brutalist Pillar
                 ctx.fillStyle = '#9EEB68';
                 ctx.fillRect(p.x, 0, pipeWidth, p.top);
                 ctx.fillRect(p.x, canvas.height - p.bottom, pipeWidth, p.bottom);
-
                 ctx.lineWidth = 2.5;
                 ctx.strokeStyle = '#0c0c0e';
                 ctx.strokeRect(p.x, 0, pipeWidth, p.top);
@@ -1492,12 +1161,11 @@
                     score++;
                     document.getElementById('flappyScore').innerText = score < 10 ? `0${score}` : score;
                 }
-            }
+            });
 
             pipes = pipes.filter(p => p.x > -40);
             if (dotY + 8 >= canvas.height || dotY - 8 <= 0) isGameOver = true;
 
-            // Player Dot
             ctx.beginPath();
             ctx.arc(60, dotY, 8, 0, Math.PI * 2);
             ctx.fillStyle = '#FFE54C';
@@ -1506,50 +1174,38 @@
             ctx.strokeStyle = '#0c0c0e';
             ctx.stroke();
 
-            if (!isGameOver) {
-                flappyLoopId = requestAnimationFrame(runLoop);
-            } else {
-                renderGameOver();
-            }
+            if (!isGameOver) flappyLoopId = requestAnimationFrame(runLoop);
+            else renderGameOver();
         }
 
-        /* KEYBOARD SHORTCUTS */
-        document.addEventListener('keydown', (e) => {
+        /* SHORTCUTS */
+        document.addEventListener('keydown', e => {
             if (e.key === 'Escape') { 
                 document.activeElement.blur(); 
                 closeAddModal(); closeSyncModal(); closeNamePromptModal();
                 if(typeof closeIcebreaker === 'function') closeIcebreaker(); 
-                return; 
-            }
-            if (e.code === 'Space' && document.getElementById('gameContainer').style.display === 'flex') {
+            } else if (e.code === 'Space' && document.getElementById('gameContainer').style.display === 'flex') {
                 e.preventDefault();
                 flapJump();
-                return;
-            }
-            if (e.key === 'Enter') {
-                if (document.getElementById('syncModal').style.display === 'flex' && document.getElementById('authForm').style.display !== 'none') { runLiveSync(); return; }
-                if (document.getElementById('addModal').style.display === 'flex') { saveNewSubject(); return; }
-                if (document.getElementById('namePromptModal').style.display === 'flex') { submitCustomName(); return; }
-            }
-            if (document.activeElement.tagName !== 'INPUT') {
-                if (e.key.toLowerCase() === 's') { e.preventDefault(); openSyncModal(); setTimeout(() => document.getElementById('collegeId').focus(), 100); }
-                if (e.key.toLowerCase() === 'a') { e.preventDefault(); openAddModal(); setTimeout(() => document.getElementById('newSubName').focus(), 100); }
-                if (e.key.toLowerCase() === 'm') { e.preventDefault(); if(typeof openIcebreaker === 'function') openIcebreaker(); }
+            } else if (document.activeElement.tagName !== 'INPUT') {
+                const k = e.key.toLowerCase();
+                if (k === 's') { e.preventDefault(); openSyncModal(); setTimeout(() => document.getElementById('collegeId').focus(), 100); }
+                if (k === 'a') { e.preventDefault(); openAddModal(); setTimeout(() => document.getElementById('newSubName').focus(), 100); }
+                if (k === 'm') { e.preventDefault(); openIcebreaker(); }
                 if (e.key === '/') { e.preventDefault(); document.getElementById('searchInput').focus(); }
             }
         });
 
-        /* ATTENDANCE CALCULATIONS */
+        /* ATTENDANCE CALC */
         function calculateStatus(present, total) {
             if (total === 0) return { pct: 0, status: "Pending", isRisk: false };
             const pct = Math.round((present / total) * 100);
             if (pct >= 75) { 
                 const safeBunks = Math.floor((present - (0.75 * total)) / 0.75); 
                 return { pct, status: `Safe [${safeBunks} bunks left]`, isRisk: false }; 
-            } else { 
-                const needed = Math.ceil(((0.75 * total) - present) / 0.25); 
-                return { pct, status: `Warning [Need ${needed} classes]`, isRisk: true }; 
             }
+            const needed = Math.ceil(((0.75 * total) - present) / 0.25); 
+            return { pct, status: `Warning [Need ${needed} classes]`, isRisk: true }; 
         }
         
         function updateOverallStats(data) {
@@ -1559,39 +1215,32 @@
                 ring.innerText = pct + '%'; 
                 text.innerText = isSafe ? 'Secure' : 'At Risk';
                 ring.style.background = isSafe ? '#DCFCE7' : '#FEE2E2';
-                ring.style.color = isSafe ? '#15803d' : '#b91c1c';
-                text.style.color = isSafe ? '#15803d' : '#b91c1c';
+                ring.style.color = text.style.color = isSafe ? '#15803d' : '#b91c1c';
             };
 
             if (!data || data.length === 0) {
-                const rTheory = document.getElementById('theoryRing');
-                const rPrac = document.getElementById('pracRing');
-                rTheory.innerText = '0%';
-                rTheory.style.background = '#ffffff';
-                rTheory.style.color = '#0c0c0e';
-                rPrac.innerText = '0%';
-                rPrac.style.background = '#ffffff';
-                rPrac.style.color = '#0c0c0e';
-                document.getElementById('theoryStatusText').innerText = '--';
-                document.getElementById('pracStatusText').innerText = '--';
-                document.getElementById('theoryStatusText').style.color = '#0c0c0e';
-                document.getElementById('pracStatusText').style.color = '#0c0c0e';
+                ['theory', 'prac'].forEach(id => {
+                    const ring = document.getElementById(id + 'Ring');
+                    ring.innerText = '0%';
+                    ring.style.background = '#fff';
+                    ring.style.color = '#0c0c0e';
+                    const text = document.getElementById(id + 'StatusText');
+                    text.innerText = '--';
+                    text.style.color = '#0c0c0e';
+                });
                 return;
             }
 
-            let tPresent = 0, tTotal = 0, tRisk = 0, pPresent = 0, pTotal = 0, pRisk = 0;
-            data.forEach(sub => { 
-                if (sub.name.includes("(Practical)")) { 
-                    pPresent += sub.present; pTotal += sub.total; if (sub.pct < 75) pRisk++; 
-                } else { 
-                    tPresent += sub.present; tTotal += sub.total; if (sub.pct < 75) tRisk++; 
-                } 
+            let tP = 0, tT = 0, tR = 0, pP = 0, pT = 0, pR = 0;
+            data.forEach(s => { 
+                if (s.name.includes("(Practical)")) { pP += s.present; pT += s.total; if (s.pct < 75) pR++; } 
+                else { tP += s.present; tT += s.total; if (s.pct < 75) tR++; } 
             });
 
-            const tPct = tTotal === 0 ? 0 : Math.round((tPresent / tTotal) * 100);
-            setRing('theory', tPct, tPct >= 75 && tRisk === 0);
-            const pPct = pTotal === 0 ? 0 : Math.round((pPresent / pTotal) * 100);
-            setRing('prac', pPct, pPct >= 75 && pRisk === 0);
+            const tPct = tT === 0 ? 0 : Math.round((tP / tT) * 100);
+            setRing('theory', tPct, tPct >= 75 && tR === 0);
+            const pPct = pT === 0 ? 0 : Math.round((pP / pT) * 100);
+            setRing('prac', pPct, pPct >= 75 && pR === 0);
         }
 
         function renderSubjects(data) {
@@ -1601,35 +1250,14 @@
                 list.innerHTML = `
                     <div class="empty-module-card">
                         <div class="empty-module-icon">
-                            <svg class="svg-icon" style="width: 28px; height: 28px; stroke-width: 2.2;" viewBox="0 0 24 24">
-                                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
-                                <path d="M6 6h10M6 10h10"></path>
-                            </svg>
+                            <svg class="svg-icon" style="width: 28px; height: 28px;" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10M6 10h10"></path></svg>
                         </div>
                         <div>
-                            <h4 style="
-                                font-size: 16px;
-                                font-weight: 800;
-                                color: var(--text-dark);
-                                text-transform: uppercase;
-                                letter-spacing: 0.5px;
-                                margin-bottom: 4px;
-                            ">No modules loaded</h4>
-                            <p style="
-                                color: var(--text-muted);
-                                font-size: 12px;
-                                font-weight: 700;
-                                max-width: 260px;
-                                line-height: 1.4;
-                                margin: 0 auto;
-                            ">Sync your portal to automatically load modules and attendance.</p>
+                            <h4 style="font-size: 16px; font-weight: 800; text-transform: uppercase;">No modules loaded</h4>
+                            <p style="color: var(--muted); font-size: 12px; font-weight: 700; margin-top: 4px;">Sync your portal to automatically load modules and attendance.</p>
                         </div>
-                        <button class="btn btn-match" style="margin-top: 6px; padding: 9px 18px;" onclick="openSyncModal()">
-                            <svg class="svg-icon" viewBox="0 0 24 24">
-                                <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
-                                <path d="M21 3v5h-5"></path>
-                            </svg>
-                            Sync Portal
+                        <button class="btn btn-match" style="padding: 9px 18px;" onclick="openSyncModal()">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg> Sync Portal
                         </button>
                     </div>`; 
                 return; 
@@ -1637,7 +1265,7 @@
             
             data.forEach((sub, index) => {
                 const isRisk = sub.pct < 75; 
-                const fillWidth = sub.pct > 100 ? 100 : sub.pct;
+                const fillWidth = Math.min(100, sub.pct);
                 const barColor = isRisk ? 'var(--coral)' : 'var(--green)';
                 const statusClass = isRisk ? 'risk' : 'safe';
 
@@ -1646,12 +1274,11 @@
                         <div class="card-top">
                             <div class="subject-info">
                                 <h4>${sub.name}</h4>
-                                <div style="font-size:11px; font-weight:700; color:var(--text-muted); margin:2px 0;">${sub.present} / ${sub.total} Classes</div>
+                                <div style="font-size:11px; font-weight:700; color:var(--muted); margin:2px 0;">${sub.present} / ${sub.total} Classes</div>
                                 <div class="status-tag ${statusClass}">
-                                    ${isRisk ? 
-                                        '<svg class="svg-icon" viewBox="0 0 24 24" style="width:13px; height:13px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>' : 
-                                        '<svg class="svg-icon" viewBox="0 0 24 24" style="width:12px; height:12px;"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 8 8 12"></polyline><line x1="12" y1="16" x2="12" y2="8"></line></svg>'
-                                    } 
+                                    <svg class="svg-icon" viewBox="0 0 24 24" style="width:12px; height:12px;">
+                                        ${isRisk ? '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>' : '<circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 8 8 12"></polyline><line x1="12" y1="16" x2="12" y2="8"></line>'}
+                                    </svg>
                                     ${sub.status}
                                 </div>
                             </div>
@@ -1662,12 +1289,10 @@
                         </div>
                         <div class="quick-actions">
                             <button class="action-btn btn-present" onclick="quickMark(${index}, true)">
-                                <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                +1 Present
+                                <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> +1 Present
                             </button>
                             <button class="action-btn btn-bunk" onclick="quickMark(${index}, false)">
-                                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                                +1 Bunk
+                                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> +1 Bunk
                             </button>
                         </div>
                     </div>`;
@@ -1683,25 +1308,21 @@
             saveAndRefresh(); 
         }
 
-        function openAddModal() { document.getElementById('addModal').style.display = 'flex'; setTimeout(()=>document.getElementById('newSubName').focus(), 100); }
+        function openAddModal() { document.getElementById('addModal').style.display = 'flex'; setTimeout(() => document.getElementById('newSubName').focus(), 100); }
         function closeAddModal() { document.getElementById('addModal').style.display = 'none'; }
         
         function openSyncModal() { 
             const modal = document.getElementById('syncModal');
             document.getElementById('syncModalContent').classList.remove('game-mode-active');
-            
             modal.style.display = 'flex'; 
             document.getElementById('authForm').style.display = 'flex'; 
             document.getElementById('gameContainer').style.display = 'none'; 
-            
-            setTimeout(()=>document.getElementById('collegeId').focus(), 100); 
+            setTimeout(() => document.getElementById('collegeId').focus(), 100); 
         }
 
         function closeSyncModal() { 
-            const modal = document.getElementById('syncModal');
             document.getElementById('syncModalContent').classList.remove('game-mode-active');
-            
-            modal.style.display = 'none'; 
+            document.getElementById('syncModal').style.display = 'none'; 
             if (resizeObserver) resizeObserver.disconnect();
             if(flappyLoopId) cancelAnimationFrame(flappyLoopId);
         }
@@ -1723,10 +1344,8 @@
             if(!user || !pass) return showToast("Credentials required!", "error"); 
             
             document.getElementById('authForm').style.display = 'none'; 
-            
             document.getElementById('syncModalContent').classList.add('game-mode-active');
             document.getElementById('gameContainer').style.display = 'flex'; 
-
             initFlappyDot();
             
             try {
@@ -1735,34 +1354,26 @@
                 if(result.success) {
                     localStorage.setItem('eimi_college_id', user);
                     updateGreeting(); 
-                    let nameCount = {}; result.data.forEach(sub => { nameCount[sub.name] = (nameCount[sub.name] || 0) + 1; });
-                    let currentNameCount = {};
+                    let nameCount = {}, currentNameCount = {};
+                    result.data.forEach(s => nameCount[s.name] = (nameCount[s.name] || 0) + 1);
                     currentSubjects = result.data.map(sub => {
                         let finalName = sub.name; 
                         if (nameCount[sub.name] > 1) { 
                             currentNameCount[sub.name] = (currentNameCount[sub.name] || 0) + 1; 
-                            if (currentNameCount[sub.name] === 1) finalName += " (Theory)"; 
-                            else if (currentNameCount[sub.name] === 2) finalName += " (Practical)"; 
+                            finalName += currentNameCount[sub.name] === 1 ? " (Theory)" : " (Practical)";
                         }
-                        const info = calculateStatus(sub.present, sub.total); 
-                        return { ...sub, name: finalName, status: info.status };
+                        return { ...sub, name: finalName, status: calculateStatus(sub.present, sub.total).status };
                     });
                     saveAndRefresh(); 
                     closeSyncModal(); 
                     showToast("Attendance updated");
                 } else { 
                     showToast(result.error || "Login Failed", "error"); 
-                    document.getElementById('syncModalContent').classList.remove('game-mode-active');
-                    document.getElementById('authForm').style.display = 'flex'; 
-                    document.getElementById('gameContainer').style.display = 'none'; 
-                    if(flappyLoopId) cancelAnimationFrame(flappyLoopId);
+                    closeSyncModal();
                 }
             } catch(e) { 
-                showToast(e.message || "Server error, retrying...", "error"); 
-                document.getElementById('syncModalContent').classList.remove('game-mode-active');
-                document.getElementById('authForm').style.display = 'flex'; 
-                document.getElementById('gameContainer').style.display = 'none'; 
-                if(flappyLoopId) cancelAnimationFrame(flappyLoopId);
+                showToast("Server error, retrying...", "error"); 
+                closeSyncModal();
             }
         }
         
@@ -1779,14 +1390,8 @@
         
         document.addEventListener('DOMContentLoaded', () => { 
             fetch('https://attendpro-web-2.onrender.com/').catch(() => {});
-            
-            // Hard wipe search box on reload to kill persistent browser autofill ghosts
             const sInput = document.getElementById('searchInput');
-            if(sInput) {
-                sInput.value = '';
-                setTimeout(() => { sInput.value = ''; }, 100);
-            }
-
+            if(sInput) sInput.value = '';
             updateGreeting(); 
             const saved = localStorage.getItem('user_attendance'); 
             if (saved) { 
