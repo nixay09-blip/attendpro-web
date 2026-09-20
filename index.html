@@ -159,7 +159,24 @@
         }
 
         .btn-match { background: var(--yellow); }
-        .btn-logout { background: var(--coral); color: #fff; }
+        /* BRIGHT HEADER EXIT BUTTON */
+        .btn-logout { 
+            background: #FF4D4D !important; 
+            color: #ffffff !important; 
+            border: 2.5px solid var(--border) !important;
+            box-shadow: var(--shadow-sm) !important;
+            font-weight: 800 !important;
+            transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
+        }
+        .btn-logout:hover {
+            background: #ff3333 !important;
+            transform: translate(-1.5px, -1.5px);
+            box-shadow: var(--shadow) !important;
+        }
+        .btn-logout:active {
+            transform: translate(2px, 2px);
+            box-shadow: none !important;
+        }
 
         /* REVEAL ID - RESTORED TO ORIGINAL YELLOW */
         .btn-reveal-prime {
@@ -826,15 +843,17 @@
                 </div>
 
                 <input 
-                    type="search" 
+                    type="text" 
                     class="search-box" 
                     id="searchInput" 
+                    name="eimi-module-query"
                     placeholder="Search modules... (Press '/')" 
-                    autocomplete="off" 
+                    autocomplete="one-time-code" 
                     autocorrect="off" 
+                    autocapitalize="off"
                     spellcheck="false" 
-                    readonly 
-                    onfocus="this.removeAttribute('readonly');" 
+                    data-lpignore="true"
+                    data-form-type="other"
                     onkeyup="filterSubjects()">
             </aside>
 
