@@ -161,7 +161,38 @@
             box-shadow: none;
         }
 
-        .btn-match { background: var(--yellow); }
+        /* ANIMATED ALIVE MATCH BUTTON */
+        .btn-match { 
+            background: var(--yellow); 
+            animation: matchPulse 2.8s ease-in-out infinite;
+        }
+
+        .btn-match:hover {
+            animation-play-state: paused;
+            transform: translate(-1.5px, -1.5px);
+            box-shadow: var(--shadow);
+        }
+
+        @keyframes matchPulse {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+            }
+            15% {
+                transform: rotate(-3deg) scale(1.04);
+            }
+            30% {
+                transform: rotate(3deg) scale(1.04);
+            }
+            45% {
+                transform: rotate(-2deg) scale(1.02);
+            }
+            60% {
+                transform: rotate(1deg) scale(1.02);
+            }
+            75% {
+                transform: rotate(0deg) scale(1);
+            }
+        }
 
         /* BRIGHT HEADER EXIT BUTTON */
         .btn-logout { 
