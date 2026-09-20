@@ -183,16 +183,29 @@
             box-shadow: var(--shadow) !important;
         }
 
-        /* RED EXIT BUTTON */
-        .btn-chat-exit {
+        /* RED EXIT, CANCEL & CLOSE BUTTONS */
+        .btn-chat-exit,
+        .btn-cancel,
+        .btn-close {
             background: var(--coral) !important;
             color: #ffffff !important;
             border: 2.5px solid var(--border) !important;
             box-shadow: var(--shadow-sm) !important;
             font-weight: 800 !important;
+            transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
         }
-        .btn-chat-exit:hover {
+        .btn-chat-exit:hover,
+        .btn-cancel:hover,
+        .btn-close:hover {
             background: #e64545 !important;
+            transform: translate(-1.5px, -1.5px);
+            box-shadow: var(--shadow) !important;
+        }
+        .btn-chat-exit:active,
+        .btn-cancel:active,
+        .btn-close:active {
+            transform: translate(2px, 2px);
+            box-shadow: none !important;
         }
 
         /* LAYOUT & CARDS */
@@ -760,7 +773,6 @@
             .overall-card { flex: none; width: 100%; }
         }
     </style>
-    <!-- Vercel Web Analytics -->
     <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
@@ -875,7 +887,7 @@
             <p style="font-size: 12px; font-weight: 700; color: var(--muted);">Bina sync ke chat? Apna naam type kar:</p>
             <input type="text" class="modal-input" id="customNameInput" placeholder="Your name..." onkeydown="handleNameEnter(event)">
             <div class="modal-footer">
-                <button class="btn" onclick="closeNamePromptModal()">Cancel</button>
+                <button class="btn btn-cancel" onclick="closeNamePromptModal()">Cancel</button>
                 <button class="btn btn-match" onclick="submitCustomName()">Confirm</button>
             </div>
         </div>
@@ -886,7 +898,7 @@
         <div class="modal-content" id="syncModalContent">
             <div class="modal-header">
                 <h3>SYSTEM SYNC</h3>
-                <button class="btn" style="padding: 4px 8px;" onclick="closeSyncModal()">✕</button>
+                <button class="btn btn-close" style="padding: 4px 8px;" onclick="closeSyncModal()">✕</button>
             </div>
 
             <div id="authForm" style="display: flex; flex-direction: column; gap: 14px;">
@@ -896,7 +908,7 @@
                 <input type="text" class="modal-input" id="collegeId" placeholder="College ID (e.g. 126nixay12006)">
                 <input type="password" class="modal-input" id="collegePass" placeholder="Password" onkeydown="if(event.key==='Enter') runLiveSync()">
                 <div class="modal-footer">
-                    <button class="btn" onclick="closeSyncModal()">Cancel</button>
+                    <button class="btn btn-cancel" onclick="closeSyncModal()">Cancel</button>
                     <button class="btn" style="background: var(--green);" onclick="runLiveSync()">Sync Data</button>
                 </div>
             </div>
@@ -922,7 +934,7 @@
                 <input type="number" class="modal-input" id="newSubTotal" placeholder="Total" style="flex: 1;">
             </div>
             <div class="modal-footer">
-                <button class="btn" onclick="closeAddModal()">Cancel</button>
+                <button class="btn btn-cancel" onclick="closeAddModal()">Cancel</button>
                 <button class="btn btn-match" onclick="saveNewSubject()">Save</button>
             </div>
         </div>
