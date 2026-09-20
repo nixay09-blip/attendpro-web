@@ -161,13 +161,17 @@
             box-shadow: none;
         }
 
-        /* ANIMATED ALIVE MATCH BUTTON */
+        /* NORMAL YELLOW BUTTON (STEADY FOR MODALS & EMPTY STATE) */
         .btn-match { 
-            background: var(--yellow); 
-            animation: matchPulse 2.8s ease-in-out infinite;
+            background: var(--yellow) !important; 
         }
 
-        .btn-match:hover {
+        /* ONLY HEADER MATCH BUTTON - ALIVE ANIMATION */
+        .btn-pulse-alive {
+            background: var(--yellow) !important;
+            animation: matchPulse 2.8s ease-in-out infinite;
+        }
+        .btn-pulse-alive:hover {
             animation-play-state: paused;
             transform: translate(-1.5px, -1.5px);
             box-shadow: var(--shadow);
@@ -865,7 +869,7 @@
                 </div>
             </div>
             <div class="header-actions">
-                <button class="btn btn-match" onclick="openIcebreaker()">
+                <button class="btn btn-pulse-alive" onclick="openIcebreaker()">
                     <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Match
                 </button>
                 <button class="btn btn-add-action" onclick="openAddModal()">
