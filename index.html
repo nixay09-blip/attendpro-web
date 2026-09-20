@@ -6,6 +6,9 @@
     <title>EIMI - Campus Hub</title>
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     
+    <!-- VERCEL ANALYTICS & INSIGHTS -->
+    <script defer src="/_vercel/insights/script.js"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
@@ -147,7 +150,7 @@
             align-items: center;
             gap: 6px;
             text-transform: uppercase;
-            transition: transform 0.1s, box-shadow 0.1s;
+            transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
         }
         .btn:hover {
             transform: translate(-1.5px, -1.5px);
@@ -159,6 +162,7 @@
         }
 
         .btn-match { background: var(--yellow); }
+
         /* BRIGHT HEADER EXIT BUTTON */
         .btn-logout { 
             background: #FF4D4D !important; 
@@ -178,7 +182,7 @@
             box-shadow: none !important;
         }
 
-        /* REVEAL ID - RESTORED TO ORIGINAL YELLOW */
+        /* REVEAL ID - YELLOW */
         .btn-reveal-prime {
             background: var(--yellow) !important;
             color: var(--text) !important;
@@ -221,6 +225,20 @@
         .btn-chat-exit:active,
         .btn-cancel:active,
         .btn-close:active {
+            transform: translate(2px, 2px);
+            box-shadow: none !important;
+        }
+
+        /* ADD CLICK: GREEN FLASH */
+        .btn-add-action:active {
+            background: var(--green) !important;
+            transform: translate(2px, 2px);
+            box-shadow: none !important;
+        }
+
+        /* SYNC CLICK: LIGHT CYAN FLASH */
+        .btn-sync-action:active {
+            background: var(--cyan-light) !important;
             transform: translate(2px, 2px);
             box-shadow: none !important;
         }
@@ -790,7 +808,6 @@
             .overall-card { flex: none; width: 100%; }
         }
     </style>
-    <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -810,10 +827,10 @@
                 <button class="btn btn-match" onclick="openIcebreaker()">
                     <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Match
                 </button>
-                <button class="btn" onclick="openAddModal()">
+                <button class="btn btn-add-action" onclick="openAddModal()">
                     <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add
                 </button>
-                <button class="btn" onclick="openSyncModal()">
+                <button class="btn btn-sync-action" onclick="openSyncModal()">
                     <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg> Sync
                 </button>
                 <button class="btn btn-logout" id="logoutBtn" onclick="handleLogout()" style="display:none;" title="Logout">
