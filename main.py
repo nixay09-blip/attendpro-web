@@ -65,11 +65,16 @@ def sync_attendance(user: str, passw: str):
                 return {"success": False, "error": "Login Failed. Password ya Captcha galat hai."}
 
             # Attendance report page scrape
-            page.goto("http://report.aldel.org/student/attendance_report.php", timeout=25000)
-            page.wait_for_selector("table tr", timeout=10000)
-            page.wait_for_timeout(1000)
+        page.goto("http://report.aldel.org/student/attendance_report.php", timeout=25000)
+        page.wait_for_timeout(1500)
 
-            data = []
+        # Check agar portal par 'No Data Found.' likha hai ya table nahi hai
+        if page.locator("text=No Data Found").count() > 0 or page.locator("table tr").count() == 0:
+            browser.close()
+            print(f"NO DATA: {user} ke portal par attendance data nahi mila", flush=True)
+            return {"success": True, "data": []}
+
+        data = []
             rows = page.locator("table tr")
             row_count = rows.count()
 
