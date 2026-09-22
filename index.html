@@ -1038,6 +1038,7 @@
 
         const db = getDatabase(initializeApp(firebaseConfig));
         let currentRoom = null;
+        let isSending = false;
         let userId = "user_" + Math.random().toString(36).substr(2, 9);
         let timerInterval = null, timeLeft = 300;
         let roomInfoRef = null, msgRefQuery = null, userWaitRef = null;
@@ -1187,8 +1188,10 @@
         window.sendMsg = function() {
             const input = document.getElementById('chatInput');
             const txt = input.value.trim();
-            if (!txt || !currentRoom || input.disabled) return;
+            // Agar pehle se send ho raha hai toh ruk jao (duplicate lock)
+            if (!txt || !currentRoom || input.disabled || isSending) return;
             
+            isSending = true; 
             input.value = ''; 
             const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
             
@@ -1196,13 +1199,19 @@
                 sender: userId, 
                 text: txt, 
                 time: timeString 
+            }).then(() => {
+                setTimeout(() => { isSending = false; }, 300);
+            }).catch(() => {
+                isSending = false;
             });
+
             input.focus();
         };
 
-        window.handleChatEnter = e => { 
+        window.handleChatEnter = function(e) { 
             if (e.key === 'Enter') { 
                 e.preventDefault(); 
+                e.stopPropagation(); // Double trigger rokne ke liye
                 sendMsg(); 
             } 
         };
@@ -1216,6 +1225,7 @@
             if (msgRefQuery) { off(msgRefQuery); msgRefQuery = null; }
             
             partnerJoined = false;
+            isSending = false;
         }
 
         window.closeIcebreaker = function() {
