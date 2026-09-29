@@ -11,7 +11,10 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800;900&family=Space+Mono:wght@700&family=Syne:wght@800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- EXACT NEO-BRUTALIST FONT (CABINET GROTESK EXTRA BOLD) -->
+    <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,900&display=swap" rel="stylesheet">
     
     <style>
         @font-face { 
@@ -104,7 +107,7 @@
             object-fit: cover;
             background: var(--yellow);
         }
-        /* ONLY EIMI REMAINS BLANKA */
+        /* ONLY EIMI LOGO IS BLANKA */
         .title-area h1 {
             font-family: 'Blanka', sans-serif;
             font-size: 28px;
@@ -115,7 +118,7 @@
             font-size: 11px;
             color: var(--muted);
             margin-top: 4px;
-            font-weight: 700;
+            font-weight: 800;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -327,13 +330,15 @@
             align-items: center;
             flex: 1 1 180px;
         }
+        
+        /* THEORY / PRACTICAL LABELS */
         .overall-info h3 {
-            font-family: 'Syne', sans-serif !important;
+            font-family: 'Cabinet Grotesk', sans-serif !important;
             font-size: 13px;
             font-weight: 900 !important;
             color: var(--muted);
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            letter-spacing: -0.2px;
+            margin-bottom: 2px;
             text-transform: uppercase;
         }
         .overall-info h2 {
@@ -370,11 +375,12 @@
             box-shadow: var(--shadow-lg);
         }
 
+        /* SECTION TITLE (YOUR ATTENDANCE) */
         .section-title {
-            font-family: 'Syne', sans-serif !important;
-            font-size: 15px;
+            font-family: 'Cabinet Grotesk', sans-serif !important;
+            font-size: 16px;
             font-weight: 900 !important;
-            letter-spacing: 0.8px;
+            letter-spacing: -0.3px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -630,12 +636,11 @@
             border-bottom: 2.5px solid var(--border);
             padding-bottom: 8px;
         }
-        /* ALL MODAL HEADERS NOW USE SYNE */
         .modal-header h3 {
-            font-family: 'Syne', sans-serif !important;
+            font-family: 'Cabinet Grotesk', sans-serif !important;
             font-weight: 900 !important;
             font-size: 16px;
-            letter-spacing: 0.8px;
+            letter-spacing: -0.2px;
             text-transform: uppercase;
         }
         .modal-input {
