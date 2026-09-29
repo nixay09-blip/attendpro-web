@@ -20,7 +20,7 @@
             src: url('blanka.otf') format('opentype'); 
         }
 
-        /* 2. LOCAL MONUMENT EXTENDED (EXACT SCREENSHOT FONT) */
+        /* 2. LOCAL MONUMENT EXTENDED */
         @font-face {
             font-family: 'Monument Extended';
             src: url('monumentextended-ultrabold.otf') format('opentype');
@@ -118,7 +118,6 @@
             object-fit: cover;
             background: var(--yellow);
         }
-        /* ONLY EIMI REMAINS BLANKA */
         .title-area h1 {
             font-family: 'Blanka', sans-serif;
             font-size: 28px;
@@ -323,7 +322,7 @@
             flex: 1 1 180px;
         }
 
-        /* 🔥 THEORY & PRACTICAL WITH MONUMENT EXTENDED 🔥 */
+        /* THEORY & PRACTICAL HEADINGS */
         .overall-info h3 {
             font-family: 'Monument Extended', sans-serif !important;
             font-weight: 800 !important;
@@ -333,11 +332,26 @@
             margin-bottom: 4px;
             text-transform: uppercase;
         }
+
+        /* AESTHETIC NEO-BRUTALIST STATUS BADGE */
         .overall-info h2 {
-            font-size: 15px;
-            font-weight: 800;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 11px !important;
+            font-weight: 900 !important;
             text-transform: uppercase;
+            letter-spacing: 0.6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            box-shadow: 1.5px 1.5px 0px var(--border);
+            width: fit-content;
+            margin-top: 3px;
+            transition: background 0.15s ease, color 0.15s ease;
         }
+
         .overall-ring {
             font-family: 'Space Mono', monospace;
             font-size: 16px;
@@ -367,7 +381,7 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* 🔥 YOUR ATTENDANCE WITH MONUMENT EXTENDED 🔥 */
+        /* SECTION TITLE */
         .section-title {
             font-family: 'Monument Extended', sans-serif !important;
             font-weight: 800 !important;
@@ -628,7 +642,6 @@
             border-bottom: 2.5px solid var(--border);
             padding-bottom: 8px;
         }
-        /* MODAL HEADINGS WITH MONUMENT EXTENDED */
         .modal-header h3 {
             font-family: 'Monument Extended', sans-serif !important;
             font-weight: 800 !important;
@@ -688,7 +701,6 @@
             word-break: break-word;
         }
 
-        /* SENDER (ME): SOFT BUTTER PASTEL YELLOW */
         .msg-wrapper.me .msg { 
             background: #FEF9C3 !important; 
             color: #0c0c0e !important; 
@@ -697,7 +709,6 @@
             border-bottom-right-radius: 2px; 
         }
 
-        /* RECEIVER (STRANGER): CRISP WHITE */
         .msg-wrapper.stranger .msg { 
             background: #ffffff !important; 
             color: #0c0c0e !important;
@@ -708,7 +719,6 @@
 
         .msg-time { font-size: 10px; font-weight: 700; color: var(--muted); margin-top: 3px; }
 
-        /* YELLOW TIMER BADGE */
         .timer-text {
             font-family: 'Space Mono', monospace;
             font-size: 14px;
@@ -1505,9 +1515,15 @@
                 const ring = document.getElementById(id + 'Ring'); 
                 const text = document.getElementById(id + 'StatusText');
                 ring.innerText = pct + '%'; 
-                text.innerText = isSafe ? 'Secure' : 'At Risk';
+                text.innerText = isSafe ? '● SECURE' : '▲ AT RISK';
+                
+                // Ring styles
                 ring.style.background = isSafe ? '#DCFCE7' : '#FEE2E2';
-                ring.style.color = text.style.color = isSafe ? '#15803d' : '#b91c1c';
+                ring.style.color = isSafe ? '#15803d' : '#b91c1c';
+
+                // Tag Badge styles (Aesthetic brutalist look)
+                text.style.background = isSafe ? '#DCFCE7' : '#FEE2E2';
+                text.style.color = isSafe ? '#15803d' : '#b91c1c';
             };
 
             if (!data || data.length === 0) {
@@ -1518,7 +1534,8 @@
                     ring.style.color = '#0c0c0e';
                     const text = document.getElementById(id + 'StatusText');
                     text.innerText = '--';
-                    text.style.color = '#0c0c0e';
+                    text.style.background = '#f4f4f5';
+                    text.style.color = '#71717a';
                 });
                 return;
             }
