@@ -11,7 +11,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800;900&family=Space+Mono:wght@700&family=Syne:wght@800;900&display=swap" rel="stylesheet">
     
     <style>
         @font-face { 
@@ -104,6 +104,7 @@
             object-fit: cover;
             background: var(--yellow);
         }
+        /* ONLY EIMI REMAINS BLANKA */
         .title-area h1 {
             font-family: 'Blanka', sans-serif;
             font-size: 28px;
@@ -327,11 +328,13 @@
             flex: 1 1 180px;
         }
         .overall-info h3 {
-            font-family: 'Blanka', sans-serif;
-            font-size: 12px;
+            font-family: 'Syne', sans-serif !important;
+            font-size: 13px;
+            font-weight: 900 !important;
             color: var(--muted);
-            letter-spacing: 1.5px;
+            letter-spacing: 0.5px;
             margin-bottom: 4px;
+            text-transform: uppercase;
         }
         .overall-info h2 {
             font-size: 15px;
@@ -368,13 +371,14 @@
         }
 
         .section-title {
-            font-family: 'Blanka', sans-serif;
-            font-size: 13px;
-            letter-spacing: 2px;
+            font-family: 'Syne', sans-serif !important;
+            font-size: 15px;
+            font-weight: 900 !important;
+            letter-spacing: 0.8px;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 800;
+            text-transform: uppercase;
         }
         .section-title::after {
             content: '';
@@ -626,10 +630,13 @@
             border-bottom: 2.5px solid var(--border);
             padding-bottom: 8px;
         }
+        /* ALL MODAL HEADERS NOW USE SYNE */
         .modal-header h3 {
-            font-family: 'Blanka', sans-serif;
+            font-family: 'Syne', sans-serif !important;
+            font-weight: 900 !important;
             font-size: 16px;
-            letter-spacing: 2px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
         }
         .modal-input {
             padding: 11px 13px;
@@ -1188,7 +1195,6 @@
         window.sendMsg = function() {
             const input = document.getElementById('chatInput');
             const txt = input.value.trim();
-            // Agar pehle se send ho raha hai toh ruk jao (duplicate lock)
             if (!txt || !currentRoom || input.disabled || isSending) return;
             
             isSending = true; 
@@ -1211,7 +1217,7 @@
         window.handleChatEnter = function(e) { 
             if (e.key === 'Enter') { 
                 e.preventDefault(); 
-                e.stopPropagation(); // Double trigger rokne ke liye
+                e.stopPropagation();
                 sendMsg(); 
             } 
         };
