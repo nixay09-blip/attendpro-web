@@ -13,8 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
     
-    <!-- EXACT NEO-BRUTALIST FONT (CABINET GROTESK EXTRA BOLD) -->
-    <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,900&display=swap" rel="stylesheet">
+    <!-- 🔥 PANCHANG FONT FOR 100% EXACT WIDE/EXTENDED SHAPE 🔥 -->
+    <link href="https://api.fontshare.com/v2/css?f[]=panchang@800,900&display=swap" rel="stylesheet">
     
     <style>
         @font-face { 
@@ -107,7 +107,7 @@
             object-fit: cover;
             background: var(--yellow);
         }
-        /* ONLY EIMI LOGO IS BLANKA */
+        /* EIMI LOGO REMAINS BLANKA */
         .title-area h1 {
             font-family: 'Blanka', sans-serif;
             font-size: 28px;
@@ -165,12 +165,7 @@
             box-shadow: none;
         }
 
-        /* NORMAL YELLOW BUTTON (STEADY FOR MODALS & EMPTY STATE) */
-        .btn-match { 
-            background: var(--yellow) !important; 
-        }
-
-        /* ONLY HEADER MATCH BUTTON - ALIVE ANIMATION */
+        .btn-match { background: var(--yellow) !important; }
         .btn-pulse-alive {
             background: var(--yellow) !important;
             animation: matchPulse 2.8s ease-in-out infinite;
@@ -182,27 +177,14 @@
         }
 
         @keyframes matchPulse {
-            0%, 100% {
-                transform: rotate(0deg) scale(1);
-            }
-            15% {
-                transform: rotate(-3deg) scale(1.04);
-            }
-            30% {
-                transform: rotate(3deg) scale(1.04);
-            }
-            45% {
-                transform: rotate(-2deg) scale(1.02);
-            }
-            60% {
-                transform: rotate(1deg) scale(1.02);
-            }
-            75% {
-                transform: rotate(0deg) scale(1);
-            }
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            15% { transform: rotate(-3deg) scale(1.04); }
+            30% { transform: rotate(3deg) scale(1.04); }
+            45% { transform: rotate(-2deg) scale(1.02); }
+            60% { transform: rotate(1deg) scale(1.02); }
+            75% { transform: rotate(0deg) scale(1); }
         }
 
-        /* BRIGHT HEADER EXIT BUTTON */
         .btn-logout { 
             background: #FF4D4D !important; 
             color: #ffffff !important; 
@@ -221,7 +203,6 @@
             box-shadow: none !important;
         }
 
-        /* REVEAL ID - YELLOW */
         .btn-reveal-prime {
             background: var(--yellow) !important;
             color: var(--text) !important;
@@ -243,10 +224,7 @@
             box-shadow: var(--shadow) !important;
         }
 
-        /* RED EXIT, CANCEL & CLOSE BUTTONS */
-        .btn-chat-exit,
-        .btn-cancel,
-        .btn-close {
+        .btn-chat-exit, .btn-cancel, .btn-close {
             background: var(--coral) !important;
             color: #ffffff !important;
             border: 2.5px solid var(--border) !important;
@@ -254,23 +232,17 @@
             font-weight: 800 !important;
             transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
         }
-        .btn-chat-exit:hover,
-        .btn-cancel:hover,
-        .btn-close:hover {
+        .btn-chat-exit:hover, .btn-cancel:hover, .btn-close:hover {
             background: #e64545 !important;
             transform: translate(-1.5px, -1.5px);
             box-shadow: var(--shadow) !important;
         }
-        .btn-chat-exit:active,
-        .btn-cancel:active,
-        .btn-close:active {
+        .btn-chat-exit:active, .btn-cancel:active, .btn-close:active {
             transform: translate(2px, 2px);
             box-shadow: none !important;
         }
 
-        /* ADD BUTTON HOVER & CLICK: GREEN */
-        .btn-add-action:hover,
-        .btn-add-action:active {
+        .btn-add-action:hover, .btn-add-action:active {
             background: var(--green) !important;
             border-color: var(--border) !important;
             color: #0c0c0e !important;
@@ -280,9 +252,7 @@
             box-shadow: none !important;
         }
 
-        /* SYNC BUTTON HOVER & CLICK: LIGHT CYAN */
-        .btn-sync-action:hover,
-        .btn-sync-action:active {
+        .btn-sync-action:hover, .btn-sync-action:active {
             background: var(--cyan-light) !important;
             border-color: var(--border) !important;
             color: #0c0c0e !important;
@@ -299,20 +269,17 @@
             gap: 16px;
             width: 100%;
         }
-
         .desktop-sidebar {
             display: flex;
             flex-direction: column;
             gap: 14px;
         }
-
         .desktop-main {
             display: flex;
             flex-direction: column;
             gap: 12px;
             min-width: 0;
         }
-
         .stats-wrapper {
             display: flex;
             gap: 12px;
@@ -331,14 +298,14 @@
             flex: 1 1 180px;
         }
         
-        /* THEORY / PRACTICAL LABELS */
+        /* 🔥 PANCHANG FONT FOR EXACT WIDE SHAPE 🔥 */
         .overall-info h3 {
-            font-family: 'Cabinet Grotesk', sans-serif !important;
-            font-size: 17px !important;
-            font-weight: 900 !important;
-            color: var(--muted);
-            letter-spacing: -0.5px !important;
-            margin-bottom: 2px;
+            font-family: 'Panchang', sans-serif !important;
+            font-size: 13px !important;
+            font-weight: 900 !important; 
+            color: var(--text) !important; 
+            letter-spacing: 0.5px !important;
+            margin-bottom: 4px;
             text-transform: uppercase;
         }
         .overall-info h2 {
@@ -375,12 +342,13 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* SECTION TITLE (YOUR ATTENDANCE) */
+        /* 🔥 SECTION TITLE (YOUR ATTENDANCE) 🔥 */
         .section-title {
-            font-family: 'Cabinet Grotesk', sans-serif !important;
-            font-size: 21px !important;
+            font-family: 'Panchang', sans-serif !important;
+            font-size: 16px !important;
             font-weight: 900 !important;
-            letter-spacing: -0.8px !important;
+            color: var(--text) !important; 
+            letter-spacing: 0.5px !important;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -389,7 +357,7 @@
         .section-title::after {
             content: '';
             flex: 1;
-            height: 3px;
+            height: 3.5px;
             background: var(--border);
         }
 
@@ -496,27 +464,22 @@
             box-shadow: none;
         }
 
-        /* TICKS & CROSS PERMANENT COLORS */
         .action-btn.btn-present .svg-icon { stroke: #16a34a !important; }
         .action-btn.btn-bunk .svg-icon { stroke: #dc2626 !important; }
 
-        .action-btn.btn-present:hover,
-        .action-btn.btn-present:active {
+        .action-btn.btn-present:hover, .action-btn.btn-present:active {
             background: var(--green) !important;
             border-color: var(--border) !important;
             color: #0c0c0e !important;
         }
-        .action-btn.btn-present:hover .svg-icon,
-        .action-btn.btn-present:active .svg-icon { stroke: #0c0c0e !important; }
+        .action-btn.btn-present:hover .svg-icon, .action-btn.btn-present:active .svg-icon { stroke: #0c0c0e !important; }
 
-        .action-btn.btn-bunk:hover,
-        .action-btn.btn-bunk:active {
+        .action-btn.btn-bunk:hover, .action-btn.btn-bunk:active {
             background: var(--coral) !important;
             border-color: var(--border) !important;
             color: #0c0c0e !important;
         }
-        .action-btn.btn-bunk:hover .svg-icon,
-        .action-btn.btn-bunk:active .svg-icon { stroke: #0c0c0e !important; }
+        .action-btn.btn-bunk:hover .svg-icon, .action-btn.btn-bunk:active .svg-icon { stroke: #0c0c0e !important; }
 
         /* EMPTY STATE */
         .empty-module-card {
@@ -636,12 +599,13 @@
             border-bottom: 2.5px solid var(--border);
             padding-bottom: 8px;
         }
-        /* MODAL HEADINGS */
+        /* 🔥 MODAL HEADINGS 🔥 */
         .modal-header h3 {
-            font-family: 'Cabinet Grotesk', sans-serif !important;
+            font-family: 'Panchang', sans-serif !important;
             font-weight: 900 !important;
-            font-size: 19px !important;
-            letter-spacing: -0.4px;
+            font-size: 15px !important;
+            color: var(--text) !important;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
         }
         .modal-input {
@@ -694,8 +658,6 @@
             line-height: 1.4;
             word-break: break-word;
         }
-
-        /* SENDER (ME): SOFT BUTTER PASTEL YELLOW */
         .msg-wrapper.me .msg { 
             background: #FEF9C3 !important; 
             color: #0c0c0e !important; 
@@ -703,8 +665,6 @@
             box-shadow: 2.5px 2.5px 0px #0c0c0e !important;
             border-bottom-right-radius: 2px; 
         }
-
-        /* RECEIVER (STRANGER): CRISP WHITE */
         .msg-wrapper.stranger .msg { 
             background: #ffffff !important; 
             color: #0c0c0e !important;
@@ -712,10 +672,8 @@
             box-shadow: 2.5px 2.5px 0px #0c0c0e !important;
             border-bottom-left-radius: 2px; 
         }
-
         .msg-time { font-size: 10px; font-weight: 700; color: var(--muted); margin-top: 3px; }
 
-        /* YELLOW TIMER BADGE */
         .timer-text {
             font-family: 'Space Mono', monospace;
             font-size: 14px;
@@ -767,17 +725,9 @@
             color: var(--text);
             transition: background 0.12s ease;
         }
-        .chat-send-btn:hover {
-            background: #f4f4f5;
-        }
-        .chat-send-btn:active {
-            background: #e4e4e7;
-        }
-        .chat-send-btn:disabled {
-            cursor: not-allowed;
-            opacity: 0.5;
-            background: transparent;
-        }
+        .chat-send-btn:hover { background: #f4f4f5; }
+        .chat-send-btn:active { background: #e4e4e7; }
+        .chat-send-btn:disabled { cursor: not-allowed; opacity: 0.5; background: transparent; }
         .chat-send-btn .svg-icon {
             width: 17px;
             height: 17px;
