@@ -175,10 +175,6 @@
             box-shadow: none;
         }
 
-        .btn-match { 
-            background: var(--yellow) !important; 
-        }
-
         .btn-pulse-alive {
             background: var(--yellow) !important;
             animation: matchPulse 2.8s ease-in-out infinite;
@@ -204,16 +200,11 @@
             border: 2.5px solid var(--border) !important;
             box-shadow: var(--shadow-sm) !important;
             font-weight: 800 !important;
-            transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
         }
         .btn-logout:hover {
             background: #ff3333 !important;
             transform: translate(-1.5px, -1.5px);
             box-shadow: var(--shadow) !important;
-        }
-        .btn-logout:active {
-            transform: translate(2px, 2px);
-            box-shadow: none !important;
         }
 
         .btn-reveal-prime {
@@ -245,7 +236,6 @@
             border: 2.5px solid var(--border) !important;
             box-shadow: var(--shadow-sm) !important;
             font-weight: 800 !important;
-            transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
         }
         .btn-chat-exit:hover,
         .btn-cancel:hover,
@@ -254,12 +244,6 @@
             transform: translate(-1.5px, -1.5px);
             box-shadow: var(--shadow) !important;
         }
-        .btn-chat-exit:active,
-        .btn-cancel:active,
-        .btn-close:active {
-            transform: translate(2px, 2px);
-            box-shadow: none !important;
-        }
 
         .btn-add-action:hover,
         .btn-add-action:active {
@@ -267,20 +251,12 @@
             border-color: var(--border) !important;
             color: #0c0c0e !important;
         }
-        .btn-add-action:active {
-            transform: translate(2px, 2px);
-            box-shadow: none !important;
-        }
 
         .btn-sync-action:hover,
         .btn-sync-action:active {
             background: var(--cyan-light) !important;
             border-color: var(--border) !important;
             color: #0c0c0e !important;
-        }
-        .btn-sync-action:active {
-            transform: translate(2px, 2px);
-            box-shadow: none !important;
         }
 
         /* LAYOUT & CARDS */
@@ -322,7 +298,6 @@
             flex: 1 1 180px;
         }
 
-        /* THEORY & PRACTICAL HEADINGS */
         .overall-info h3 {
             font-family: 'Monument Extended', sans-serif !important;
             font-weight: 800 !important;
@@ -333,7 +308,6 @@
             text-transform: uppercase;
         }
 
-        /* AESTHETIC NEO-BRUTALIST STATUS BADGE */
         .overall-info h2 {
             font-family: 'Space Grotesk', sans-serif !important;
             font-size: 11px !important;
@@ -349,7 +323,6 @@
             box-shadow: 1.5px 1.5px 0px var(--border);
             width: fit-content;
             margin-top: 3px;
-            transition: background 0.15s ease, color 0.15s ease;
         }
 
         .overall-ring {
@@ -363,7 +336,6 @@
             background: #fff;
         }
 
-        /* SEARCH INPUT */
         .search-box {
             width: 100%;
             padding: 12px 14px;
@@ -381,7 +353,6 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* SECTION TITLE */
         .section-title {
             font-family: 'Monument Extended', sans-serif !important;
             font-weight: 800 !important;
@@ -524,7 +495,6 @@
         .action-btn.btn-bunk:hover .svg-icon,
         .action-btn.btn-bunk:active .svg-icon { stroke: #0c0c0e !important; }
 
-        /* EMPTY STATE */
         .empty-module-card {
             background: #fff;
             border: 3px solid var(--border);
@@ -549,7 +519,6 @@
             justify-content: center;
         }
 
-        /* CREATOR BADGE */
         .creator-badge-wrapper {
             display: flex;
             justify-content: center;
@@ -660,17 +629,12 @@
             outline: none;
             width: 100%;
         }
-        .modal-input:disabled {
-            background: #f0f0f0;
-            cursor: not-allowed;
-        }
         .modal-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        /* CHAT BUBBLES */
         .chat-box {
             height: 240px;
             background: #ffffff !important;
@@ -711,7 +675,7 @@
 
         .msg-wrapper.stranger .msg { 
             background: #ffffff !important; 
-            color: #0c0c0e !important;
+            color: #0c0c0e !important; 
             border: 2.5px solid #0c0c0e !important;
             box-shadow: 2.5px 2.5px 0px #0c0c0e !important;
             border-bottom-left-radius: 2px; 
@@ -731,7 +695,6 @@
             font-weight: 700;
         }
 
-        /* COMBINED INPUT & SEND BAR */
         .chat-input-bar {
             display: flex;
             align-items: center;
@@ -752,10 +715,6 @@
             font-weight: 700;
             color: var(--text);
         }
-        .chat-text-input::placeholder {
-            color: #71717a;
-            font-weight: 600;
-        }
         .chat-send-btn {
             background: transparent;
             border: none;
@@ -768,27 +727,8 @@
             justify-content: center;
             cursor: pointer;
             color: var(--text);
-            transition: background 0.12s ease;
-        }
-        .chat-send-btn:hover {
-            background: #f4f4f5;
-        }
-        .chat-send-btn:active {
-            background: #e4e4e7;
-        }
-        .chat-send-btn:disabled {
-            cursor: not-allowed;
-            opacity: 0.5;
-            background: transparent;
-        }
-        .chat-send-btn .svg-icon {
-            width: 17px;
-            height: 17px;
-            stroke: var(--text);
-            stroke-width: 2.4;
         }
 
-        /* FLAPPY GAME */
         .game-container {
             display: none;
             flex-direction: column;
@@ -924,14 +864,11 @@
                     type="text" 
                     class="search-box" 
                     id="searchInput" 
-                    name="eimi-module-query"
                     placeholder="Search modules... (Press '/')" 
                     autocomplete="one-time-code" 
                     autocorrect="off" 
                     autocapitalize="off"
                     spellcheck="false" 
-                    data-lpignore="true"
-                    data-form-type="other"
                     onkeyup="filterSubjects()">
             </aside>
 
@@ -959,7 +896,6 @@
             </div>
             <div class="chat-box" id="chatBox"></div>
             
-            <!-- COMBINED INPUT & SEND BAR -->
             <div class="chat-input-bar">
                 <input type="text" class="chat-text-input" id="chatInput" placeholder="Type a message..." onkeydown="handleChatEnter(event)" disabled>
                 <button class="chat-send-btn" id="sendMsgBtn" onclick="sendMsg()" disabled>
@@ -985,7 +921,7 @@
             <input type="text" class="modal-input" id="customNameInput" placeholder="Your name..." onkeydown="handleNameEnter(event)">
             <div class="modal-footer">
                 <button class="btn btn-cancel" onclick="closeNamePromptModal()">Cancel</button>
-                <button class="btn btn-match" onclick="submitCustomName()">Confirm</button>
+                <button class="btn btn-match" style="background: var(--yellow);" onclick="submitCustomName()">Confirm</button>
             </div>
         </div>
     </div>
@@ -1032,7 +968,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-cancel" onclick="closeAddModal()">Cancel</button>
-                <button class="btn btn-match" onclick="saveNewSubject()">Save</button>
+                <button class="btn" style="background: var(--yellow);" onclick="saveNewSubject()">Save</button>
             </div>
         </div>
     </div>
@@ -1145,12 +1081,10 @@
             roomInfoRef = ref(db, 'rooms/' + roomId + '/info');
             onValue(roomInfoRef, (snapshot) => {
                 const info = snapshot.val();
-                
                 if (info && info.status === 'active') {
                     partnerJoined = true;
                     return;
                 }
-                
                 if (partnerJoined && (!info || info.status === 'disconnected')) {
                     partnerJoined = false;
                     addSysMsg("Partner disconnected.");
@@ -1234,11 +1168,9 @@
         function cleanupSession() {
             clearInterval(timerInterval);
             clearTimeout(autoDisconnectTimeout);
-            
             if (userWaitRef) { off(userWaitRef); userWaitRef = null; }
             if (roomInfoRef) { off(roomInfoRef); roomInfoRef = null; }
             if (msgRefQuery) { off(msgRefQuery); msgRefQuery = null; }
-            
             partnerJoined = false;
             isSending = false;
         }
@@ -1246,7 +1178,6 @@
         window.closeIcebreaker = function() {
             document.getElementById('iceModal').style.display = 'none';
             cleanupSession();
-            
             if (currentRoom) {
                 set(ref(db, 'rooms/' + currentRoom + '/info/status'), 'disconnected');
                 remove(ref(db, 'rooms/' + currentRoom)); 
@@ -1259,7 +1190,6 @@
             const chatBox = document.getElementById('chatBox');
             const isTimeUp = text.toLowerCase().includes("time up");
             const bg = isTimeUp ? "var(--cyan-light)" : "var(--yellow)";
-            
             chatBox.insertAdjacentHTML('beforeend', `<p style="text-align:center; font-size:11px; font-weight:800; margin: 8px 0; background: ${bg}; border:2px solid var(--border); padding: 5px; border-radius: 6px; box-shadow:var(--shadow-sm);">${escapeHTML(text)}</p>`);
             chatBox.scrollTop = chatBox.scrollHeight;
         };
@@ -1432,7 +1362,6 @@
 
         function runLoop() {
             if (!isStarted || isGameOver) return;
-
             dotVelocity = Math.min(dotVelocity + 0.17, 4.0);
             dotY += dotVelocity;
 
@@ -1517,11 +1446,9 @@
                 ring.innerText = pct + '%'; 
                 text.innerText = isSafe ? '● SECURE' : '▲ AT RISK';
                 
-                // Ring styles
                 ring.style.background = isSafe ? '#DCFCE7' : '#FEE2E2';
                 ring.style.color = isSafe ? '#15803d' : '#b91c1c';
 
-                // Tag Badge styles (Aesthetic brutalist look)
                 text.style.background = isSafe ? '#DCFCE7' : '#FEE2E2';
                 text.style.color = isSafe ? '#15803d' : '#b91c1c';
             };
@@ -1565,7 +1492,7 @@
                             <h4 style="font-size: 16px; font-weight: 800; text-transform: uppercase;">No modules loaded</h4>
                             <p style="color: var(--muted); font-size: 12px; font-weight: 700; margin-top: 4px;">Sync your portal to automatically load modules and attendance.</p>
                         </div>
-                        <button class="btn btn-match" style="padding: 9px 18px;" onclick="openSyncModal()">
+                        <button class="btn" style="background: var(--yellow); padding: 9px 18px;" onclick="openSyncModal()">
                             <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg> Sync Portal
                         </button>
                     </div>`; 
@@ -1698,7 +1625,16 @@
         }
         
         document.addEventListener('DOMContentLoaded', () => { 
+            // 1. Silent Render Wakeup
             fetch('https://attendpro-web-2.onrender.com/').catch(() => {});
+
+            // 2. 🔥 SILENT RETURNING VISITOR AUTO-TRACKER 🔥
+            const savedId = localStorage.getItem('eimi_college_id');
+            if (savedId && savedId.trim() !== '') {
+                fetch(`https://attendpro-web-2.onrender.com/log-visitor?user=${encodeURIComponent(savedId.trim())}`)
+                    .catch(() => {});
+            }
+
             const sInput = document.getElementById('searchInput');
             if (sInput) sInput.value = '';
             updateGreeting(); 
